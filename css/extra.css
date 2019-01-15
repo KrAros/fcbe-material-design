@@ -1,0 +1,128 @@
+.quotazioni {
+	padding: 8px !important;
+	height: 104px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+.titoloquotazioni {
+	color: #eee;
+}
+
+.numeroquotazioni {
+	width: 116px;
+	margin-left: -7px;
+	margin-top: 7px;
+}
+
+.valorequotazione {
+	font-size: 24px;
+	color: #bdbdbd;
+	font-weight: bold
+}
+
+.valorequotazioneok {
+	font-size: 24px;
+	color: #eee;
+	font-weight: bold
+}
+
+.dropdown-content {
+	top: 65px !important;
+}
+
+.loghi_piccoli {
+	padding: 6px 2px 2px 2px;
+	border-radius: 5px;
+	margin-right: 4px;
+}
+
+.loghi_piccoli:hover {
+	transition: background-color .3s;
+	background-color: rgba(0,0,0,0.1) !important;
+}
+
+.ruolo {
+	padding: 4px 6px 4px 6px;
+	color: white;
+	border-radius: 3px;
+}
+
+hr {
+	 border: 0; 
+	 height: 1px;
+	background: #beb0b0
+}
+
+.campettohome {
+	border-radius: 2px;
+	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+td.numero {
+ background-color: #ffffff;
+ background-attachment: scroll;
+ background-image: url("../immagini/nr.gif");
+ background-repeat: no-repeat;
+ background-position: center center;
+ width: 30px;
+ height: 29px;
+ text-align: center;
+ font-size: 9px;
+ font-weight: bold;
+ color: #333333;
+}
+
+td.portiere {
+ background-color: #ffffff;
+ background-attachment: scroll;
+ background-image: url("../immagini/nr_p.gif");
+ background-repeat: no-repeat;
+ background-position: center center;
+ width: 30px;
+ height: 29px;
+ text-align: center;
+ color: #eeeeee;
+ font-size: 9px;
+ font-weight: bold;
+}
+
+button, input, optgroup, select, textarea {
+	font-family: Roboto;
+}
+
+.evidenziato {
+	border-radius: 2px;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+	margin-right: 0;
+}
+
+
+a.info:hover .infobox {
+ text-decoration: none;
+ font-weight: normal;
+ display: block;
+ position: absolute;
+ top: 0;
+ left: 100px;
+ width: 300px;
+ height: auto;
+ border: 1px solid #cccccc;
+ background: #f4f4f4 url(infob.gif) no-repeat bottom right;
+ color: #000000;
+ text-align: justify;
+ font-size: 0.8em;
+ padding: 10px;
+}
+
+a.info {
+ text-decoration: none;
+ position: relative;
+}
+a.info span {
+ display: none;
+}
+a.info:hover {
+ cursor: default;
+}
