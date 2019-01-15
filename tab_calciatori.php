@@ -18,7 +18,7 @@
 	// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 	// #################################################################################
 	@$escludi_controllo = $_GET ['escludi_controllo'];
-	
+
 	if ($escludi_controllo != "SI")
 	require_once ("./controlla_pass.php");
 	else
@@ -358,7 +358,8 @@
 		
 		echo "<script type='text/javascript' src='./inc/js/ordina_tabella.js'></script>";
 		echo $layout;
-		echo "						    </div>
+		
+		echo "</div>
 					    </div>		
 			        </div>
 			    </div>
