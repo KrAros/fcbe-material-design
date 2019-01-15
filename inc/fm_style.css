@@ -1,0 +1,30 @@
+div.dirphp {
+	background-color: #FFFFFF;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: left;
+}
+.dirphp tr:hover td { background-color: yellow; }
+.dirphp textarea { font-size: 11px; font-family: Courier New; color: navy; }
+.dirphp a:link , .dirphp a:visited , .dirphp a:active { text-decoration: none; color: #0000FF; }
+.dirphp a:hover{ text-decoration: underline; }
+.dirphp a:link .php , .dirphp a:visited .php , .dirphp a:active .php { text-decoration: none; color: #9933CC; }
+.dirphp a:hover .php { text-decoration: underline; color: #9933CC; }
+.dirphp a:link .directory , .dirphp a:visited .directory , .dirphp a:active .directory { text-decoration: none; color: #006600; }
+.dirphp a:hover .directory { text-decoration: underline; color: #006600; }
+.dirphp a:link .image , .dirphp a:visited .image , .dirphp a:active .image { text-decoration: none; color: #FF6600; }
+.dirphp a:hover .image { text-decoration: underline; color: #FF6600; }
+.dirphp a:link .flash , .dirphp a:visited .flash , .dirphp a:active .flash { text-decoration: none; color: #CC0000; }
+.dirphp a:hover .flash { text-decoration: underline; color: #CC0000; }
+.dirphp a:link .compressed , .dirphp a:visited .compressed , .dirphp a:active .compressed { text-decoration: none; color: #996600; }
+.dirphp a:hover .compressed { text-decoration: underline; color: #996600; }
+.dirphp a:link .dir-view , .dirphp a:visited .dir-view , .dirphp a:active .dir-view { color: #000000; }
+.dirphp a:hover .dir-view { color: #009900; }
+.dirphp td.file { padding: 1px; border-bottom: 1px dashed #CCCCCC; }
+.dirphp span.dir-view { height: 18px; width: 20px; background-color: #99FFCC; padding-left: 3px; padding-right: 3px; padding-top: 2px; padding-bottom: 3px; font-size: 10px; text-decoration: none; }
+.dirphp .error_msg { color: #FF0000; }
+.dirphp .greyed-out { color: #666666; }
+.dirphp .bottom_bar { height: 90px; background-color: #CCFFCC; border-top: 1px dashed #336633; border-bottom: 1px dashed #336633; padding: 4px; }
+.dirphp tr.header { background-color: #EEEEEE;  font-weight: bold; }
+.dirphp td.file-property { text-align: right; padding-right: 5px; padding: 1px; border-bottom: 1px dashed #CCCCCC; }
+.dirphp td.file-options { text-align: center; padding-right: 5px; padding: 1px; border-bottom: 1px dashed #CCCCCC; background-color: #F6F6F6; }

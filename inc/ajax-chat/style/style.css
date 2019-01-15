@@ -1,0 +1,277 @@
+div.chat form,
+div.chat img,
+div.chat input,
+div.chat table,
+div.chat td,
+div.chat th
+{
+  margin:  0px;
+  padding: 0px;
+  border:     none;
+  background: none;
+}
+
+div.chat table { border-collapse: collapse; }
+div.chat td    { vertical-align:  top; }
+
+
+/* ***** Main *************************************************************** */
+
+div.chat div.main
+{
+  border:  1px solid #000000;
+  padding: 2px;
+  width: 518px;
+  background: #F0FFF8;
+}
+
+div.chat div.main div.main,
+div.chat div.main   a.main,
+div.chat div.room   a.main
+{
+ display: block;
+ width:    auto;
+
+ border:  1px solid #000000;
+ padding: 1px 15px 2px 15px;
+
+ background: #700b0b;
+
+ text-decoration: none;
+ font-family: Verdana, Sans-Serif;
+ font-weight: 900;
+ font-size:  12px;
+ color:   #FFFFFF;
+}
+
+div.chat div.main div.main,
+div.chat div.main   a.main { margin: 0px 1px 1px 0px; float: left; }
+div.chat div.room   a.main { margin: 0px 0px 1px 0px; }
+div.chat div.room          { border: 1px solid black; padding: 1px 1px 0px 1px; background: white; }
+
+
+div.chat div.main table.main { clear: both; }
+
+div.chat div.main div#header_messages,
+div.chat div.main div#header_users
+{
+  border:  1px solid #000000;
+  padding: 0px 3px 1px 3px;
+  border-bottom: none;
+
+  background: #BF3E17;
+}
+
+div.chat div.main div#header_messages a { float: right; }
+
+div.chat div.main div#header_messages,
+div.chat div.main div#header_users,
+div.chat div.main div#header_messages a
+{
+  text-decoration: none;
+  font-family: Verdana, Sans-Serif;
+  font-weight: 900;
+  font-size:  10px;
+  color:   #FFFFFF;
+}
+
+div.chat div.main div#messages,
+div.chat div.main div#users
+{
+  height:  300px;
+  overflow: auto;
+
+  border:  1px solid #000000;
+  padding: 1px 1px;
+
+  background: #FFFFFF;
+}
+
+div.chat div.main div#messages,
+div.chat div.main div#users,
+div.chat div.main div#messages a,
+div.chat div.main div#users a
+{
+  text-decoration: none;
+  font-family: Verdana, Sans-Serif;
+  font-size:  11px;
+  color:   #000000;
+}
+
+div.chat div.main div#messages img    { vertical-align: baseline; margin: 0px 0px 0px 0px; }
+div.chat div.main div#users    img    { vertical-align: baseline; margin: 0px 0px 0px 0px; }
+
+div.chat div.main div#header_messages { width: 400px; margin: 0px 2px 0px 0px; }
+div.chat div.main div#header_users    { width: 100px; }
+div.chat div.main div#messages        { width: 404px; margin: 0px 2px 2px 0px; }
+div.chat div.main div#users           { width: 104px; white-space: nowrap; }
+
+div.chat div.main div#users b
+{
+  display: block;
+
+  margin:  1px 0px;
+  padding: 1px 2px;
+
+  background: #700b0b;
+
+  font-family: Verdana, Sans-Serif;
+  font-weight: 900;
+  font-size:  10px;
+  color:   #FFFFFF;
+}
+
+div.chat div.main div#users b.first { margin-top: 0px; }
+div.chat div.main div#users div     { margin-top: 2px; display: none; }
+
+div.chat div.main form.send td                             { vertical-align: middle; }
+div.chat div.main form.send div.form_input                 { width: 448px; }
+div.chat div.main form.send div.form_input div.input       { width: 446px; }
+div.chat div.main form.send div.form_input div.input input { width: 440px; }
+
+div.chat div#log_log { margin-top: 2px; border: 1px solid   red; padding: 1px; }
+div.chat div#log_add { margin-top: 2px; border: 1px solid green; padding: 1px; }
+div.chat div#log_get { margin-top: 2px; border: 1px solid  blue; padding: 1px; }
+
+
+/* ***** Forms ************************************************************** */
+
+div.chat input.submit
+{
+  width:  70px;
+  height: 24px;
+  background:  #FFFFFF url('submit.png');
+}
+
+div.chat div.input
+{
+  background:  #FFFFFF url( 'input.png');
+  line-height: 1px;
+}
+
+div.chat div.input input
+{
+  border:  1px solid #000000;
+  padding: 1px 1px 1px 3px;
+}
+
+
+/* ***** Popups ************************************************************* */
+
+div.chat div.menu_form_head
+{
+  border:  1px solid #000000;
+  padding: 1px 5px 2px 5px;
+  border-bottom: none;
+
+  background: #700b0b;
+
+  text-decoration: none;
+  font-family: Verdana, Sans-Serif;
+  font-weight: 900;
+  font-size:  11px;
+  color:   #FFFFFF;
+  cursor:  default;
+}
+
+div.chat div.menu_form_body
+{
+  border: 1px solid #000000;
+  background: #F0FFF8;
+}
+
+div.chat div.menu_form_exit
+{
+  float: right;
+  width: 9px;
+  background: #105050 url('exit.png') no-repeat 0px 3px;
+  cursor: pointer;
+}
+
+/* ***** About ***** */
+
+div.chat div.about             { width: 270px; display: none; }
+div.chat div.about div.padding { padding: 5px; }
+
+div.chat div.about div.about_aux
+{
+  height:  170px;
+  overflow: auto;
+
+  border:  1px solid black;
+  padding: 0px 5px;
+
+  background: white;
+}
+
+div.chat div.about h1
+{
+  margin:  0px;
+  padding: 5px 0px;
+
+  font-family: Tahoma, Sans-Serif;
+  font-weight: 900;
+  font-size:  11px;
+  color:   #000000;
+}
+
+div.chat div.about p
+{
+  margin:  0px;
+  padding: 0px 0px 5px 0px;
+
+  font-family: Tahoma, Sans-Serif;
+  font-weight: 100;
+  font-size:  11px;
+  color:   #202020;
+}
+
+/* ***** Color ***** */
+
+div.chat div.color                    { width: 159px; display: none; }
+div.chat div.color table.color_aux td { padding: 5px; line-height: 1px; }
+div.chat div.color img                { float:  left; }
+
+
+/* ***** Login ***** */
+
+div.chat div.login             { width: 200px; display: none; }
+div.chat div.login div.padding { padding: 5px 5px 2px 5px; }
+
+div.chat div.login div.form_title
+{
+  float: left;
+
+  font-family: Verdana, Sans-Serif;
+  font-weight: 900;
+  font-size:  11px;
+  color:   #000000;
+}
+
+div.chat div.login div.form_input                 { width: 106px; float: right; }
+div.chat div.login div.form_input div.input       { width: 106px; }
+div.chat div.login div.form_input div.input input { width: 100px; }
+
+div.chat div.login table.form_separator    { width: 100%; clear: both; }
+div.chat div.login table.form_separator td { height: 3px; line-height: 3px; }
+
+/* ***** Smiley ***** */
+
+div.chat div.smiley { width: 192px; display: none; }
+
+div.chat div.smiley div.padding
+{
+  margin:  5px;
+  border:  1px solid #000000;
+  padding: 1px 1px 2px 2px;
+  background: #FFFFFF;
+  line-height: 1px;
+}
+
+div.chat div.smiley div.padding img
+{
+  float:   left;
+  padding: 1px 1px 1px 1px;
+  border:  1px solid #E0E0E0;
+  margin:  1px 1px 0px 0px;
+}
