@@ -1309,8 +1309,7 @@
 				A questo punto decidete voi se cambiare lo stato del mercato e tutte le altre variabili a vostro piacimento oppure continuare un'altra busta chiusa. Nel caso si deci di farlo dovete solo modificare la variabile data_busta_chiusa in un tempo futuro.
 				</div>";
 			}
-			echo"
-			</div></div></div></div></div></div></div>";  //CHIUDONO CARD INIZIALE
+			echo"</div></div></div></div></div></div></div>";  //CHIUDONO CARD INIZIALE
 		} # fine if ($_SESSION["utente"]
 		else header("Location: ./logout.php");
 		include("./footer.php");

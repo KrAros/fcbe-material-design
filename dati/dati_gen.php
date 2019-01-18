@@ -10,7 +10,7 @@ $admin_nome 						= 'Presidente';
 $email_mittente 					= 'fantacalcio@localhost.com';
 $admin_user 						= 'admin';
 $admin_pass 						= 'password';
-$iscrizione_online				= 'SI';
+$iscrizione_online				= 'NO';
 $iscrizione_immediata_utenti		=	'SI';
 $mostra_voti_in_login 			= 'SI';
 $trasferiti_ok       			= 'NO';
@@ -32,7 +32,7 @@ $uploaddir 						=	'dati/2018';
 $manutenzione 					=	'NO';
 $attiva_log 						=	'SI';
 $attiva_rss 						= 'SI';
-$url_rss							= 'http://www.gazzetta.it/rss/Calcio.xml                                                                                                                                                    ';
+$url_rss							= 'http://www.gazzetta.it/rss/Calcio.xml';
 $attiva_multi 					= 'NO';
 
 $attiva_shoutbox 				= 'NO';

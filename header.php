@@ -93,6 +93,7 @@ dir="ltr">
 		<!--[if gte IE 9]><!-->
 		<script src="./inc/js/jquery-2.0.3.min.js"></script>
 		<!--<![endif]-->
+<script src="./dati/update/update.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			$(document).ready(function(){
@@ -160,6 +161,27 @@ dir="ltr">
 							if ($usa_cms == "SI")
 							echo '<li><a href="a_sito.php"><i class="material-icons left">view_module</i>CMS</a></li>';
 							echo '<li><a href="a_configura.php"><i class="material-icons left">build</i>Configurazione sito</a></li>
+							<li><a class="dropdown-trigger" href="#!" data-target="dropdownad"><i class="material-icons left">list</i>Altre funzionalit&agrave;</a></li>
+							
+							
+							<ul id="dropdownad" class="dropdown-content">
+							<li><a href="./a_aggUtente.php">Aggiungi utenti</a></li>
+							<li><a href="./a_appUtente.php">Approvazione utenti</a></li>
+							<li><a href="./a_verifiche.php">Verifiche struttura</a></li>
+							<li class="divider"></li>
+							<li><a href="./a_upload.php">Carica voti</a></li>
+							<li><a href="./a_invia_voti.php">Invia formazioni - DA FIXARE</a></li>
+							<li><a href="./a_invia_risultati.php">Invia risultati - DA FIXARE</a></li>
+							<li><a href="./messaggi.php">Gestione messaggi</a></li>
+							<li class="divider"></li>
+							<li><a href="./a_nlUtente.php">Newsletter utenti</a></li>
+							<li><a href="./a_crea_sondaggio.php">Sondaggi e votazioni</a></li>
+							<li><a href="./a_fm.php">File manager</a></li>
+							<li><a href="./a_backup.php">Backup dati</a></li>
+							<li><a href="./a_b2mail.php">Backup dati per email</a></li>
+							</ul>
+							
+							
 							<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
 							</ul>';
 						} 
@@ -240,12 +262,12 @@ dir="ltr">
 						    <ul id="dropdown4" class="dropdown-content">
 							<li><a href="a_modUtente.php">Modifica profilo</a></li>
 							<li><a href="messaggi.php">Messaggi</a></li>
-						    </ul>
-							
-							<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
-							</ul>';
+						</ul>
+						
+						<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+						</ul>';
 						}
-					?>	
-				</div>
-			</nav>
-		</div>		
+						?>	
+						</div>
+						</nav>
+						</div>								

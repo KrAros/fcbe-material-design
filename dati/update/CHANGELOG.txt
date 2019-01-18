@@ -1,0 +1,7 @@
+########## CHANGELOG ##########
+
+##### 0.0.5-alpha #####
+
+- Estensione della grafica in Material Design a quasi tutti i file amministrativi
+- Introduzione di un sistema di aggiornamento automatico dello script, in a_verifiche.php
+- Pulizia file personali script
