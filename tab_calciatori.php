@@ -159,7 +159,7 @@
 				$props = "";
 				
 				$calciatori_merc = @file ( $percorso_cartella_dati . "/mercato_" . $_SESSION [torneo] . "_" . $_SESSION [serie] . ".txt" );
-				$num_calciatori_merc = count ( $calciatori_merc );
+				$num_calciatori_merc = @count ( $calciatori_merc );
 				$n = $num_calciatori_merc - 1;
 				
 				// ####################‡‡

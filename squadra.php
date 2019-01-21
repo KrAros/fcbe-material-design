@@ -616,37 +616,37 @@
 								$inserire = "NO";
 								$controlla_squadra = "";
 								if ($np == substr ( $verifica_sg, 0, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Portieri</p><b><p class='numtab'>$np / " . substr ( $verifica_sg, 0, 1 ) . "</b></p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #4caf50;color: white;'>Al completo</p></center></td>";
+								$controlla_squadra .= "<tr><td style='width: 25%;'><p class='ruolotab'>Portieri</p><b><p class='numtab'>$np / " . substr ( $verifica_sg, 0, 1 ) . "</b></p><center><p class='btn waves-effect waves-light green'>Al completo</p></center></td>";
 								elseif ($np > substr ( $verifica_sg, 0, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric'><p class='ruolotab'>Portieri:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 0, 1 ) . " </p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #f44336;color: white;'>Vendere esubero</p></center></td>";
+								$controlla_squadra .= "<tr><td><p class='ruolotab'>Portieri:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 0, 1 ) . " </p><center><p class='btn waves-effect waves-light red'>Vendere esubero</p></center></td>";
 								elseif ($np < substr ( $verifica_sg, 0, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Portieri</p><p class='numtab'>$np / " . substr ( $verifica_sg, 0, 1 ) . " </p><center><a class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' href='tab_calciatori.php?ruolo_guarda=P&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
+								$controlla_squadra .= "<tr><td style='width: 25%;'><p class='ruolotab'>Portieri</p><p class='numtab'>$np / " . substr ( $verifica_sg, 0, 1 ) . " </p><center><a class='btn waves-effect waves-light indigo' href='tab_calciatori.php?ruolo_guarda=P&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
 								if ($nd == substr ( $verifica_sg, 1, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Difensori</p><b><p class='numtab'>$nd / " . substr ( $verifica_sg, 1, 1 ) . "</b></p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #4caf50;color: white;'>Al completo</p></center></td></tr>";
+								$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Difensori</p><b><p class='numtab'>$nd / " . substr ( $verifica_sg, 1, 1 ) . "</b></p><center><p class='btn waves-effect waves-light green'>Al completo</p></center></td></tr>";
 								elseif ($nd > substr ( $verifica_sg, 1, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric'><p class='ruolotab'>Difensori:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 1, 1 ) . " </p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #f44336;color: white;'>Vendere esubero</p></center></td></tr>";
+								$controlla_squadra .= "<td><p class='ruolotab'>Difensori:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 1, 1 ) . " </p><center><p class='btn waves-effect waves-light red'>Vendere esubero</p></center></td></tr>";
 								elseif ($nd < substr ( $verifica_sg, 1, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Difensori</p><p class='numtab'> $nd / " . substr ( $verifica_sg, 1, 1 ) . "</p><center><a class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' href='tab_calciatori.php?ruolo_guarda=D&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td></tr>";
+								$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Difensori</p><p class='numtab'> $nd / " . substr ( $verifica_sg, 1, 1 ) . "</p><center><a class='btn waves-effect waves-light indigo' href='tab_calciatori.php?ruolo_guarda=D&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td></tr>";
 								if ($nc == substr ( $verifica_sg, 2, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Centrocampisti</p><b><p class='numtab'>$nc / " . substr ( $verifica_sg, 2, 1 ) . "</b></p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #4caf50;color: white;'>Al completo</p></center></td>";
+								$controlla_squadra .= "<tr><td style='width: 25%;'><p class='ruolotab'>Centrocampisti</p><b><p class='numtab'>$nc / " . substr ( $verifica_sg, 2, 1 ) . "</b></p><center><p class='btn waves-effect waves-light green'>Al completo</p></center></td>";
 								elseif ($nc > substr ( $verifica_sg, 2, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric'><p class='ruolotab'>Centrocampisti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 2, 1 ) . " </p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #f44336;color: white;'>Vendere esubero</p></center></td>";
+								$controlla_squadra .= "<tr><td><p class='ruolotab'>Centrocampisti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 2, 1 ) . " </p><center><p class='btn waves-effect waves-light red'>Vendere esubero</p></center></td>";
 								elseif ($nc < substr ( $verifica_sg, 2, 1 ))
-								$controlla_squadra .= "<tr><td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Centrocampisti</p><p class='numtab'>$nc / " . substr ( $verifica_sg, 2, 1 ) . "</p><center><a class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' href='tab_calciatori.php?ruolo_guarda=C&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
+								$controlla_squadra .= "<tr><td style='width: 25%;'><p class='ruolotab'>Centrocampisti</p><p class='numtab'>$nc / " . substr ( $verifica_sg, 2, 1 ) . "</p><center><a class='btn waves-effect waves-light indigo' href='tab_calciatori.php?ruolo_guarda=C&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
 								if ($considera_fantasisti_come == "F") {
 									if ($nf == substr ( $verifica_sg, 3, 1 ))
-									$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Fantasisti</p><b><p class='numtab'>$nf / " . substr ( $verifica_sg, 3, 1 ) . "</b></p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #4caf50;color: white;'>Al completo</p></center></td>";
+									$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Fantasisti</p><b><p class='numtab'>$nf / " . substr ( $verifica_sg, 3, 1 ) . "</b></p><center><p class='btn waves-effect waves-light green''>Al completo</p></center></td>";
 									elseif ($nf > substr ( $verifica_sg, 3, 1 ))
-									$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric'><p class='ruolotab'>Fantasisti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 3, 1 ) . " </p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #f44336;color: white;'>Vendere esubero</p></center></td>";
+									$controlla_squadra .= "<td><p class='ruolotab'>Fantasisti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 3, 1 ) . " </p><center><p class='btn waves-effect waves-light red'>Vendere esubero</p></center></td>";
 									elseif ($nf < substr ( $verifica_sg, 3, 1 ))
-									$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Fantasisti</p><p class='numtab'>$nf / " . substr ( $verifica_sg, 3, 1 ) . "</p><center><a class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' href='tab_calciatori.php?ruolo_guarda=F&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
+									$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Fantasisti</p><p class='numtab'>$nf / " . substr ( $verifica_sg, 3, 1 ) . "</p><center><a class=btn waves-effect waves-light indigo' href='tab_calciatori.php?ruolo_guarda=F&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td>";
 								}
 								if ($na == substr ( $verifica_sg, 4, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Attaccanti</p><b><p class='numtab'>$na / " . substr ( $verifica_sg, 4, 1 ) . "</b></p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #4caf50;color: white;'>Al completo</p></center></td></tr>";
+								$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Attaccanti</p><b><p class='numtab'>$na / " . substr ( $verifica_sg, 4, 1 ) . "</b></p><center><p class='btn waves-effect waves-light green'>Al completo</p></center></td></tr>";
 								elseif ($na > substr ( $verifica_sg, 4, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric'><p class='ruolotab'>Attaccanti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 4, 1 ) . " </p><center><p class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' style='background-color: #f44336;color: white;'>Vendere esubero</p></center></td></tr>";
+								$controlla_squadra .= "<td><p class='ruolotab'>Attaccanti:</p> <p class='numtab'><font color='red'><b>$np</b></font> / " . substr ( $verifica_sg, 4, 1 ) . " </p><center><p class='btn waves-effect waves-light red'>Vendere esubero</p></center></td></tr>";
 								elseif ($na < substr ( $verifica_sg, 4, 1 ))
-								$controlla_squadra .= "<td class='mdl-data-table__cell--non-numeric' style='width: 25%;'><p class='ruolotab'>Attaccanti</p><p class='numtab'>$na / " . substr ( $verifica_sg, 4, 1 ) . "</p><center><a class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored' href='tab_calciatori.php?ruolo_guarda=A&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td></tr>";
+								$controlla_squadra .= "<td style='width: 25%;'><p class='ruolotab'>Attaccanti</p><p class='numtab'>$na / " . substr ( $verifica_sg, 4, 1 ) . "</p><center><a class='btn waves-effect waves-light indigo' href='tab_calciatori.php?ruolo_guarda=A&amp;xsquadra_ok=NO&amp;mercato_libero=$mercato_libero' class='user'>acquista</a></center></td></tr>";
 							} // fine if ($xsquadra_ok != "SI")
 							else {
 								$fuori_tabella .= "<br />
@@ -845,7 +845,8 @@
 								$logo_squadra = "./immagini/loghi/" . $_SESSION ['utente'] . ".jpg";
 							}
 						}
-						$dati_utente = "<div class='row'><div class='col m5'>												    
+						$dati_utente = "<div class='row'>
+						<div class='col m5'>												    
 						<div class='card'>							    						    
 						<span class='card-title white-text' style='background-color: #3f51b5;background-image:url($logo_squadra);background-repeat:no-repeat;background-position:right;background-size:40%;height:116px;padding: 42px 0 0 10px;';>                                    							    
 						Profilo giocatore      
@@ -867,12 +868,11 @@
 						$dati_utente .= "</div></div></div>";
 						if ($num_calciatori_comprabili != "0") {
 							$dati_utente .= "
-							<div class='mdl-cell mdl-cell--7-col'>
-							<table class='mdl-data-table mdl-js-data-table mdl-shadow--2dp' style='width:100%' cellpadding='10' cellspacing='0'>
-							<caption>ACQUISTO GIOCATORI</caption>			                        							
+							<div class='col m7'>
+							<table cellpadding='10' cellspacing='0'>		                        							
 							<tr>			                            							    
-							<td class='mdl-data-table__cell--non-numeric'><center><b>Crediti disponibili:</b> $soldi_spendibili</center></td>											
-							<td class='mdl-data-table__cell--non-numeric'><center><b>Giocatori da acquistare:</b> $num_calciatori_comprabili</center></td>								
+							<td><center><b>Crediti disponibili:</b> $soldi_spendibili</center></td>											
+							<td><center><b>Giocatori da acquistare:</b> $num_calciatori_comprabili</center></td>								
 							</tr>		                                							
 							$controlla_squadra			                         						
 							</table></div>";
@@ -912,7 +912,7 @@
 								</tr>
 								</table></div></div></div>";
 							}
-						} else {
+							} else {
 							tabella_squadre ();
 							echo "<table summary='squadra testa' bgcolor='$sfondo_tab' width='100%' align='center'>
 							<tr><td align='center' class='testa'>$titolo";

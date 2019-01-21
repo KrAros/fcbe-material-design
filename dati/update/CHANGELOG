@@ -1,0 +1,8 @@
+########## CHANGELOG ##########
+
+##### 0.0.6-alpha #####
+
+- Aggiornamento al Material Design per i seguenti file: mercato.php, compra.php, registro_mercato.php, squadra.php
+- Aggiornamento a PHP 7 per i seguenti file: vedi_vendi_subito.php, vendi_subito.php, mercato.php, compra.php, registro_mercato.php, squadra.php
+- Fix grafica campetto tab_squadre con reparti a 5 giocatori
+- Inizio aggiornamento icone squadre

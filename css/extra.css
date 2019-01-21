@@ -27,7 +27,7 @@
 }
 
 .dropdown-content {
-	top: 65px !important;
+	top: 64px !important;
 }
 
 .loghi_piccoli {
@@ -125,4 +125,18 @@ a.info span {
 }
 a.info:hover {
  cursor: default;
+}
+.ruolotab {
+	text-transform: uppercase;
+	font-size: 20px;
+	letter-spacing: 0.5px;
+	text-align: center;
+}
+.numtab {
+	font-size: 18px;
+	padding-bottom: 15px;
+	padding-top: 10px;
+	opacity: 0.75;
+	-moz-opacity: 0.75;
+	text-align: center;
 }
