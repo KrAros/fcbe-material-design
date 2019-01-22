@@ -23,7 +23,7 @@
 		############################################
 		#### Controllo l'ultima versione disponibile
 		
-		$version = file_get_contents('http://pokemonoverwhelm.com/VERSION');
+		$version = file_get_contents('https://raw.githubusercontent.com/KrAros/fcbe-material-design/master/dati/update/VERSION');
 		$version = explode(".", $version);
 		$major = $version[0];
 		$minor = $version[1];
@@ -168,7 +168,7 @@
 		}
 		echo "</tr></table>\r\n";
 	}
-
+	
 	function ultima_giornata_giocata() {
 		global $percorso_cartella_voti;
 		for($num1 = 1; $num1 < 40; $num1 ++) {
@@ -549,40 +549,40 @@
 			}
 			
 			if ($html) {
-			$output = getHtmlOutput ( $key, $val );
-			
-			$intestazioni = "MIME-Version: 1.0\r\n";
-			$intestazioni .= "Content-type: text/html; charset=iso-8859-1\r\n";
-			} else {
-			for($i = 0; $i < count ( $key ); $i ++) {
-			$output .= $key [$i] . ": " . $val [$i] . "\r\n";
-			}
-			
-			$intestazioni = "";
+				$output = getHtmlOutput ( $key, $val );
+				
+				$intestazioni = "MIME-Version: 1.0\r\n";
+				$intestazioni .= "Content-type: text/html; charset=iso-8859-1\r\n";
+				} else {
+				for($i = 0; $i < count ( $key ); $i ++) {
+					$output .= $key [$i] . ": " . $val [$i] . "\r\n";
+				}
+				
+				$intestazioni = "";
 			}
 			
 			if ((! empty ( $emailMittente )) || (! empty ( $nome ))) {
-			$intestazioni .= "From: " . $nome . "<" . $emailMittente . "> \r\n";
-			} else {
-			$intestazioni .= "From: " . $mittente . "\r\n";
+				$intestazioni .= "From: " . $nome . "<" . $emailMittente . "> \r\n";
+				} else {
+				$intestazioni .= "From: " . $mittente . "\r\n";
 			}
 			
 			if (! mail ( $destinatari, $oggetto, $output, $intestazioni )) {
-			echo "<br/>" . $messaggioErrore . "<br/><br/><br/>" . getHtmlOutput ( $key, $val ) . "<br/><br/><br/>" . getCredits ();
-			
-			if (strlen ( $paginaErrore ) < 5) {
-			exit ();
-			} else {
-			echo "<META HTTP-EQUIV=Refresh CONTENT=\"10; URL=" . $paginaErrore . "\">";
-			}
+				echo "<br/>" . $messaggioErrore . "<br/><br/><br/>" . getHtmlOutput ( $key, $val ) . "<br/><br/><br/>" . getCredits ();
+				
+				if (strlen ( $paginaErrore ) < 5) {
+					exit ();
+					} else {
+					echo "<META HTTP-EQUIV=Refresh CONTENT=\"10; URL=" . $paginaErrore . "\">";
+				}
 			}
 			
 			echo "<br/>" . $messaggioConferma . "<br/><br/><br/>" . getHtmlOutput ( $key, $val ) . "<br/><br/><br/>" . getCredits ();
 			
 			if (strlen ( $paginaConferma ) < 5) {
-			exit ();
-			} else {
-			echo "<META HTTP-EQUIV=Refresh CONTENT=\"10; URL=" . $paginaConferma . "\">";
+				exit ();
+				} else {
+				echo "<META HTTP-EQUIV=Refresh CONTENT=\"10; URL=" . $paginaConferma . "\">";
 			}
 			} else {
 			echo "<center>
@@ -615,197 +615,197 @@
 			</table>
 			<br/><input type='submit' value='Invia' /><br/>
 			</form></center>";
-			}
-			}
-			function getHtmlOutput($k, $v) {
-			$stripsHtml = 1; // Se settato a 1, toglie tutti i tag html presenti negli input prima di visualizzarlo graficamente. E' possibile specificare quali tag permettere. Se a 0 permette tag html
-			$tagAllowed = "<b><i><br><br/><u>"; // Specifica quali tag html sono permessi nel caso in cui il parametro di sopra sia settato a 1
-			
-			$return = "<center><div style=\"width: 322; height: 147; text-align: center\">";
-			$return .= "<fieldset style=\"font-family: Verdana; font-size: 10pt; color: #008080; font-weight: bold; border: 3px double #F3C65C; background-color: #F4F5FF\">";
-			$return .= "<legend align='center'>Dati inseriti</legend>";
-			$return .= "<table summary='' border=0 cellpadding=3 style=\"border-collapse: collapse; font-family:Verdana; font-size:10pt; color:#4062EA\" bordercolor=#111111 cellspacing=5 width=300>";
-			$return .= "<colgroup span=1 style=\"text-align:right; font-weight: bold; background-color: #DDE8FF\"></colgroup>";
-			
-			for($i = 0; $i < count ( $k ); $i ++) {
+		}
+	}
+	function getHtmlOutput($k, $v) {
+		$stripsHtml = 1; // Se settato a 1, toglie tutti i tag html presenti negli input prima di visualizzarlo graficamente. E' possibile specificare quali tag permettere. Se a 0 permette tag html
+		$tagAllowed = "<b><i><br><br/><u>"; // Specifica quali tag html sono permessi nel caso in cui il parametro di sopra sia settato a 1
+		
+		$return = "<center><div style=\"width: 322; height: 147; text-align: center\">";
+		$return .= "<fieldset style=\"font-family: Verdana; font-size: 10pt; color: #008080; font-weight: bold; border: 3px double #F3C65C; background-color: #F4F5FF\">";
+		$return .= "<legend align='center'>Dati inseriti</legend>";
+		$return .= "<table summary='' border=0 cellpadding=3 style=\"border-collapse: collapse; font-family:Verdana; font-size:10pt; color:#4062EA\" bordercolor=#111111 cellspacing=5 width=300>";
+		$return .= "<colgroup span=1 style=\"text-align:right; font-weight: bold; background-color: #DDE8FF\"></colgroup>";
+		
+		for($i = 0; $i < count ( $k ); $i ++) {
 			$v [$i] = eregi_replace ( "\r\n", "<br/>", $v [$i] );
 			
 			if ($stripsHtml) {
-			$v [$i] = strip_tags ( $v [$i], $tagAllowed );
+				$v [$i] = strip_tags ( $v [$i], $tagAllowed );
 			}
 			
 			$return .= "<tr><td width=\"30%\">" . $k [$i] . ": </td><td>" . $v [$i] . "</td></tr>";
-			}
-			
-			$return .= "</table></fieldset></div></center>";
-			
-			return $return;
-			}
-			function ultimi10() {
-			global $percorso_cartella_dati;
-			$files = array ();
-			$dhandle = opendir ( $percorso_cartella_dati . "/messaggi" ) or die ( "impossibile aprire la directory dei messaggi" );
-			while ( $filei = readdir ( $dhandle ) ) {
+		}
+		
+		$return .= "</table></fieldset></div></center>";
+		
+		return $return;
+	}
+	function ultimi10() {
+		global $percorso_cartella_dati;
+		$files = array ();
+		$dhandle = opendir ( $percorso_cartella_dati . "/messaggi" ) or die ( "impossibile aprire la directory dei messaggi" );
+		while ( $filei = readdir ( $dhandle ) ) {
 			if (($filei == ".") || ($filei == "..") || ($filei == "index.php")) {
-			} else {
-			array_push ( $files, $filei );
+				} else {
+				array_push ( $files, $filei );
 			}
-			}
-			
-			rsort ( $files );
-			reset ( $files );
-			
-			for($x = 0; $x < 10; $x ++) {
+		}
+		
+		rsort ( $files );
+		reset ( $files );
+		
+		for($x = 0; $x < 10; $x ++) {
 			$dato = $files [$x];
 			
 			if ($dato != "") {
-			$topic = file ( $percorso_cartella_dati . "/messaggi/$dato" );
-			$topicinfo = explode ( "|", $topic [0] );
-			echo "- <a href='messaggi.php?a=topic&amp;topic=" . substr ( $dato, 0, strlen ( $dato ) - 4 ) . "'>" . $topicinfo [0] . "</a><br />";
+				$topic = file ( $percorso_cartella_dati . "/messaggi/$dato" );
+				$topicinfo = explode ( "|", $topic [0] );
+				echo "- <a href='messaggi.php?a=topic&amp;topic=" . substr ( $dato, 0, strlen ( $dato ) - 4 ) . "'>" . $topicinfo [0] . "</a><br />";
 			}
-			}
-			}
-			function read_dir($dir, $type = 'both', $extra = false) {
-			$info = array ();
-			$dh = opendir ( $dir );
-			$infod = array ();
-			$infof = array ();
-			while ( $lm_name = readdir ( $dh ) ) {
+		}
+	}
+	function read_dir($dir, $type = 'both', $extra = false) {
+		$info = array ();
+		$dh = opendir ( $dir );
+		$infod = array ();
+		$infof = array ();
+		while ( $lm_name = readdir ( $dh ) ) {
 			
 			if ($lm_name == "." || $lm_name == "..")
 			continue;
 			
 			if (is_dir ( "$dir/$lm_name" ) && ($type == 'dir' || $type == 'both')) {
-			if ($extra) {
-			$tinfo ['id'] = $lm_name . "/";
-			$tinfo ['path'] = $dir . $lm_name . "/";
-			$tinfo ['size'] = 'NA';
-			$tinfo ['perms'] = getPerms ( fileperms ( $tinfo ['path'] ) );
-			$tinfo ['created'] = filectime ( "$dir/$lm_name" );
-			$infod [] = $tinfo;
-			} else
-			$infod [] = $lm_name;
+				if ($extra) {
+					$tinfo ['id'] = $lm_name . "/";
+					$tinfo ['path'] = $dir . $lm_name . "/";
+					$tinfo ['size'] = 'NA';
+					$tinfo ['perms'] = getPerms ( fileperms ( $tinfo ['path'] ) );
+					$tinfo ['created'] = filectime ( "$dir/$lm_name" );
+					$infod [] = $tinfo;
+				} else
+				$infod [] = $lm_name;
 			}
 			
 			if (is_file ( "$dir/$lm_name" ) && ($type == 'file' || $type == 'both')) {
-			if ($extra) {
-			$tinfo ['id'] = $lm_name;
-			$tinfo ['path'] = $dir . '/' . $lm_name;
-			$tinfo ['size'] = filesize ( "$dir/$lm_name" );
-			$tinfo ['perms'] = getPerms ( fileperms ( $tinfo ['path'] ) );
-			$tinfo ['created'] = filectime ( "$dir/$lm_name" );
-			$infof [] = $tinfo;
-			} else
-			$infof [] = $lm_name;
+				if ($extra) {
+					$tinfo ['id'] = $lm_name;
+					$tinfo ['path'] = $dir . '/' . $lm_name;
+					$tinfo ['size'] = filesize ( "$dir/$lm_name" );
+					$tinfo ['perms'] = getPerms ( fileperms ( $tinfo ['path'] ) );
+					$tinfo ['created'] = filectime ( "$dir/$lm_name" );
+					$infof [] = $tinfo;
+				} else
+				$infof [] = $lm_name;
 			}
-			}
-			$info = array_merge ( $infod, $infof );
-			return $info;
-			}
-			function controlla_ug() {
-			global $percorso_cartella_dati;
-			for($num1 = 1; $num1 < 40; $num1 ++) {
+		}
+		$info = array_merge ( $infod, $infof );
+		return $info;
+	}
+	function controlla_ug() {
+		global $percorso_cartella_dati;
+		for($num1 = 1; $num1 < 40; $num1 ++) {
 			if (strlen ( $num1 ) == 1)
 			$num1 = "0" . $num1;
 			$giornata = "giornata" . $num1 . "_" . $_SESSION ['torneo'] . "_" . $_SESSION ['serie'];
 			if (@is_file ( $percorso_cartella_dati . "/" . $giornata ))
 			$ultima_giornata = "";
 			else {
-			$ultima_giornata = $num1 - 1;
-			if (strlen ( $ultima_giornata ) == 1)
-			$ultima_giornata = "0" . $ultima_giornata;
-			break;
+				$ultima_giornata = $num1 - 1;
+				if (strlen ( $ultima_giornata ) == 1)
+				$ultima_giornata = "0" . $ultima_giornata;
+				break;
 			} // fine else
-			} // fine for $num1
-			
-			return $ultima_giornata;
-			} // fine function ultima_giornata_giocata
-			
-			// ################################################################
-			// #############################################################################
-			// Ricerca Binaria sostituisce la for nel cerca dei giocatori
-			// in max 10 cicli trova la riga del giocatore
-			// da utilizzare pero solo su file ordinati
-			// quindi se non ordinati ardinarli prima con l'istruzione
-			// es. sort($calciatori,SORT_NUMERIC);
-			// Parametri: file-> file ordinatovoti
-			// conta -> numero righe presenti
-			// numero_da_cercare -> numero del giocatore da cercare
-			// tipo -> voti,calciatori,mercato (opzionale per i primi due tipi che hanno lo stesso formato )
-			// Ritorna: numoro riga corrispondente al giocatore trovato
-			// Ritorna -1 se non lo ha trovato il numero nel file
-			// by luigi_anselmi@hotmail.com aka (giggios)
-			// 29-08-2007 aggiornata by luigi_anselmi@hotmail.com aka (giggios)
-			// Inserito parametro tipo
-			// che ci permette di usarla anche per il file mercato.txt previa
-			// ordinamento e passagio marametro tipo="mercato".
-			// Inserite due possibili ottimizzazioni di ricerca che pervedono
-			// l'inerimento in dati.php delle due variabili:
-			// $ric_binaria_ottimizzata01="SI";
-			// Tiente presente la struttura di codifica del file voti e/o mcc
-			// e della media delle righe per determinate le posizioni del file
-			// da elaborare e le posizioni del file da qui partire.
-			// $ric_binaria_ottimizzata02"SI";
-			// tiente presente la sequenzialita dei ruoli del file voti e/o mcc
-			// es.101,102 ecc
-			// ed esegue un tentativo di ricerca per sequenzialita
-			// #le prestazioni della ricerca (con questi due parametri impostati)
-			// #salgono a soli due cicli per i calciatori trovati e nove per quelli
-			// # non presenti
-			// fate qualche prova e ditemi
-			// ###########################################################################
-			function ricerca_binaria($file, $conta, $numero_da_cercare, $tipo = "voti") {
-			global $ric_binaria_ottimizzata01, $ric_binaria_ottimizzata02;
-			$l_ric_binaria_ottimizzata02 = 0;
-			if (strtolower ( $tipo ) == "voti" or strtolower ( $tipo ) == "calciatori" or strtolower ( $tipo ) == 'mcc') {
+		} // fine for $num1
+		
+		return $ultima_giornata;
+	} // fine function ultima_giornata_giocata
+	
+	// ################################################################
+	// #############################################################################
+	// Ricerca Binaria sostituisce la for nel cerca dei giocatori
+	// in max 10 cicli trova la riga del giocatore
+	// da utilizzare pero solo su file ordinati
+	// quindi se non ordinati ardinarli prima con l'istruzione
+	// es. sort($calciatori,SORT_NUMERIC);
+	// Parametri: file-> file ordinatovoti
+	// conta -> numero righe presenti
+	// numero_da_cercare -> numero del giocatore da cercare
+	// tipo -> voti,calciatori,mercato (opzionale per i primi due tipi che hanno lo stesso formato )
+	// Ritorna: numoro riga corrispondente al giocatore trovato
+	// Ritorna -1 se non lo ha trovato il numero nel file
+	// by luigi_anselmi@hotmail.com aka (giggios)
+	// 29-08-2007 aggiornata by luigi_anselmi@hotmail.com aka (giggios)
+	// Inserito parametro tipo
+	// che ci permette di usarla anche per il file mercato.txt previa
+	// ordinamento e passagio marametro tipo="mercato".
+	// Inserite due possibili ottimizzazioni di ricerca che pervedono
+	// l'inerimento in dati.php delle due variabili:
+	// $ric_binaria_ottimizzata01="SI";
+	// Tiente presente la struttura di codifica del file voti e/o mcc
+	// e della media delle righe per determinate le posizioni del file
+	// da elaborare e le posizioni del file da qui partire.
+	// $ric_binaria_ottimizzata02"SI";
+	// tiente presente la sequenzialita dei ruoli del file voti e/o mcc
+	// es.101,102 ecc
+	// ed esegue un tentativo di ricerca per sequenzialita
+	// #le prestazioni della ricerca (con questi due parametri impostati)
+	// #salgono a soli due cicli per i calciatori trovati e nove per quelli
+	// # non presenti
+	// fate qualche prova e ditemi
+	// ###########################################################################
+	function ricerca_binaria($file, $conta, $numero_da_cercare, $tipo = "voti") {
+		global $ric_binaria_ottimizzata01, $ric_binaria_ottimizzata02;
+		$l_ric_binaria_ottimizzata02 = 0;
+		if (strtolower ( $tipo ) == "voti" or strtolower ( $tipo ) == "calciatori" or strtolower ( $tipo ) == 'mcc') {
 			global $separatore_campi_file_voti, $num_colonna_numcalciatore_file_voti;
 			$separatore_campi = $separatore_campi_file_voti;
 			$num_colonna_numcalciatore = $num_colonna_numcalciatore_file_voti - 1;
 			} else { // mercato
 			$separatore_campi = ",";
 			$num_colonna_numcalciatore = 0;
-			}
-			//
-			$basso = 0;
-			//
-			$alto = intval ( $conta - 1 );
-			$medio = 0;
-			$xx_num_calciatore = 0;
-			$riga_return = - 1;
-			$ap_conta = 0;
-			//
-			while ( $basso <= $alto ) {
+		}
+		//
+		$basso = 0;
+		//
+		$alto = intval ( $conta - 1 );
+		$medio = 0;
+		$xx_num_calciatore = 0;
+		$riga_return = - 1;
+		$ap_conta = 0;
+		//
+		while ( $basso <= $alto ) {
 			$ap_conta ++;
 			if (($ric_binaria_ottimizzata01 == "SI" and $ap_conta == 1 and $conta >= 540) and (strtolower ( $tipo ) == "voti" or strtolower ( $tipo ) == "calciatori" or strtolower ( $tipo ) == 'mcc')) {
-			if ($numero_da_cercare > 100 and $numero_da_cercare <= 200) {
-			$basso = 0;
-			$medio = 50;
-			$alto = 101;
-			} elseif ($numero_da_cercare >= 201 and $numero_da_cercare <= 500) {
-			$basso = 50;
-			$medio = 130;
-			$alto = 400;
-			} elseif ($numero_da_cercare >= 501 and $numero_da_cercare <= 800) {
-			$basso = 230;
-			$medio = 400;
-			$alto = 700;
-			} elseif ($numero_da_cercare >= 801 and $numero_da_cercare <= 999) {
-			$basso = 400;
-			$medio = 600;
-			$alto = 900;
-			} else
-			$medio = intval ( ($basso + $alto) / 2 );
-			//
-			if ($alto >= $conta)
-			$alto = intval ( $conta - 1 );
-			if ($medio >= $conta)
-			$medio = intval ( ($basso + $alto) / 2 );
-			if ($basso >= $conta)
-			$basso = 0;
+				if ($numero_da_cercare > 100 and $numero_da_cercare <= 200) {
+					$basso = 0;
+					$medio = 50;
+					$alto = 101;
+					} elseif ($numero_da_cercare >= 201 and $numero_da_cercare <= 500) {
+					$basso = 50;
+					$medio = 130;
+					$alto = 400;
+					} elseif ($numero_da_cercare >= 501 and $numero_da_cercare <= 800) {
+					$basso = 230;
+					$medio = 400;
+					$alto = 700;
+					} elseif ($numero_da_cercare >= 801 and $numero_da_cercare <= 999) {
+					$basso = 400;
+					$medio = 600;
+					$alto = 900;
+				} else
+				$medio = intval ( ($basso + $alto) / 2 );
+				//
+				if ($alto >= $conta)
+				$alto = intval ( $conta - 1 );
+				if ($medio >= $conta)
+				$medio = intval ( ($basso + $alto) / 2 );
+				if ($basso >= $conta)
+				$basso = 0;
 			} elseif ($ap_conta == 1)
 			$medio = intval ( ($basso + $alto) / 2 );
 			else {
-			$medio = intval ( ($basso + $alto) / 2 );
+				$medio = intval ( ($basso + $alto) / 2 );
 			}
 			//
 			$dati_voto = explode ( $separatore_campi, $file [$medio] );
@@ -816,27 +816,27 @@
 			// echo "tipo: $tipo conta: $ap_conta medio: $medio basso: $basso alto: $alto ** $numero_da_cercare == $xx_num_calciatore<br>";
 			//
 			if (($ric_binaria_ottimizzata02 == "SI" and $l_ric_binaria_ottimizzata02 == 0 and $numero_da_cercare != $xx_num_calciatore) and (strtolower ( $tipo ) == "voti" or strtolower ( $tipo ) == "calciatori" or strtolower ( $tipo ) == 'mcc')) {
-			if (($numero_da_cercare > 100 and $numero_da_cercare <= 200 and $xx_num_calciatore > 100 and $xx_num_calciatore <= 200) or ($numero_da_cercare >= 201 and $numero_da_cercare <= 500 and $xx_num_calciatore > 201 and $xx_num_calciatore <= 500) or ($numero_da_cercare >= 501 and $numero_da_cercare <= 800 and $xx_num_calciatore > 501 and $xx_num_calciatore <= 800) or ($numero_da_cercare >= 801 and $numero_da_cercare <= 999 and $xx_num_calciatore > 801 and $xx_num_calciatore <= 999)) {
-			$ap_conta ++;
-			$l_ric_binaria_ottimizzata02 ++;
-			// echo "*tipo: $tipo conta: $ap_conta medio: $medio ** $numero_da_cercare == $xx_num_calciatore Differenza: ".($numero_da_cercare-$xx_num_calciatore)." ". "<br>";
-			$ap_medio = ($numero_da_cercare - $xx_num_calciatore) + $medio;
-			if ($ap_medio <= ($conta - 1)) {
-			$dati_voto = explode ( $separatore_campi, $file [$ap_medio] );
-			$ap_xx_num_calciatore = $dati_voto [$num_colonna_numcalciatore];
-			$ap_xx_num_calciatore = trim ( $ap_xx_num_calciatore );
-			// echo "**tipo: $tipo conta: $ap_conta medio: $ap_medio ** $numero_da_cercare == $ap_xx_num_calciatore<br>";
-			if ($numero_da_cercare == $ap_xx_num_calciatore) {
-			$riga_return = $ap_medio;
-			break;
-			}
-			}
-			}
+				if (($numero_da_cercare > 100 and $numero_da_cercare <= 200 and $xx_num_calciatore > 100 and $xx_num_calciatore <= 200) or ($numero_da_cercare >= 201 and $numero_da_cercare <= 500 and $xx_num_calciatore > 201 and $xx_num_calciatore <= 500) or ($numero_da_cercare >= 501 and $numero_da_cercare <= 800 and $xx_num_calciatore > 501 and $xx_num_calciatore <= 800) or ($numero_da_cercare >= 801 and $numero_da_cercare <= 999 and $xx_num_calciatore > 801 and $xx_num_calciatore <= 999)) {
+					$ap_conta ++;
+					$l_ric_binaria_ottimizzata02 ++;
+					// echo "*tipo: $tipo conta: $ap_conta medio: $medio ** $numero_da_cercare == $xx_num_calciatore Differenza: ".($numero_da_cercare-$xx_num_calciatore)." ". "<br>";
+					$ap_medio = ($numero_da_cercare - $xx_num_calciatore) + $medio;
+					if ($ap_medio <= ($conta - 1)) {
+						$dati_voto = explode ( $separatore_campi, $file [$ap_medio] );
+						$ap_xx_num_calciatore = $dati_voto [$num_colonna_numcalciatore];
+						$ap_xx_num_calciatore = trim ( $ap_xx_num_calciatore );
+						// echo "**tipo: $tipo conta: $ap_conta medio: $ap_medio ** $numero_da_cercare == $ap_xx_num_calciatore<br>";
+						if ($numero_da_cercare == $ap_xx_num_calciatore) {
+							$riga_return = $ap_medio;
+							break;
+						}
+					}
+				}
 			}
 			//
 			if ($numero_da_cercare == $xx_num_calciatore) {
-			$riga_return = $medio;
-			break;
+				$riga_return = $medio;
+				break;
 			} elseif ($numero_da_cercare < $xx_num_calciatore)
 			$alto = ($medio - 1);
 			elseif ($numero_da_cercare > $xx_num_calciatore)
@@ -845,27 +845,27 @@
 			if ($ap_conta >= $conta)
 			break;
 			//
-			} // while($basso <= $alto)
-			return ($riga_return);
-			} // end ricerca_binaria
-			function pr($val) {
-			echo "<u>DEBUG:</u><br /><pre style='text-align: left; border: 1px solid navy; background-color: white; padding: 5px'>";
-			print_r ( $val );
-			echo "</pre>";
-			}
-			class createZip {
-			public $compressedData = array ();
-			public $centralDirectory = array (); // central directory
-			public $endOfCentralDirectory = "\x50\x4b\x05\x06\x00\x00\x00\x00"; // end of Central directory record
-			public $oldOffset = 0;
-			
-			/**
+		} // while($basso <= $alto)
+		return ($riga_return);
+	} // end ricerca_binaria
+	function pr($val) {
+		echo "<u>DEBUG:</u><br /><pre style='text-align: left; border: 1px solid navy; background-color: white; padding: 5px'>";
+		print_r ( $val );
+		echo "</pre>";
+	}
+	class createZip {
+		public $compressedData = array ();
+		public $centralDirectory = array (); // central directory
+		public $endOfCentralDirectory = "\x50\x4b\x05\x06\x00\x00\x00\x00"; // end of Central directory record
+		public $oldOffset = 0;
+		
+		/**
 			* Function to create the directory where the file(s) will be unzipped
 			*
 			* @param $directoryName string
 			*
-			*/
-			public function addDirectory($directoryName) {
+		*/
+		public function addDirectory($directoryName) {
 			$directoryName = str_replace ( "\\", "/", $directoryName );
 			
 			$feedArrayRow = "\x50\x4b\x03\x04";
@@ -913,15 +913,15 @@
 			$addCentralRecord .= $directoryName;
 			
 			$this->centralDirectory [] = $addCentralRecord;
-			}
-			
-			/**
+		}
+		
+		/**
 			* Function to add file(s) to the specified directory in the archive
 			*
 			* @param $directoryName string
 			*
-			*/
-			public function addFile($data, $directoryName) {
+		*/
+		public function addFile($data, $directoryName) {
 			$directoryName = str_replace ( "\\", "/", $directoryName );
 			
 			$feedArrayRow = "\x50\x4b\x03\x04";
@@ -974,260 +974,260 @@
 			$addCentralRecord .= $directoryName;
 			
 			$this->centralDirectory [] = $addCentralRecord;
-			}
-			
-			/**
+		}
+		
+		/**
 			* Fucntion to return the zip file
 			*
 			* @return zipfile (archive)
-			*/
-			public function getZippedfile() {
+		*/
+		public function getZippedfile() {
 			$data = implode ( "", $this->compressedData );
 			$controlDirectory = implode ( "", $this->centralDirectory );
 			
 			return $data . $controlDirectory . $this->endOfCentralDirectory . pack ( "v", sizeof ( $this->centralDirectory ) ) . pack ( "v", sizeof ( $this->centralDirectory ) ) . pack ( "V", strlen ( $controlDirectory ) ) . pack ( "V", strlen ( $data ) ) . "\x00\x00";
-			}
-			}
-			
-			define ( 'MSB_VERSION', '1.0.0' );
-			
-			define ( 'MSB_NL', "\r\n" );
-			
-			define ( 'MSB_STRING', 0 );
-			define ( 'MSB_DOWNLOAD', 1 );
-			define ( 'MSB_SAVE', 2 );
-			class MySQL_Backup {
-			var $server = 'localhost';
-			var $port = 3306;
-			var $username = 'root';
-			var $password = '';
-			var $database = '';
-			var $link_id = - 1;
-			var $connected = false;
-			var $tables = array ();
-			var $drop_tables = true;
-			var $struct_only = false;
-			var $comments = true;
-			var $backup_dir = '';
-			var $fname_format = 'd_m_y__H_i_s';
-			var $error = '';
-			function Execute($task = MSB_STRING, $fname = '', $compress = false) {
+		}
+	}
+	
+	define ( 'MSB_VERSION', '1.0.0' );
+	
+	define ( 'MSB_NL', "\r\n" );
+	
+	define ( 'MSB_STRING', 0 );
+	define ( 'MSB_DOWNLOAD', 1 );
+	define ( 'MSB_SAVE', 2 );
+	class MySQL_Backup {
+		var $server = 'localhost';
+		var $port = 3306;
+		var $username = 'root';
+		var $password = '';
+		var $database = '';
+		var $link_id = - 1;
+		var $connected = false;
+		var $tables = array ();
+		var $drop_tables = true;
+		var $struct_only = false;
+		var $comments = true;
+		var $backup_dir = '';
+		var $fname_format = 'd_m_y__H_i_s';
+		var $error = '';
+		function Execute($task = MSB_STRING, $fname = '', $compress = false) {
 			if (! ($sql = $this->_Retrieve ())) {
-			return false;
+				return false;
 			}
 			if ($task == MSB_SAVE) {
-			if (empty ( $fname )) {
-			$fname = $this->backup_dir;
-			$fname .= date ( $this->fname_format );
-			$fname .= ($compress ? '.sql.gz' : '.sql');
+				if (empty ( $fname )) {
+					$fname = $this->backup_dir;
+					$fname .= date ( $this->fname_format );
+					$fname .= ($compress ? '.sql.gz' : '.sql');
+				}
+				return $this->_SaveToFile ( $fname, $sql, $compress );
+				} elseif ($task == MSB_DOWNLOAD) {
+				if (empty ( $fname )) {
+					$fname = date ( $this->fname_format );
+					$fname .= ($compress ? '.sql.gz' : '.sql');
+				}
+				return $this->_DownloadFile ( $fname, $sql, $compress );
+				} else {
+				return $sql;
 			}
-			return $this->_SaveToFile ( $fname, $sql, $compress );
-			} elseif ($task == MSB_DOWNLOAD) {
-			if (empty ( $fname )) {
-			$fname = date ( $this->fname_format );
-			$fname .= ($compress ? '.sql.gz' : '.sql');
-			}
-			return $this->_DownloadFile ( $fname, $sql, $compress );
-			} else {
-			return $sql;
-			}
-			}
-			function _Connect() {
+		}
+		function _Connect() {
 			$value = false;
 			if (! $this->connected) {
-			$host = $this->server . ':' . $this->port;
-			$this->link_id = mysql_connect ( $host, $this->username, $this->password );
+				$host = $this->server . ':' . $this->port;
+				$this->link_id = mysql_connect ( $host, $this->username, $this->password );
 			}
 			if ($this->link_id) {
-			if (empty ( $this->database )) {
-			$value = true;
-			} elseif ($this->link_id !== - 1) {
-			$value = mysql_select_db ( $this->database, $this->link_id );
-			} else {
-			$value = mysql_select_db ( $this->database );
-			}
+				if (empty ( $this->database )) {
+					$value = true;
+					} elseif ($this->link_id !== - 1) {
+					$value = mysql_select_db ( $this->database, $this->link_id );
+					} else {
+					$value = mysql_select_db ( $this->database );
+				}
 			}
 			if (! $value) {
-			$this->error = mysql_error ();
+				$this->error = mysql_error ();
 			}
 			return $value;
-			}
-			function _Query($sql) {
+		}
+		function _Query($sql) {
 			if ($this->link_id !== - 1) {
-			$result = mysql_query ( $sql, $this->link_id );
-			} else {
-			$result = mysql_query ( $sql );
+				$result = mysql_query ( $sql, $this->link_id );
+				} else {
+				$result = mysql_query ( $sql );
 			}
 			if (! $result) {
-			$this->error = mysql_error ();
+				$this->error = mysql_error ();
 			}
 			return $result;
-			}
-			function _GetTables() {
+		}
+		function _GetTables() {
 			$value = array ();
 			if (! ($result = $this->_Query ( 'SHOW TABLES' ))) {
-			return false;
+				return false;
 			}
 			while ( $row = mysql_fetch_row ( $result ) ) {
-			if (empty ( $this->tables ) || in_array ( $row [0], $this->tables )) {
-			$value [] = $row [0];
-			}
+				if (empty ( $this->tables ) || in_array ( $row [0], $this->tables )) {
+					$value [] = $row [0];
+				}
 			}
 			if (! sizeof ( $value )) {
-			$this->error = 'No tables found in database.';
-			return false;
+				$this->error = 'No tables found in database.';
+				return false;
 			}
 			return $value;
-			}
-			function _DumpTable($table) {
+		}
+		function _DumpTable($table) {
 			$value = '';
 			$this->_Query ( 'LOCK TABLES ' . $table . ' WRITE' );
 			if ($this->comments) {
-			$value .= '#' . MSB_NL;
-			$value .= '# Table structure for table `' . $table . '`' . MSB_NL;
-			$value .= '#' . MSB_NL . MSB_NL;
+				$value .= '#' . MSB_NL;
+				$value .= '# Table structure for table `' . $table . '`' . MSB_NL;
+				$value .= '#' . MSB_NL . MSB_NL;
 			}
 			if ($this->drop_tables) {
-			$value .= 'DROP TABLE IF EXISTS `' . $table . '`;' . MSB_NL;
+				$value .= 'DROP TABLE IF EXISTS `' . $table . '`;' . MSB_NL;
 			}
 			if (! ($result = $this->_Query ( 'SHOW CREATE TABLE ' . $table ))) {
-			return false;
+				return false;
 			}
 			$row = mysql_fetch_assoc ( $result );
 			$value .= str_replace ( "\n", MSB_NL, $row ['Create Table'] ) . ';';
 			$value .= MSB_NL . MSB_NL;
 			if (! $this->struct_only) {
-			if ($this->comments) {
-			$value .= '#' . MSB_NL;
-			$value .= '# Dumping data for table `' . $table . '`' . MSB_NL;
-			$value .= '#' . MSB_NL . MSB_NL;
-			}
-			
-			$value .= $this->_GetInserts ( $table );
+				if ($this->comments) {
+					$value .= '#' . MSB_NL;
+					$value .= '# Dumping data for table `' . $table . '`' . MSB_NL;
+					$value .= '#' . MSB_NL . MSB_NL;
+				}
+				
+				$value .= $this->_GetInserts ( $table );
 			}
 			$value .= MSB_NL . MSB_NL;
 			$this->_Query ( 'UNLOCK TABLES' );
 			return $value;
-			}
-			function _GetInserts($table) {
+		}
+		function _GetInserts($table) {
 			$value = '';
 			if (! ($result = $this->_Query ( 'SELECT * FROM ' . $table ))) {
-			return false;
+				return false;
 			}
 			while ( $row = mysql_fetch_row ( $result ) ) {
-			$values = '';
-			foreach ( $row as $data ) {
-			$values .= '\'' . addslashes ( $data ) . '\', ';
-			}
-			$values = substr ( $values, 0, - 2 );
-			$value .= 'INSERT INTO ' . $table . ' VALUES (' . $values . ');' . MSB_NL;
+				$values = '';
+				foreach ( $row as $data ) {
+					$values .= '\'' . addslashes ( $data ) . '\', ';
+				}
+				$values = substr ( $values, 0, - 2 );
+				$value .= 'INSERT INTO ' . $table . ' VALUES (' . $values . ');' . MSB_NL;
 			}
 			return $value;
-			}
-			function _Retrieve() {
+		}
+		function _Retrieve() {
 			$value = '';
 			if (! $this->_Connect ()) {
-			return false;
+				return false;
 			}
 			if ($this->comments) {
-			$value .= '#' . MSB_NL;
-			$value .= '# MySQL database dump' . MSB_NL;
-			$value .= '# Created by MySQL_Backup class, ver. ' . MSB_VERSION . MSB_NL;
-			$value .= '#' . MSB_NL;
-			$value .= '# Host: ' . $this->server . MSB_NL;
-			$value .= '# Generated: ' . date ( 'M j, Y' ) . ' at ' . date ( 'H:i' ) . MSB_NL;
-			$value .= '# MySQL version: ' . mysql_get_server_info () . MSB_NL;
-			$value .= '# PHP version: ' . phpversion () . MSB_NL;
-			if (! empty ( $this->database )) {
-			$value .= '#' . MSB_NL;
-			$value .= '# Database: `' . $this->database . '`' . MSB_NL;
-			}
-			$value .= '#' . MSB_NL . MSB_NL . MSB_NL;
+				$value .= '#' . MSB_NL;
+				$value .= '# MySQL database dump' . MSB_NL;
+				$value .= '# Created by MySQL_Backup class, ver. ' . MSB_VERSION . MSB_NL;
+				$value .= '#' . MSB_NL;
+				$value .= '# Host: ' . $this->server . MSB_NL;
+				$value .= '# Generated: ' . date ( 'M j, Y' ) . ' at ' . date ( 'H:i' ) . MSB_NL;
+				$value .= '# MySQL version: ' . mysql_get_server_info () . MSB_NL;
+				$value .= '# PHP version: ' . phpversion () . MSB_NL;
+				if (! empty ( $this->database )) {
+					$value .= '#' . MSB_NL;
+					$value .= '# Database: `' . $this->database . '`' . MSB_NL;
+				}
+				$value .= '#' . MSB_NL . MSB_NL . MSB_NL;
 			}
 			if (! ($tables = $this->_GetTables ())) {
-			return false;
+				return false;
 			}
 			foreach ( $tables as $table ) {
-			if (! ($table_dump = $this->_DumpTable ( $table ))) {
-			$this->error = mysql_error ();
-			return false;
-			}
-			$value .= $table_dump;
+				if (! ($table_dump = $this->_DumpTable ( $table ))) {
+					$this->error = mysql_error ();
+					return false;
+				}
+				$value .= $table_dump;
 			}
 			return $value;
-			}
-			function _SaveToFile($fname, $sql, $compress) {
+		}
+		function _SaveToFile($fname, $sql, $compress) {
 			if ($compress) {
-			if (! ($zf = gzopen ( $fname, 'w9' ))) {
-			$this->error = 'Can\'t create the output file.';
-			return false;
-			}
-			gzwrite ( $zf, $sql );
-			gzclose ( $zf );
-			} else {
-			if (! ($f = fopen ( $fname, 'w' ))) {
-			$this->error = 'Can\'t create the output file.';
-			return false;
-			}
-			fwrite ( $f, $sql );
-			fclose ( $f );
+				if (! ($zf = gzopen ( $fname, 'w9' ))) {
+					$this->error = 'Can\'t create the output file.';
+					return false;
+				}
+				gzwrite ( $zf, $sql );
+				gzclose ( $zf );
+				} else {
+				if (! ($f = fopen ( $fname, 'w' ))) {
+					$this->error = 'Can\'t create the output file.';
+					return false;
+				}
+				fwrite ( $f, $sql );
+				fclose ( $f );
 			}
 			return true;
-			}
-			}
-			function mailAttachment($file, $mailto, $from_mail, $from_name, $replyto, $subject, $message) {
-			$filename = basename ( $file );
-			$file_size = filesize ( $file );
-			$handle = fopen ( $file, "r" );
-			$content = fread ( $handle, $file_size );
-			fclose ( $handle );
-			$content = chunk_split ( base64_encode ( $content ) );
-			$uid = md5 ( uniqid ( time () ) );
-			$name = basename ( $file );
-			$header = "From: " . $from_name . " <" . $from_mail . ">\r\n";
-			$header .= "Reply-To: " . $replyto . "\r\n";
-			$header .= "MIME-Version: 1.0\r\n";
-			$header .= "Content-Type: multipart/mixed; boundary=\"" . $uid . "\"\r\n\r\n";
-			$header .= "This is a multi-part message in MIME format.\r\n";
-			$header .= "--" . $uid . "\r\n";
-			$header .= "Content-type:text/plain; charset=iso-8859-1\r\n";
-			$header .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-			$header .= $message . "\r\n\r\n";
-			$header .= "--" . $uid . "\r\n";
-			$header .= "Content-Type: application/octet-stream; name=\"" . $filename . "\"\r\n"; // use diff. tyoes here
-			$header .= "Content-Transfer-Encoding: base64\r\n";
-			$header .= "Content-Disposition: attachment; filename=\"" . $filename . "\"\r\n\r\n";
-			$header .= $content . "\r\n\r\n";
-			$header .= "--" . $uid . "--";
-			if (mail ( $mailto, $subject, "", $header )) {
+		}
+	}
+	function mailAttachment($file, $mailto, $from_mail, $from_name, $replyto, $subject, $message) {
+		$filename = basename ( $file );
+		$file_size = filesize ( $file );
+		$handle = fopen ( $file, "r" );
+		$content = fread ( $handle, $file_size );
+		fclose ( $handle );
+		$content = chunk_split ( base64_encode ( $content ) );
+		$uid = md5 ( uniqid ( time () ) );
+		$name = basename ( $file );
+		$header = "From: " . $from_name . " <" . $from_mail . ">\r\n";
+		$header .= "Reply-To: " . $replyto . "\r\n";
+		$header .= "MIME-Version: 1.0\r\n";
+		$header .= "Content-Type: multipart/mixed; boundary=\"" . $uid . "\"\r\n\r\n";
+		$header .= "This is a multi-part message in MIME format.\r\n";
+		$header .= "--" . $uid . "\r\n";
+		$header .= "Content-type:text/plain; charset=iso-8859-1\r\n";
+		$header .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+		$header .= $message . "\r\n\r\n";
+		$header .= "--" . $uid . "\r\n";
+		$header .= "Content-Type: application/octet-stream; name=\"" . $filename . "\"\r\n"; // use diff. tyoes here
+		$header .= "Content-Transfer-Encoding: base64\r\n";
+		$header .= "Content-Disposition: attachment; filename=\"" . $filename . "\"\r\n\r\n";
+		$header .= $content . "\r\n\r\n";
+		$header .= "--" . $uid . "--";
+		if (mail ( $mailto, $subject, "", $header )) {
 			echo "mail send ... OK"; // or use booleans here
 			} else {
 			echo "mail send ... ERROR!";
-			}
-			}
-			function directoryToArray($directory, $recursive) {
-			$array_items = array ();
-			if ($handle = opendir ( $directory )) {
+		}
+	}
+	function directoryToArray($directory, $recursive) {
+		$array_items = array ();
+		if ($handle = opendir ( $directory )) {
 			while ( false !== ($file = readdir ( $handle )) ) {
-			if ($file != "." && $file != "..") {
-			if (is_dir ( $directory . "/" . $file )) {
-			if ($recursive) {
-			$array_items = array_merge ( $array_items, directoryToArray ( $directory . "/" . $file, $recursive ) );
-			}
-			$file = $directory . "/" . $file . "/";
-			$array_items [] = preg_replace ( "/\/\//si", "/", $file );
-			} else {
-			$file = $directory . "/" . $file;
-			$array_items [] = preg_replace ( "/\/\//si", "/", $file );
-			}
-			}
+				if ($file != "." && $file != "..") {
+					if (is_dir ( $directory . "/" . $file )) {
+						if ($recursive) {
+							$array_items = array_merge ( $array_items, directoryToArray ( $directory . "/" . $file, $recursive ) );
+						}
+						$file = $directory . "/" . $file . "/";
+						$array_items [] = preg_replace ( "/\/\//si", "/", $file );
+						} else {
+						$file = $directory . "/" . $file;
+						$array_items [] = preg_replace ( "/\/\//si", "/", $file );
+					}
+				}
 			}
 			closedir ( $handle );
-			}
-			return $array_items;
-			}
-			function syntax_hilight($filename) {
-			if ((substr ( $filename, - 4 ) == '.php')) {
+		}
+		return $array_items;
+	}
+	function syntax_hilight($filename) {
+		if ((substr ( $filename, - 4 ) == '.php')) {
 			ob_start ();
 			show_source ( $filename );
 			$buffer = ob_get_contents ();
@@ -1241,204 +1241,80 @@
 			$buffer = join ( "\n", $buffer );
 			$buffer = eregi_replace ( '^.*<PRE>', '<pre>', $buffer );
 			$buffer = eregi_replace ( '</PRE>.*$', '</pre>', $buffer );
-			}
-			
-			// Making it XHTML compatible.
-			$buffer = eregi_replace ( '<FONT COLOR="', '<span style="color:', $buffer );
-			$buffer = eregi_replace ( '</FONT>', '</style>', $buffer );
-			
-			return $buffer;
-			}
-			function tabella_squadre() {
-			global $percorso_cartella_dati;
-			$sq = file ( $percorso_cartella_dati . "/squadre.txt" );
-			echo "<center><div>" . $acapo;
-			
-			foreach ( $sq as $val ) {
+		}
+		
+		// Making it XHTML compatible.
+		$buffer = eregi_replace ( '<FONT COLOR="', '<span style="color:', $buffer );
+		$buffer = eregi_replace ( '</FONT>', '</style>', $buffer );
+		
+		return $buffer;
+	}
+	function tabella_squadre() {
+		global $percorso_cartella_dati;
+		$sq = file ( $percorso_cartella_dati . "/squadre.txt" );
+		echo "<div class='row'>
+		<div class='col m12'>";
+		
+		foreach ( $sq as $val ) {
 			$val = trim ( $val );
 			echo "<div style=' float: left; background-color: #FFFFFF; height:auto' class='loghi_piccoli card'>
 			<a href='tab_squadre.php?vedi_squadra=$val' style='border: 0px; text-decoration:none'>
 			<img src='./immagini/lp_" . strtolower ( $val ) . ".png' width='32' height='34' alt='" . ucfirst ( strtolower ( $val ) ) . "' title='" . ucfirst ( strtolower ( $val ) ) . "' style='border: 0px; text-decoration:none' />
 			</a>
-			</div>" . $acapo;
-			}
-			echo "<div style='clear:both'></div></div></center>";
-			}
-			
-			function tabella_squadre_tra() {
-			$sq = file ( $percorso_cartella_dati . "/squadre.txt" );
-			echo "<center><div>" . $acapo;
-			
-			foreach ( $sq as $val ) {
+			</div>";
+		}
+		echo "</div></div>";
+	}
+	
+	function tabella_squadre_tra() {
+		global $percorso_cartella_dati;
+		$sq = file ( $percorso_cartella_dati . "/squadre.txt" );
+		echo "<center><div>" . $acapo;
+		
+		foreach ( $sq as $val ) {
 			$val = trim ( $val );
 			echo "<div style='padding: 0px; margin: 0px; float: left; background-color: #FFFFFF'>
 			<a href='tab_squadre_tra.php?vedi_squadra=$val' style='border: 0px; text-decoration:none'>
 			<img src='./immagini/lp_" . strtolower ( $val ) . ".png' width='32' height='34' alt='" . ucfirst ( strtolower ( $val ) ) . "' title='" . ucfirst ( strtolower ( $val ) ) . "' style='border: 0px; text-decoration:none' />
 			</a>
 			</div>" . $acapo;
-			}
-			echo "<div style='clear:both'></div></div></center>" . $acapo;
-			}
-			function cerca_proprietario($num_gio_cerc) {
-			global $percorso_cartella_dati;
-			$calciatori_merc1 = @file ( $percorso_cartella_dati . "/mercato_" . $_SESSION [torneo] . "_" . $_SESSION [serie] . ".txt" );
-			$num_calciatori_merc1 = count ( $calciatori_merc1 );
-			for($num21 = 0; $num21 < $num_calciatori_merc1; $num21 ++) {
+		}
+		echo "<div style='clear:both'></div></div></center>" . $acapo;
+	}
+	function cerca_proprietario($num_gio_cerc) {
+		global $percorso_cartella_dati;
+		$calciatori_merc1 = @file ( $percorso_cartella_dati . "/mercato_" . $_SESSION [torneo] . "_" . $_SESSION [serie] . ".txt" );
+		$num_calciatori_merc1 = count ( $calciatori_merc1 );
+		for($num21 = 0; $num21 < $num_calciatori_merc1; $num21 ++) {
 			$dati_calciatore_merc1 = explode ( ",", $calciatori_merc1 [$num21] );
 			$numero_merc1 = $dati_calciatore_merc1 [0];
 			if ($num_gio_cerc == $numero_merc1)
 			$proprietario_merc1 = $dati_calciatore_merc1 [4];
-			}
-			return $proprietario_merc1;
-			}
-			
-			function rosa_squadra($largcol) {
-			
-			global $percorso_cartella_voti;
-			global $percorso_cartella_dati;
-			global $separatore_campi_file_calciatori;
-			global $num_colonna_nome_file_calciatori;
-			global $num_colonna_numcalciatore_file_calciatori;
-			global $num_colonna_ruolo_file_calciatori;
-			global $num_colonna_valore_calciatori;
-			global $num_colonna_squadra_file_calciatori;
-			global $ncs_attivo;
-			global $outente;
-			global $mercato_libero;
-			global $stato_mercato;
-			global $simbolo_portiere_file_calciatori;
-			global $simbolo_difensore_file_calciatori;
-			global $simbolo_centrocampista_file_calciatori;
-			global $simbolo_attaccante_file_calciatori;
-			global $vedi_squadra;
-			global $num_colonna_votogiornale_file_voti;
-			global $num_colonna_vototot_file_voti;
-			
-			######################################
-			##### Controlla numero ultima giornata		
-			
-			$ultima_giornata = ultima_giornata_giocata();
-			
-			if ($ultima_giornata != "00") {
-			$cerca_squadra = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
-			$frase_giornata = "Dati aggiornati alla giornata $ultima_giornata";
-			}
-			else {
-			$cerca_squadra = file($percorso_cartella_dati."/calciatori.txt");
-			$frase_giornata = "Dati relativi al precampionato";
-			}
-			
-			$num_cer_squ = count($cerca_squadra);
-			
-			$table_layout = "<div class='col m$largcol'>
-			<div class='card'>
-			<div class='card-content'>
-			<span class='card-title'>Rosa<span style='font-size: 13px;'> - $frase_giornata</span></span>
-			<hr>
-			<table class='centered highlight' style='width:100%' cellpadding='3px' bgcolor='$sfondo_tab'>
-			<tr>
-			<td class='testa'>Nome</td>
-			<td class='testa'>V</td>
-			<td class='testa'>FV</td>
-			<td class='testa'>Val</td>
-			<td class='testa'>&nbsp;</td>
-			</tr>";
-			
-			$calciatori = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-			$num_calciatori = count($calciatori);
-			
-			
-			for ($num1 = 0 ; $num1 < $num_cer_squ ; $num1++) {
-			
-			#######################################
-			#Controllo componenti squadra		
-			
-			$dati_calciatore = explode($separatore_campi_file_calciatori, $cerca_squadra[$num1]);
-			$numero = $dati_calciatore[($num_colonna_numcalciatore_file_calciatori-1)];
-			$numero = trim($numero);
-			$nome = stripslashes($dati_calciatore[($num_colonna_nome_file_calciatori-1)]);
-			$nome = trim($nome);
-			$nome = preg_replace( "/\"/", "",$nome);
-			$ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
-			$ruolo = trim($ruolo);
-			$valore = $dati_calciatore[($num_colonna_valore_calciatori-1)];
-			$valore = trim($valore);
-			$ultvoto = $dati_calciatore[($num_colonna_votogiornale_file_voti-1)];
-			$ultvoto = trim($ultvoto);
-			$ultfantavoto = $dati_calciatore[($num_colonna_vototot_file_voti-1)];
-			$ultfantavoto = trim($ultfantavoto);
-			$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori-1)];
-			$xsquadra = trim($xsquadra);
-			$xsquadra = preg_replace( "/\"/", "",$xsquadra);
-			
-			$attivo = $dati_calciatore[($ncs_attivo-1)];
-			$attivo = trim($attivo);
-			
-			if ($considera_fantasisti_come != "P" and $considera_fantasisti_come != "D" and $considera_fantasisti_come != "C" and $considera_fantasisti_come != "A") $considera_fantasisti_come = "F";
-			if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
-			if ($ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
-			if ($ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
-			if ($ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
-			if ($ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
-			
-			#####################
-			if ($vedi_squadra == $xsquadra and $attivo == "1") {
-			$sx="on";
-			for ($num2 = 0 ; $num2 < $num_calciatori ; $num2++) {
-			$dati_calciatore = explode(",", $calciatori[$num2]);
-			$proprietario = $dati_calciatore[4];
-			$numero_calciatore= $dati_calciatore[0];
-			if ($proprietario == $outente and $numero_calciatore==$numero) $sx="off";
-			}
-			if ($ruolo == "P") {$backruolo = "#ffb732";}
-			if ($ruolo == "D") {$backruolo = "#00007f";}
-			if ($ruolo == "C") {$backruolo = "#006600";}
-			if ($ruolo == "A") {$backruolo = "#cc0000";}
-			
-			$table_layout .= "<tr>
-			<td style='text-align:left'><b class='ruolo' style='background: $backruolo'>$ruolo</b> <a href='stat_calciatore.php?num_calciatore=$numero&amp;ruolo_guarda=$ruolo_guarda&amp;escludi_controllo=$escludi_controllo' class='user'>$nome</a></td>
-			<td align=center>$ultvoto</td>
-			<td align=center>$ultfantavoto</td>
-			<td align=center>$valore</td>";
-			if ($_SESSION['valido'] == "SI" and $mercato_libero == "SI" and $stato_mercato == "I" and $sx!="off")  $table_layout .= "<td align='center'><a href='compra.php?num_calciatore=$numero&amp;valutazione=$valutazione' class='user'>compra</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "SI" and $stato_mercato != "I" and $sx!="off") $table_layout .= "<td align='center'><a href='cambi.php?num_calciatore=$numero' class='user'>cambia</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "I" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
-			//elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "B") $table_layout .= "<td align='center'><a href='busta_offerta.php?num_calciatore=$numero&amp;valutazione=$valutazione&amp;xsquadra_ok=$xsquadra_ok&amp;mercato_libero=$mercato_libero' class='user'>inserisci nella busta</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "B" and $sx!="off") $table_layout .= "<td align='center'><a class='user'>inserisci nella busta</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "P" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "S" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
-			elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "A" and $sx!="off") $table_layout .= "<td align=center><a href='scambia.php?num_calciatore=$numero&amp;altro_utente=$proprietario' class='user'>scambia</a></td>";
-			else $table_layout .= "<td align='center'>----</td>";
-			$table_layout .= "</tr>";
-			}
-			} # fine for $num1
-			$table_layout .= "</table>
-			</div>
-			</div>
-			</div>";
-			echo $table_layout;
-			}
-			
-			function carica_logo() {
-			$uploadpath = 'immagini/loghi/';      // directory to store the uploaded files
-			$max_size = 256;          // maximum file size, in KiloBytes
-			$alwidth = 1500;            // maximum allowed width, in pixels
-			$alheight = 1500;           // maximum allowed height, in pixels
-			$allowtype = array('gif', 'jpg','png');        // allowed extensions
-			
-			
-			if (!is_dir($uploadpath)) {
+		}
+		return $proprietario_merc1;
+	}
+	
+	
+	function carica_logo() {
+		$uploadpath = 'immagini/loghi/';      // directory to store the uploaded files
+		$max_size = 256;          // maximum file size, in KiloBytes
+		$alwidth = 1500;            // maximum allowed width, in pixels
+		$alheight = 1500;           // maximum allowed height, in pixels
+		$allowtype = array('gif', 'jpg','png');        // allowed extensions
+		
+		
+		if (!is_dir($uploadpath)) {
 			mkdir($uploadpath, 0775, true);
 			echo "Creata cartella caricamento loghi: $uploadpath!<br />";
-			}
-			
-			if (!is_writable($uploadpath)) echo "La cartella $uploadpath non &egrave; scrivibile!<br /> Impostare CHMOD 775.<br />";
-			if (!is_readable($uploadpath)) echo "La cartella $uploadpath non &egrave; leggibile!<br /> Impostare CHMOD 775.<br />";
-			
-			echo "<center>Form upload per il logo utente. <br />Sono supportate le seguenti estensioni: $allowtype[0] - $allowtype[1] - $allowtype[2] <br /><br />
-			Dimensione consentita: $max_size Kb<br /><br />";
-			
-			if(isset($_FILES['fileup']) && strlen($_FILES['fileup']['name']) > 1) {
+		}
+		
+		if (!is_writable($uploadpath)) echo "La cartella $uploadpath non &egrave; scrivibile!<br /> Impostare CHMOD 775.<br />";
+		if (!is_readable($uploadpath)) echo "La cartella $uploadpath non &egrave; leggibile!<br /> Impostare CHMOD 775.<br />";
+		
+		echo "<center>Form upload per il logo utente. <br />Sono supportate le seguenti estensioni: $allowtype[0] - $allowtype[1] - $allowtype[2] <br /><br />
+		Dimensione consentita: $max_size Kb<br /><br />";
+		
+		if(isset($_FILES['fileup']) && strlen($_FILES['fileup']['name']) > 1) {
 			$sepext = explode('.', strtolower($_FILES['fileup']['name']));
 			$type = end($sepext);       // gets extension
 			$uploadpath = $uploadpath.$_SESSION['utente'].".jpg";    // gets the file name
@@ -1452,18 +1328,18 @@
 			
 			// If no errors, upload the image, else, output the errors
 			if($err == '') {
-			if(file_exists($_SESSION['utente'].".jpg")) unlink($_SESSION['utente'].".jpg");
-			if(move_uploaded_file($_FILES['fileup']['tmp_name'], $uploadpath)) {
-			echo 'File: <b>'. basename( $_FILES['fileup']['name']). '</b> caricato correttamente:';
-			echo '<br/>File tipo: <b>'. $_FILES['fileup']['type'] .'</b>';
-			echo '<br />Dimensione: <b>'. number_format($_FILES['fileup']['size']/1024, 3, '.', '') .'</b> KB';
-			#if(isset($width) && isset($height)) echo '<br/>Image Width x Height: '. $width. ' x '. $height;
-			#echo '<br/><br/>Image address: <b>http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['REQUEST_URI']), '\\/').'/'.$uploadpath.'</b>';
+				if(file_exists($_SESSION['utente'].".jpg")) unlink($_SESSION['utente'].".jpg");
+				if(move_uploaded_file($_FILES['fileup']['tmp_name'], $uploadpath)) {
+					echo 'File: <b>'. basename( $_FILES['fileup']['name']). '</b> caricato correttamente:';
+					echo '<br/>File tipo: <b>'. $_FILES['fileup']['type'] .'</b>';
+					echo '<br />Dimensione: <b>'. number_format($_FILES['fileup']['size']/1024, 3, '.', '') .'</b> KB';
+					#if(isset($width) && isset($height)) echo '<br/>Image Width x Height: '. $width. ' x '. $height;
+						#echo '<br/><br/>Image address: <b>http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['REQUEST_URI']), '\\/').'/'.$uploadpath.'</b>';
+					}
+					else echo '<b>Impossibile caricare il file.</b>';
+				}
+				else echo $err;
 			}
-			else echo '<b>Impossibile caricare il file.</b>';
-			}
-			else echo $err;
-			}
-			}
-			
-			?>																			
+		}
+		
+	?>																				

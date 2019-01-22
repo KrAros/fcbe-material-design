@@ -88,7 +88,7 @@ for ($num1 = 0 ; $num1 < $num_cer_squ ; $num1++) {
 	$numero = trim($numero);
 	$nome = stripslashes($dati_calciatore[($num_colonna_nome_file_calciatori-1)]);
 	$nome = trim($nome);
-	$nome = ereg_replace("\"","",$nome);
+	$nome = preg_replace("#\"#","",$nome);
 	$ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
 	$ruolo = trim($ruolo);
 	$valore = $dati_calciatore[($num_colonna_valore_calciatori-1)];
@@ -99,7 +99,7 @@ for ($num1 = 0 ; $num1 < $num_cer_squ ; $num1++) {
 	$ultfantavoto = trim($ultfantavoto);
 	$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori-1)];
 	$xsquadra = trim($xsquadra);
-	$xsquadra = ereg_replace("\"","",$xsquadra);
+	$xsquadra = preg_replace("#\"#","",$xsquadra);
 
 	$attivo = $dati_calciatore[($ncs_attivo-1)];
 	$attivo = trim($attivo);

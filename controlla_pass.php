@@ -29,6 +29,7 @@
 	#header ("cache-control: private");
 	require_once("./dati/dati_gen.php");
 	require_once("./inc/funzioni.php");
+	require_once("./inc/funzioni_utente.php");
 	$versione = "Versione 1.5";
 	setlocale (LC_TIME, "it_IT");
 	set_time_limit(90);

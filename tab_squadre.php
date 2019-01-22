@@ -20,180 +20,71 @@
 	include("./controlla_pass.php");
 	include("./header.php");
 	
-	########################################################
-	##### Carico le informazioni per le probabili formazioni
-	
-	$xml = simplexml_load_file('http://xml2.temporeale.gazzettaobjects.it/Calcio/prob_form/squadre/'.strtolower($vedi_squadra).'/formazione.xml');
-	$modulo = $xml->modulo;
-	
-	$mod = explode("-", $modulo);
-	array_unshift($mod, "1");
-	
-	$titolari = $xml->titolari->calciatore;
-	$data = $xml->data;
-	$ora = $xml->ora;
-	$prossima_partita = $xml->partita;
-	$teamlogo = explode("-", $prossima_partita);
-	$casa = "./immagini/".strtolower($teamlogo[0]).".png";
-	$trasferta = "./immagini/".strtolower($teamlogo[1]).".png";
-	
-	$logourl = "http://images2.gazzettaobjects.it/includes2013/LIBS/css/assets/squadre/".ucfirst(strtolower($vedi_squadra)).".jpg";
-	
-	##################################
-	##### Lettore RSS News - DA FIXARE
-	
-	$url_rss="http://www.gazzetta.it/rss/Squadre/".ucfirst(strtolower($vedi_squadra)).".xml"; //rss url
-	include_once "./inc/rss_fetch.php";
-	
 	if ($_SESSION['valido'] == "SI") {
-				
+		
 		#######################
 		##### Layout Principale	
 		
-		echo '<div class="container" style="width: 85%;margin-top: -10px;">
-		<div class="card-panel">
-		<div class="row">';
+		$logourl = "http://images2.gazzettaobjects.it/includes2013/LIBS/css/assets/squadre/".ucfirst(strtolower($vedi_squadra)).".jpg";
+		
+		echo "<div class='container' style='width: 85%;margin-top: -10px;'>
+		<div class='card-panel'>
+		<div class='row'>";
 		require ("./widget.php");
 		echo "<div class='col m9'>
-		<div class='bread'><a href='./mercato.php'>Gestione</a> / ".ucfirst(strtolower($vedi_squadra))."</div>";
-		tabella_squadre();  
-		echo '<div class="card">
-		<div style="height:62px; background-image:url('.$logourl.');background-repeat:no-repeat; background-size:100%"><h4 style="padding-top: 6px;text-align: left;color: white;padding-left: 10px;">'.ucfirst(strtolower($vedi_squadra)).'</h4></div>';
-		
-		##################################
-		##### Probabili formazioni ed info	
-		
-		echo "<div class='card-content'>
 		<div class='row'>
-		<div class='col m6'>
-		<div class='card center-align'>
-		<div class='card-content'>
-		<span class='card-title left-align'>Prossima gara in Serie A</span>
-		<hr><br>
-		<img height='130' src='$casa'> <span class='vs'>VS</span> <img height='130' src='$trasferta'> 
-		$data - $ora
+		<div class='col m12'>
+		<ol class='breadcrumbs indigo'>
+		<li class='breadcrumbs-item'><a class='white-text' href='#'>Dashboard</a></li>
+		<li class='breadcrumbs-item grey-text text-lighten-1'>".ucfirst(strtolower($vedi_squadra))."</li>
+		</ol>
 		</div>
-		</div>
-		
-		<div class='card center-align'>
-		<div class='card-content' style='height: 760px;'>
-		<div class='giocherebbero_cosi'>
-		<div class='headgioca'>
-		<h2 class='pro_for'>Probabile Formazione</h2>
-		<h2 class='modulo'>Modulo: $modulo</h2>
-		</div>
-		<div class='footballMatchField'>
-		<div class='matchTotalField n".count($mod)."'>
-		<ul class='portiere matchPlayersList module-1'>
-		<li>
-		<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'/>
-		</div>
-		<div class='playerName'>".$titolari[0]."</div>
-		</li>
-		</ul>
-		<ul class='difensori matchPlayersList module-".$mod[1]."'>";
-		for ($i = $mod[1]; $i > 0; $i--){
-			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'/>
-			</div>
-			<div class='playerName'>".$titolari[$i+0]."</div>
-			</li>";
-		}
-		echo "</ul>
-		<ul class='centrocampisti matchPlayersList module-".$mod[2]."'>";
-		for ($i = $mod[2]; $i > 0; $i--){
-			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'/>
-			</div>
-			<div class='playerName'>".$titolari[$i+$mod[1]]."</div>
-			</li>";
-		}
-		echo "</ul>
-		<ul class='attaccanti matchPlayersList module-".$mod[3]."'>";
-		for ($i = $mod[3]; $i > 0; $i--){
-			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'/>
-			</div>
-			<div class='playerName'>".$titolari[$i+$mod[2]+$mod[1]]."</div>
-			</li>";
-		}
-		echo "</ul>";
-		if (count($mod) == 5 ) {
-			echo "<ul class='punte matchPlayersList module-".$mod[4]."'>";
-			for ($i = $mod[4]; $i > 0; $i--){
-				echo "<li>
-				<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'/>
-				</div>
-				<div class='playerName'>".$titolari[$i+$mod[3]+$mod[2]+$mod[1]]."</div>
-				</li>";
-			}
-			echo "</ul>"; 
-		}
-		echo"</div>
-		</div>
-		
-		<div class='info panchina_section'>
-		<div style='clear:both;'>&nbsp;</div>
-		<p class='card green lighten-2 center-align'><b>Panchina</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->panchina->calciatore as $panchina) {
-			echo $panchina." - ";
-		}
-		echo "</p>
-		</div>
-		<div class='info first'>
-		<p class='card orange lighten-2 center-align'><b>Infortunati:</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->indisponibili->calciatore as $indisponibili) {
-			echo $indisponibili." - ";
-		}
-		echo "</p>
-		</div>
-		<div class='info second'>
-		<p class='card red lighten-2 center-align'><b>Squalificati:</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->squalificati->calciatore as $squalificati) {
-			echo $squalificati." - ";
-		}
-		echo "</p>
-		</div>
-		<div class='info diffidati_section'>
-		<p class='card yellow lighten-2 center-align'><b>Diffidati</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->diffidati->calciatore as $diffidati) {
-			echo $diffidati." - ";
-		}
-		echo "</p>
-		</div>
-		<div class='info altri_section'>
-		<p class='card blue lighten-2 center-align'><b>Altri</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->altri->calciatore as $altri) {
-			echo $altri." - ";
-		}
-		echo "</p>
-		</div>
-		<div class='info ballottaggi_section'>
-		<p class='card teal lighten-2 center-align'><b>Ballottaggi</b></p>
-		<p style='padding-top:6px'>";
-		foreach($xml->ballottaggi->calciatore as $ballottaggi) {
-			echo $ballottaggi." - ";
-		}
-		echo "</p>
-		</div>
-		<div style='clear:both;'>&nbsp;</div>
-		<div style='clear:both;'>&nbsp;</div>
-		</div>
-		</div> 
-		</div> 
 		</div>";
+		tabella_squadre();  
+		echo "<div class='card'>
+		<div class='backsquadre' style='background-image:url($logourl);'><h4 class='backsquadrenome'>".ucfirst(strtolower($vedi_squadra))."</h4></div>
 		
-		########################################################################################
-		##### Rose squadre ufficiali - il numero tra parentesi specifica la larghezza del modulo	
+		<div class='card-content'>
+		<div class='row'>";
 		
-		rosa_squadra(6);
+		#########################
+		##### Colonna di sinistra	
 		
-		echo"</div>
+		echo "<div class='col m6'>";
+		
+		######################################################
+		##### MODULO - Prossima Gara (inc/funzioni_utente.php)	
+		
+		modulo_prossima_gara(12);
+		
+		####################################################################
+		##### MODULO - Info e Probabili Formazioni (inc/funzioni_utente.php)
+		
+		modulo_info_e_probabili_formazioni();
+		
+		##############################################
+		##### MODULO - Ultime notizie squadra (inc/funzioni_utente.php)
+		
+		ultime_notizie_squadra(12);
+		
+		echo "</div>"; ## Chiudo la colonna di sinistra
+		
+		#######################
+		##### Colonna di destra
+
+		echo "<div class='col m6'>";
+		
+		###############################################################
+		##### MODULO - Rosa squadra ufficiale (inc/funzioni_utente.php)
+		
+		rosa_squadra(12);
+		
+		echo "</div>"; ## Chiudo la colonna di destra
+		
+		################################################
+		##### Chiudo i div aperti in Layout Principale
+		
+		echo "</div>
 		</div>
 		</div>
 		</div>

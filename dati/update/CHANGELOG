@@ -1,8 +1,42 @@
-########## CHANGELOG ##########
+########## CHANGELOG v0.0.7-alpha ##########
 
-##### 0.0.6-alpha #####
+##### ROOT #####
 
-- Aggiornamento al Material Design per i seguenti file: mercato.php, compra.php, registro_mercato.php, squadra.php
-- Aggiornamento a PHP 7 per i seguenti file: vedi_vendi_subito.php, vendi_subito.php, mercato.php, compra.php, registro_mercato.php, squadra.php
-- Fix grafica campetto tab_squadre con reparti a 5 giocatori
-- Inizio aggiornamento icone squadre
+- controlla_pass.php
+Aggiunto richiamo per il file inc/funzioni_utente.php.
+
+- registro_mercato.php
+Ora è possibile filtrare la lista acquisti, visualizzando solo i movimenti di ogni specifico utente. 
+Thanks to Kindot! (showthread.php?tid=7804)
+
+- tab_calciatori.php
+Eliminata la variabile $cerca_valutazione, doppione di $calciatori. Codice snellito.
+Introduzione della funzione ultima_giornata_giocata() - già esistente - per la ricerca dell'ultima giornata disputata.
+
+- tab_calciatori_tra.php
+- tab_squadre_tra.php
+Aggiunto il supporto per PHP 7.0.
+
+- tab_squadre.php 
+- registro_mercato.php
+Inizio testing suddivisione contenuto dei file. Il file di riferimento contiene la grafica e la struttura della pagina, 
+il contenuto è richiamato tramite funzioni presenti in due file esterni: uno per utente e l'altro per admin (in progettazione).
+
+- tab_squadre.php
+Fixato problema con il lettore RSS delle news per la squadra visualizzata.
+
+- widget.php
+Fix minor bug.
+
+##### INC #####
+
+- inc/funzioni.php
+Fixata la lettura della versione presente online dello script, in a_verifiche.php.
+
+- inc/funzioni_utente.php
+Creazione file per il richiamo delle funzioni utili lato utente.
+
+##### CSS #####
+
+- css/extra.css
+Aggiunta qualche classe per il controllo grafico degli elementi in tab_squadre.php.

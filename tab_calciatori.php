@@ -18,7 +18,7 @@
 	// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 	// #################################################################################
 	@$escludi_controllo = $_GET ['escludi_controllo'];
-
+	
 	if ($escludi_controllo != "SI")
 	require_once ("./controlla_pass.php");
 	else
@@ -26,64 +26,49 @@
 	
 	include ("./header.php");
 	
-	$data_busta_chiusa = @join ( '', @file ( "./dati/data_buste_" . $_SESSION ['torneo'] . "_0.txt" ) );
-	$data_busta_precedente = @join ( '', @file ( "./dati/data_buste_precedente_" . $_SESSION ['torneo'] . "_0.txt" ) );
+	$data_busta_chiusa = @join('',@file($percorso_cartella_dati."/data_buste_".$_SESSION['torneo']."_0.txt"));
+	$data_busta_precedente = @join('',@file($percorso_cartella_dati."/data_buste_precedente_".$_SESSION['torneo']."_0.txt"));
+	
 	if ($_SESSION ['valido'] == "SI" or $escludi_controllo == "SI") {
-		// require ("./menu.php");
 		
-		// #####################################
-		// #### Controlla numero ultima giornata
+		#####################################
+		#### Controlla numero ultima giornata
 		
-		if ($stato_mercato != "I") {
-			for($num1 = 1; $num1 < 40; $num1 ++) {
-				if (strlen ( $num1 ) == 1)
-				$num1 = "0" . $num1;
-				if (@is_file ( "$percorso_cartella_voti/voti$num1.txt" ))
-				$ultima_giornata = 0;
-				else {
-					$ultima_giornata = $num1 - 1;
-					if (strlen ( $ultima_giornata ) == 1)
-					$ultima_giornata = "0" . $ultima_giornata;
-					break;
-				} // fine else
-			} // fine for $num1
-		} // if mercato iniziale
+		if ($stato_mercato != "I") ultima_giornata_giocata();
 		
 		if ($stato_mercato != "I" and $ultima_giornata >= 1) {
-			$cerca_valutazione = file ( "$percorso_cartella_voti/voti$ultima_giornata.txt" );
-			$calciatori = file ( "$percorso_cartella_dati/calciatori.txt" );
-			if (@is_file ( "$percorso_cartella_voti/voti$ultima_giornata.txt" )) {
-				$cerca_valutazione = file ( "$percorso_cartella_voti/voti$ultima_giornata.txt" );
+			if (@is_file("$percorso_cartella_voti/voti$ultima_giornata.txt")) {
+				$calciatori = file("$percorso_cartella_voti/voti$ultima_giornata.txt");
 				$frase_voti = "Dati aggiornati all'ultima giornata <b>$ultima_giornata</b>";
 				} else {
 				$ultima_giornata --;
-				$cerca_valutazione = file ( "$percorso_cartella_voti/voti$ultima_giornata.txt" );
-				$frase_voti = "<font color=red>Dati dell'ultima giornata ancora non presenti.</font><br/> Valutazione alla giornata <b>$ultima_giornata</b>";
+				$calciatori = file("$percorso_cartella_voti/voti$ultima_giornata.txt");
+				$frase_voti = "<font color=red>Dati dell'ultima giornata ancora non presenti.</font><br/> Valutazione alla giornata <b>$ultima_giornata</b>.";
 				$blocco = 1;
 			}
 			} else {
-			$cerca_valutazione = @file ( "$percorso_cartella_dati/calciatori.txt" );
-			$calciatori = @file ( "$percorso_cartella_dati/calciatori.txt" );
+			$calciatori = @file("$percorso_cartella_dati/calciatori.txt");
 			$frase_voti = "Dati relativi al precampionato.";
 		}
 		
-		// ######################################
+		#######################
+		##### Layout Principale
 		
 		echo '<div class="container" style="width: 85%;margin-top: -10px;">
-	        <div class="card-panel">
-    	        <div class="row">';
-			
-			require ("./widget.php");
-			echo'<div class="col m9">';
-			    echo"<div class='bread'><a href='./mercato.php'>Gestione</a> / Listone calciatori</div><br>";
-				echo"
-				<div class='card'>
-				    <div class='card-content'>
-					    <span class='card-title'>Elenco calciatori<span style='font-size: 13px;'> - $frase_voti</span></span>
-			 	        <hr>
-			  	        <div class='row'>";
-			
-		$num_calciatori = count ( $cerca_valutazione );
+		<div class="card-panel">
+		<div class="row">';
+		
+		require ("./widget.php");
+		echo'<div class="col m9">';
+		echo"<div class='bread'><a href='./mercato.php'>Gestione</a> / Listone calciatori</div><br>";
+		echo"
+		<div class='card'>
+		<div class='card-content'>
+		<span class='card-title'>Elenco calciatori<span style='font-size: 13px;'> - $frase_voti</span></span>
+		<hr>
+		<div class='row'>";
+		
+		
 		$layout = "
 		<table class='sortable centered highlight' style='width:100%' cellpadding='10' cellspacing='0' id='t1'>
 		
@@ -101,54 +86,55 @@
 		
 		$layout .= "<th style='text-align: center'>Squadra</th></tr>";
 		
+		$num_calciatori = count($calciatori);
 		for($num1 = 0; $num1 < $num_calciatori; $num1 ++) {
 			
 			$valore_mercato = " - ";
 			$tempo_restante = "";
-			$dati_calciatore = explode ( $separatore_campi_file_calciatori, $cerca_valutazione [$num1] );
-			$numero = $dati_calciatore [($num_colonna_numcalciatore_file_calciatori - 1)];
-			$numero = trim ( $numero );
-			$numgio = $dati_calciatore [1];
-			$nome = stripslashes ( $dati_calciatore [($num_colonna_nome_file_calciatori - 1)] );
-			$nome = trim ( $nome );
-			$nome = preg_replace ( "/\"/", "", $nome );
-			$s_ruolo = $dati_calciatore [($num_colonna_ruolo_file_calciatori - 1)];
-			$s_ruolo = trim ( $s_ruolo );
+			$dati_calciatore = explode($separatore_campi_file_calciatori, $calciatori [$num1]);
+			$numero = $dati_calciatore[($num_colonna_numcalciatore_file_calciatori - 1)];
+			$numero = trim($numero);
+			$numgio = $dati_calciatore[1];
+			$nome = stripslashes($dati_calciatore[($num_colonna_nome_file_calciatori - 1)]);
+			$nome = trim($nome);
+			$nome = preg_replace("#\"#", "", $nome);
+			$s_ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori - 1)];
+			$s_ruolo = trim($s_ruolo);
 			$ruolo = $s_ruolo;
-			$valutazione = $dati_calciatore [($num_colonna_valore_calciatori - 1)];
-			$valutazione = trim ( $valutazione );
-			$xsquadra = $dati_calciatore [($num_colonna_squadra_file_calciatori - 1)];
-			$xsquadra = trim ( $xsquadra );
-			$xsquadra = preg_replace ( "/\"/", "", $xsquadra );
-			$attivo = $dati_calciatore [($ncs_attivo - 1)];
-			$attivo = trim ( $attivo );
+			$valutazione = $dati_calciatore[($num_colonna_valore_calciatori - 1)];
+			$valutazione = trim($valutazione);
+			$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori - 1)];
+			$xsquadra = trim($xsquadra);
+			$xsquadra = preg_replace( "#\"#", "", $xsquadra);
+			$attivo = $dati_calciatore[($ncs_attivo - 1)];
+			$attivo = trim($attivo);
 			
-			$adesso = mktime ( date ( "H" ), date ( "i" ), 0, date ( "m" ), date ( "d" ), date ( "Y" ) );
+			$adesso = mktime(date("H"),date("i"),0,date("m"),date("d"),date("Y"));
 			
 			if ($considera_fantasisti_come != "P" and $considera_fantasisti_come != "D" and $considera_fantasisti_come != "C" and $considera_fantasisti_come != "A")
 			$considera_fantasisti_come = "F";
-			if ($s_ruolo == $simbolo_fantasista_file_calciatori)
-			$ruolo = $considera_fantasisti_come;
-			if ($s_ruolo == $simbolo_portiere_file_calciatori)
-			$ruolo = "P";
-			if ($s_ruolo == $simbolo_difensore_file_calciatori)
-			$ruolo = "D";
-			if ($s_ruolo == $simbolo_centrocampista_file_calciatori)
-			$ruolo = "C";
-			if ($s_ruolo == $simbolo_attaccante_file_calciatori)
-			$ruolo = "A";
+			if ($s_ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
+			if ($s_ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
+			if ($s_ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
+			if ($s_ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
+			if ($s_ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
+			
+			if ($ruolo == "P") $backruolo = "#ffb732";
+			if ($ruolo == "D") $backruolo = "#00007f";
+			if ($ruolo == "C") $backruolo = "#006600";
+			if ($ruolo == "A") $backruolo = "#cc0000";
 			
 			if ($ruolo == $ruolo_guarda or $ruolo_guarda == "tutti") {
-				$num_cer_val = count ( $calciatori );
+				$num_cer_val = count($calciatori);
 				
 				for($num2 = 0; $num2 < $num_cer_val; $num2 ++) {
-					$dati_cervalcal = explode ( $separatore_campi_file_calciatori, $calciatori [$num2] );
-					$num_cervalcal = $dati_cervalcal [($num_colonna_numcalciatore_file_calciatori - 1)];
-					$num_cervalcal = trim ( $num_cervalcal );
+					$dati_cervalcal = explode($separatore_campi_file_calciatori, $calciatori [$num2]);
+					$num_cervalcal = $dati_cervalcal[($num_colonna_numcalciatore_file_calciatori - 1)];
+					$num_cervalcal = trim($num_cervalcal);
 					
 					if ($num_cervalcal == $numero) {
-						$costo = $dati_cervalcal [($num_colonna_valore_calciatori - 1)];
-						$costo = trim ( $costo );
+						$costo = $dati_cervalcal[($num_colonna_valore_calciatori - 1)];
+						$costo = trim($costo);
 						break;
 					} else
 					$costo = "-";
@@ -158,11 +144,11 @@
 				$propr_c = "";
 				$props = "";
 				
-				$calciatori_merc = @file ( $percorso_cartella_dati . "/mercato_" . $_SESSION [torneo] . "_" . $_SESSION [serie] . ".txt" );
-				$num_calciatori_merc = @count ( $calciatori_merc );
+				$calciatori_merc = @file($percorso_cartella_dati."/mercato_".$_SESSION [torneo]."_".$_SESSION [serie].".txt");
+				$num_calciatori_merc = @count($calciatori_merc);
 				$n = $num_calciatori_merc - 1;
 				
-				// ####################àà
+				####################
 				
 				for($num2 = 0; $num2 < $num_calciatori_merc; $num2 ++) {
 					$dati_calciatore_merc = explode ( ",", $calciatori_merc [$num2] );
@@ -333,11 +319,6 @@
 				if ($stato_mercato == "A" and $mercato_libero == "SI" and $props and $pallinogiallo == "SI")
 				$info = "<img src='./immagini/info1.gif' style='border:0; margin:0;' title='$props' alt='$props' />";
 				
-				if ($ruolo == "P") $backruolo = "#ffb732";
-				if ($ruolo == "D") $backruolo = "#00007f";
-				if ($ruolo == "C") $backruolo = "#006600";
-				if ($ruolo == "A") $backruolo = "#cc0000";
-				
 				$layout .= "<tr bgcolor=$colore>
 				<td>$link_info</td>
 				<td>$nome $info</td>
@@ -360,12 +341,12 @@
 		echo $layout;
 		
 		echo "</div>
-					    </div>		
-			        </div>
-			    </div>
-		    </div>	
-	    </div>
-	</div>";
+		</div>		
+		</div>
+		</div>
+		</div>	
+		</div>
+		</div>";
 	} // fine if ($pass_errata != "SI")
 	include ("./footer.php");
-?>
+?>											

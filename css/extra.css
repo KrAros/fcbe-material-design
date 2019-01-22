@@ -48,8 +48,8 @@
 }
 
 hr {
-	 border: 0; 
-	 height: 1px;
+	border: 0; 
+	height: 1px;
 	background: #beb0b0
 }
 
@@ -59,31 +59,31 @@ hr {
 }
 
 td.numero {
- background-color: #ffffff;
- background-attachment: scroll;
- background-image: url("../immagini/nr.gif");
- background-repeat: no-repeat;
- background-position: center center;
- width: 30px;
- height: 29px;
- text-align: center;
- font-size: 9px;
- font-weight: bold;
- color: #333333;
+	background-color: #ffffff;
+	background-attachment: scroll;
+	background-image: url("../immagini/nr.gif");
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 30px;
+	height: 29px;
+	text-align: center;
+	font-size: 9px;
+	font-weight: bold;
+	color: #333333;
 }
 
 td.portiere {
- background-color: #ffffff;
- background-attachment: scroll;
- background-image: url("../immagini/nr_p.gif");
- background-repeat: no-repeat;
- background-position: center center;
- width: 30px;
- height: 29px;
- text-align: center;
- color: #eeeeee;
- font-size: 9px;
- font-weight: bold;
+	background-color: #ffffff;
+	background-attachment: scroll;
+	background-image: url("../immagini/nr_p.gif");
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 30px;
+	height: 29px;
+	text-align: center;
+	color: #eeeeee;
+	font-size: 9px;
+	font-weight: bold;
 }
 
 button, input, optgroup, select, textarea {
@@ -100,31 +100,31 @@ button, input, optgroup, select, textarea {
 
 
 a.info:hover .infobox {
- text-decoration: none;
- font-weight: normal;
- display: block;
- position: absolute;
- top: 0;
- left: 100px;
- width: 300px;
- height: auto;
- border: 1px solid #cccccc;
- background: #f4f4f4 url(infob.gif) no-repeat bottom right;
- color: #000000;
- text-align: justify;
- font-size: 0.8em;
- padding: 10px;
+	text-decoration: none;
+	font-weight: normal;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 100px;
+	width: 300px;
+	height: auto;
+	border: 1px solid #cccccc;
+	background: #f4f4f4 url(infob.gif) no-repeat bottom right;
+	color: #000000;
+	text-align: justify;
+	font-size: 0.8em;
+	padding: 10px;
 }
 
 a.info {
- text-decoration: none;
- position: relative;
+	text-decoration: none;
+	position: relative;
 }
 a.info span {
- display: none;
+	display: none;
 }
 a.info:hover {
- cursor: default;
+	cursor: default;
 }
 .ruolotab {
 	text-transform: uppercase;
@@ -139,4 +139,46 @@ a.info:hover {
 	opacity: 0.75;
 	-moz-opacity: 0.75;
 	text-align: center;
+}
+
+.breadcrumbs {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding: .75rem 1rem;
+	margin-bottom: 1rem;
+	list-style: none;
+	background-color: #e9ecef;
+	border-radius: .25rem;
+}
+
+.breadcrumbs-item + .breadcrumbs-item::before {
+	display: inline-block;
+	padding-right: .5rem;
+	color: #fff;
+	content: "/";
+}
+
+.breadcrumbs-item + .breadcrumbs-item {
+	padding-left: .5rem;
+}
+
+.row {
+	margin-bottom: 0px;
+}
+
+.backsquadrenome {
+	padding-top: 6px;
+	text-align: left;
+	color: white;
+	padding-left: 10px;
+	margin-top: 0;
+}
+
+.backsquadre {
+	background-repeat:no-repeat; 
+	background-size:100%; 
+	border-radius:2px;
+	height:54px;
 }

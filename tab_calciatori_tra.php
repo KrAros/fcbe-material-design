@@ -91,7 +91,7 @@ if ($_SESSION['valido'] == "SI" or $escludi_controllo == "SI") {
 		$numgio = $dati_calciatore[1];
 		$nome = stripslashes($dati_calciatore[($num_colonna_nome_file_calciatori-1)]);
 		$nome = trim($nome);
-		$nome = ereg_replace("\"","",$nome);
+		$nome = preg_replace("#\"#","",$nome);
 		$s_ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
 		$s_ruolo = trim($s_ruolo);
 		$ruolo = $s_ruolo;
@@ -99,7 +99,7 @@ if ($_SESSION['valido'] == "SI" or $escludi_controllo == "SI") {
 		$valutazione = trim($valutazione);
 		$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori-1)];
 		$xsquadra = trim($xsquadra);
-		$xsquadra = ereg_replace("\"","",$xsquadra);
+		$xsquadra = preg_replace("#\"#","",$xsquadra);
 		$attivo = $dati_calciatore[($ncs_attivo-1)];
 		$attivo = trim($attivo);
 

@@ -22,51 +22,45 @@
 	
 	if ($_SESSION['valido'] == "SI") {
 		
-			echo '<div class="container" style="width: 85%;margin-top: -10px;">
-			<div class="card-panel">
-			<div class="row">';
-			require ("./widget.php");
-			echo "<div class='col m9'>
-			<div class='bread'><a href='./mercato.php'>Gestione</a> / Riepilogo movimenti</div>";
-			tabella_squadre();  
-			echo "<div class='card'>
-			<div class='card-content'>
-			<span class='card-title'>Riepilogo movimenti</span>
-			<hr>";
+		#######################
+		##### Layout Principale
 		
-		$file = file($percorso_cartella_dati."/utenti_".$_SESSION['torneo'].".php");
-		$linee = count($file);
-		$num_giocatori = 0;
-		for($num1 = 1; $num1 < $linee; $num1++){
-			if(!"") $num_giocatori++;
-		}
+		echo '<div class="container" style="width: 85%;margin-top: -10px;">
+		<div class="card-panel">
+		<div class="row">';
+		require ("./widget.php");
+		echo "<div class='col m9'>
+		<div class='row'>
+		<div class='col m12'>
+		<ol class='breadcrumbs indigo'>
+		<li class='breadcrumbs-item'><a class='white-text' href='#'>Dashboard</a></li>
+		<li class='breadcrumbs-item grey-text text-lighten-1'>Riepilogo movimenti</li>
+		</ol>
+		</div>
+		</div>";
+		tabella_squadre();  
 		
-		for($num1 = 1 ; $num1 < $num_giocatori; $num1++) {
-			@list($outente, $opass, $opermessi, $oemail, $ourl, $osquadra, $otorneo, $oserie, $ocittà, $ocrediti, $ovariazioni, $ocambi, $oreg) = explode("<del>", $file[$num1]);
-			$ssquadra[$outente] = $osquadra;
-		}
+		echo "<div class='row'>";
 		
-	$messaggi = @file($percorso_cartella_dati."/registro_mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-	$num_messaggi = count($messaggi);
-	$num_iniziale = 0;
-	#rsort ($messaggi);
-	
-	for ($num1 = $num_iniziale ; $num1 < $num_messaggi ; $num1++) {
-	$messaggio = explode("#@?",$messaggi[$num1]);
-	$nome = stripslashes($messaggio[0]);
-	$data = stripslashes($messaggio[1]);
-	$testo_messaggio = stripslashes($messaggio[2]);
-	$soprannome = $ssquadra[$nome];
-	
-	if (substr("$messaggi[$num1]",0,13) == "Radio mercato") $messmerc .= "$nome<br/>";
-	
-	} # fine for $num1
-	
-	echo "$messmerc";
-	echo "</div></div></div></div></div></div>";
-	
-	
+		###################
+		##### Colonna unica	
+		
+		echo "<div class='col m12'>";
+		
+		#########################################################
+		##### MODULO - Registro mercato (inc/funzioni_utente.php)
+		
+		registro_mercato(12);
+		
+		echo "</div>"; ## Chiudo la colonna unica
+		
+		################################################
+		##### Chiudo i div aperti in Layout Principale
+		
+		echo "</div></div></div></div></div>";
+		
+		
 	} # fine if ($_SESSION['valido'] == "SI")
 	
 	include("./footer.php");
-	?>	
+?>	
