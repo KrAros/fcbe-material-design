@@ -58,8 +58,7 @@
 		##### Chiudo i div aperti in Layout Principale
 		
 		echo "</div></div></div></div></div>";
-		
-		
+			
 	} # fine if ($_SESSION['valido'] == "SI")
 	
 	include("./footer.php");

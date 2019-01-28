@@ -1,7 +1,7 @@
 .footballMatchField {
     background: url("http://css.gazzettaobjects.it/includes2013/LIBS/css/assets/campetto-fantacalcio.jpg?v=201407181626") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     float: left;
-    height: 222px;
+    height: 235px;
     width: 100%;
     background-size: 100%;
 }
@@ -48,6 +48,7 @@
     list-style-type: none;
     margin-top: -7px;
     width: 22%;
+	padding: 0px 0px 0px 8px;
 }
 @media only screen and (min-width: 600px) and (max-width: 1023px) {
 	.footballMatchField .matchTotalField ul.matchPlayersList {
@@ -113,6 +114,7 @@
     font-size: 11px;
     text-transform: uppercase;
     font-weight: bold;
+	border-radius: 2px
 }
 .footballMatchField .matchTotalField ul.matchPlayersList li .playerName span.sub {
     background-color: #fcc200;
@@ -121,7 +123,6 @@
     padding-right: 2px;
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-1 li {
-	margin-top: -8px;
 	position: relative;
 	top: 50%;
 }
@@ -149,6 +150,7 @@
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-2 li {
     height: 50%;
+	padding-top: 10px;
 }
 @media only screen and (min-width: 600px) and (max-width: 1023px) {
 	.footballMatchField .matchTotalField ul.matchPlayersList.module-2 li {
@@ -161,7 +163,7 @@
 	}
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-3 {
-    padding: 48px 0 0;
+    padding: 48px 0px 0px 8px;
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-3 li {
     height: 33.33%;
@@ -177,9 +179,9 @@
 	}
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-4 {
-	padding: 24px 0 0;
+	padding: 16px 0px 8px 0px;
 	height: 100% !important;
-	margin-left: 0px !important;
+	margin-top: 0px !important;
 }
 .footballMatchField .matchTotalField ul.matchPlayersList.module-4 li {
     height: 25%;

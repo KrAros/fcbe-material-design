@@ -121,7 +121,7 @@ if ($_SESSION['valido'] == "SI") {
 				$trovato = "SI";
 				$nome = $dati_calciatore[($num_colonna_nome_file_calciatori-1)];
 				$nome = togli_acapo($nome);
-				$nome = ereg_replace("\"","",$nome);
+				$nome = preg_replace("#\"#","",$nome);
 				$s_ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
 				$s_ruolo = togli_acapo($s_ruolo);
 				$ruolo = $s_ruolo;
@@ -155,7 +155,7 @@ if ($_SESSION['valido'] == "SI") {
 		echo "<center>Il mercato &egrave; <b>chiuso</b> in questo momento.</center><br />";
 	} # fine if ($stato_mercato == "C")
 
-	$verifica_num = ereg_replace("[0-9]","",$valore_offerta);
+	$verifica_num = preg_replace("#[0-9]#","",$valore_offerta);
 
 	if ($verifica_num != "" or $valore_offerta == "" or $valore_offerta == 0) {
 		$inserire = "NO";

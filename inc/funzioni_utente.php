@@ -1,5 +1,118 @@
 <?php
 	
+	##############################
+	##### FUNZIONE - Assegna ruoli
+	##### Converte i ruoli da numeri a lettere, assegnando un colore di background
+	
+	function assegna_ruoli() {
+		
+		extract($GLOBALS);
+		global $ruolo, $backruolo;
+		
+		$ruoli = array("P","D","C","A");
+		$simboli = array($simbolo_portiere_file_calciatori, $simbolo_difensore_file_calciatori, $simbolo_centrocampista_file_calciatori, $simbolo_attaccante_file_calciatori);
+		$backruolo = array("orange darken-4", "indigo darken-4", "green darken-4", "red darken-4");
+		
+		for ($num3 = 0; $num3 < 4; $num3++) {
+			if ($ruolo == $simboli[$num3]) {
+				$ruolo = $ruoli[$num3]; 
+				$backruolo = $backruolo[$num3];
+			}	
+		}
+	}
+	
+	##################################################
+	##### FUNZIONE - Tempo rimasto dall'ultima offerta
+	##### Controlla quanto tempo resta alla scadenza di un'offerta presentata per un giocatore e riporta su schermo le azioni possibili
+	
+	function offerta_tempo_rimasto() {
+		
+		extract($GLOBALS);
+		global $proprietario, $azione, $t_r, $propr_c, $props, $numero;
+		
+		$proprietario = "Svincolato";
+		$propr_c = "";
+		$props = "";
+		
+		$mercato = file($percorso_cartella_dati."/mercato_".$_SESSION ['torneo']."_".$_SESSION ['serie'].".txt");
+		$num_mercato = count($mercato);
+		$n = $num_mercato - 1;
+		
+		###############################################################
+		#### Il ciclo controlla quanto manca alla scadenza dell'offerta
+		
+		$adesso = mktime(date("H"),date("i"),0,date("m"),date("d"),date("Y"));
+		
+		for($num2 = 0; $num2 < $num_mercato; $num2 ++) {
+			$dati_mercato = explode(",",$mercato[$num2]);
+			
+			$tempo_off = $dati_mercato[5];
+			$anno_off = substr($tempo_off, 0, 4);
+			$mese_off = substr($tempo_off, 4, 2);
+			$giorno_off = substr($tempo_off, 6, 2);
+			$ora_off = substr($tempo_off, 8, 2);
+			$minuto_off = substr($tempo_off, 10, 2);
+			$secondo_off = substr($tempo_off, 12, 2);
+			$sec_restanti = mktime($ora_off, $minuto_off, 0, intval($mese_off), $giorno_off, intval($anno_off) ) - $adesso;
+			
+			$numero_merc = $dati_mercato[0];
+			$proprietario_merc = $dati_mercato[4];
+			$tempo_off = $dati_mercato[5];
+			$tempo_off_mer = 0;
+			
+			if ($numero_merc == $numero) {
+				$props = "$proprietario_merc ";
+				if ($proprietario_merc == $_SESSION ['utente']) {
+					$propr_c .= $proprietario_merc;
+				}
+				
+				if ($sec_restanti > 1) {
+					$tempo=$anno_off.", ".$mese_off."-1, ".$giorno_off.", ".$ora_off.", ".$minuto_off.", ".$secondo_off; #formato 2012, 8-1, 02, 13, 14
+					countdown($numero,$tempo);
+					$t_r="<span id='$numero'></span> - <a href='offerta.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok&amp;mercato_libero=$mercato_libero' class='user'>rilancia</a>";
+					} else {
+					$t_r = "----";
+				}
+				
+				if ($stato_mercato == "B") {
+					$proprietario = "<font color='red' size='-2'>".$_SESSION['utente']."</font>";
+					if ($propr_c != $_SESSION['utente'] and (double) substr($tempo_off_mer, 0, 12) <= (double) substr($data_busta_precedente, 0, 12)) {
+						$proprietario = "<font color='red' size='-2'>$proprietario_merc</font>";
+						$azione = "<a >Venduto</a>";
+					}
+				} 
+				else {
+					$proprietario = "<font color='red' size='-2'>$proprietario_merc</font>";
+					$tempo_off_mer = $tempo_off;
+				}
+			}
+		} ## fine for $num2	
+		return $proprietario;
+	}
+	
+	############################################
+	##### FUNZIONE - Associa giocatori con ruolo
+	##### Cerca nel file calciatori il COGNOME del giocatore ($nome), trova il numero della stringa e restituisce il numero di ruolo.
+	
+	function cerca_ruolo_giocatore($nome){
+		global $ruolo, $backruolo;
+		extract($GLOBALS);
+		$nome_giocatore = strtoupper($nome);
+		
+		$lines = file('./dati/calciatori.txt');
+		$line_number = false;		
+		
+		while (list($key, $line) = each($lines) and !$line_number) {
+			$line_number = (strpos($line, $nome_giocatore) !== FALSE) ? $key + 1 : $line_number;
+		}
+		
+		$dati_calciatore = explode($separatore_campi_file_calciatori, $lines[$line_number-1]);
+		$ruolo = $dati_calciatore[5];
+		
+		assegna_ruoli();
+		
+	}
+	
 	############################
 	##### MODULO - Prossima Gara
 	##### Mostra il prossimo scontro di Serie A della squadra della quale si visualizzano le info
@@ -36,12 +149,15 @@
 		</div>";
 	}	
 	
+	
 	##########################################
 	##### MODULO - Info e Probabili Formazioni
 	##### Mostra le probabili formazioni ed info della prossima in Serie A della squadra della quale si visualizzano le info
 	
 	function modulo_info_e_probabili_formazioni() {
-		global $vedi_squadra;
+		
+		global $ruolo, $backruolo, $titolari;
+		extract($GLOBALS);
 		
 		########################################################
 		##### Carico le informazioni per le probabili formazioni
@@ -71,41 +187,46 @@
 		<div class='footballMatchField'>
 		<div class='matchTotalField n".count($mod)."'>
 		<ul class='portiere matchPlayersList module-1'>
-		<li>
-		<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
-		<div class='playerName'>".$titolari[0]."</div>
+		<li>";
+		cerca_ruolo_giocatore($titolari[0]);
+		echo "<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+		<div class='playerName card $backruolo'>".$titolari[0]."</div>
 		</li>
 		</ul>
 		<ul class='difensori matchPlayersList module-".$mod[1]."'>";
 		for ($i = $mod[1]; $i > 0; $i--){
+			cerca_ruolo_giocatore($titolari[$i+0]);
 			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
-			<div class='playerName'>".$titolari[$i+0]."</div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerName card $backruolo'>".$titolari[$i+0]."</div>
 			</li>";
 		}
 		echo "</ul>
 		<ul class='centrocampisti matchPlayersList module-".$mod[2]."'>";
 		for ($i = $mod[2]; $i > 0; $i--){
+			cerca_ruolo_giocatore($titolari[$i+$mod[1]]);
 			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
-			<div class='playerName'>".$titolari[$i+$mod[1]]."</div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerName card $backruolo'>".$titolari[$i+$mod[1]]."</div>
 			</li>";
 		}
 		echo "</ul>
 		<ul class='attaccanti matchPlayersList module-".$mod[3]."'>";
 		for ($i = $mod[3]; $i > 0; $i--){
+			cerca_ruolo_giocatore($titolari[$i+$mod[2]+$mod[1]]);
 			echo "<li>
-			<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
-			<div class='playerName'>".$titolari[$i+$mod[2]+$mod[1]]."</div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerName card $backruolo'>".$titolari[$i+$mod[2]+$mod[1]]."</div>
 			</li>";
 		}
 		echo "</ul>";
 		if (count($mod) == 5 ) {
 			echo "<ul class='punte matchPlayersList module-".$mod[4]."'>";
 			for ($i = $mod[4]; $i > 0; $i--){
+				cerca_ruolo_giocatore($titolari[$i+$mod[3]+$mod[2]+$mod[1]]);
 				echo "<li>
 				<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
-				<div class='playerName'>".$titolari[$i+$mod[3]+$mod[2]+$mod[1]]."</div>
+				<div class='playerName card $backruolo'>".$titolari[$i+$mod[3]+$mod[2]+$mod[1]]."</div>
 				</li>";
 			}
 			echo "</ul>"; 
@@ -202,7 +323,8 @@
 	
 	function rosa_squadra($larghezza) {
 		
-		global $percorso_cartella_voti, $percorso_cartella_dati, $separatore_campi_file_calciatori, $num_colonna_nome_file_calciatori, $num_colonna_numcalciatore_file_calciatori, $num_colonna_ruolo_file_calciatori, $num_colonna_valore_calciatori, $num_colonna_squadra_file_calciatori, $ncs_attivo, $outente, $mercato_libero, $stato_mercato, $simbolo_portiere_file_calciatori, $simbolo_difensore_file_calciatori, $simbolo_centrocampista_file_calciatori, $simbolo_attaccante_file_calciatori, $vedi_squadra, $num_colonna_votogiornale_file_voti, $num_colonna_vototot_file_voti;
+		extract($GLOBALS);
+		global $ruolo, $backruolo;
 		
 		######################################
 		##### Controlla numero ultima giornata		
@@ -210,15 +332,18 @@
 		$ultima_giornata = ultima_giornata_giocata();
 		
 		if ($ultima_giornata != "00") {
-			$cerca_squadra = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
+			$calciatori = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
 			$frase_giornata = "Dati aggiornati alla giornata $ultima_giornata";
 		}
 		else {
-			$cerca_squadra = file($percorso_cartella_dati."/calciatori.txt");
+			$calciatori = file($percorso_cartella_dati."/calciatori.txt");
 			$frase_giornata = "Dati relativi al precampionato";
 		}
 		
-		$num_cer_squ = count($cerca_squadra);
+		$num_cer_squ = count($calciatori);
+		
+		$mercato = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+		$num_acquisti_mercato = count($mercato);
 		
 		######################
 		##### Template grafico
@@ -231,76 +356,57 @@
 		<hr>
 		<table class='centered highlight' style='width:100%' cellpadding='3px' bgcolor='$sfondo_tab'>
 		<tr>
-		<td class='testa'>Nome</td>
-		<td class='testa'>V</td>
-		<td class='testa'>FV</td>
-		<td class='testa'>Val</td>
-		<td class='testa'>&nbsp;</td>
+		<thead>
+		<th>Nome</th>
+		<th>V</th>
+		<th>FV</th>
+		<th>Val</th>
+		<th>&nbsp;</td>
+		</thead>
 		</tr>";
-		
-		$calciatori = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-		$num_calciatori = count($calciatori);
-		
 		
 		for ($num1 = 0 ; $num1 < $num_cer_squ ; $num1++) {
 			
-			#######################################
-			#Controllo componenti squadra		
+			##################################
+			##### Controllo componenti squadra		
 			
-			$dati_calciatore = explode($separatore_campi_file_calciatori, $cerca_squadra[$num1]);
-			$numero = $dati_calciatore[($num_colonna_numcalciatore_file_calciatori-1)];
-			$numero = trim($numero);
-			$nome = stripslashes($dati_calciatore[($num_colonna_nome_file_calciatori-1)]);
-			$nome = trim($nome);
-			$nome = preg_replace( "/\"/", "",$nome);
-			$ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
-			$ruolo = trim($ruolo);
-			$valore = $dati_calciatore[($num_colonna_valore_calciatori-1)];
-			$valore = trim($valore);
-			$ultvoto = $dati_calciatore[($num_colonna_votogiornale_file_voti-1)];
-			$ultvoto = trim($ultvoto);
-			$ultfantavoto = $dati_calciatore[($num_colonna_vototot_file_voti-1)];
-			$ultfantavoto = trim($ultfantavoto);
-			$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori-1)];
-			$xsquadra = trim($xsquadra);
-			$xsquadra = preg_replace( "/\"/", "",$xsquadra);
+			$dati_calciatore = explode($separatore_campi_file_calciatori, $calciatori[$num1]);
+			list ($numero, $giornata, $nome, $squadra, $attivo, $ruolo, $presenza, $votofc, $mininf25, $minsup25, $voto, $golsegnati, $golsubiti, $golvittoria, $golpareggio, $assist, $ammonizione, $espulsione, $rigoretirato, $rigoresubito, $rigoreparato, $rigoresbagliato, $autogol, $entrato, $titolare, $sv, $giocaincasa, $valore) = $dati_calciatore;
 			
-			$attivo = $dati_calciatore[($ncs_attivo-1)];
-			$attivo = trim($attivo);
+			$squadra = preg_replace( "#\"#","",$squadra);
+			$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
 			
-			if ($considera_fantasisti_come != "P" and $considera_fantasisti_come != "D" and $considera_fantasisti_come != "C" and $considera_fantasisti_come != "A") $considera_fantasisti_come = "F";
+			assegna_ruoli();
+			
+			if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
 			if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
-			if ($ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
-			if ($ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
-			if ($ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
-			if ($ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
 			
-			#####################
-			if ($vedi_squadra == $xsquadra and $attivo == "1") {
+			####################################################
+			##### Mostro solo i membri della squadra selezionata
+			
+			if ($vedi_squadra == $squadra and $attivo == "1") {
 				$sx="on";
-				for ($num2 = 0 ; $num2 < $num_calciatori ; $num2++) {
-					$dati_calciatore = explode(",", $calciatori[$num2]);
+				
+				################################################################
+				##### Il ciclo controlla se qualche giocatore è stato acquistato
+				
+				for ($num2 = 0 ; $num2 < $num_acquisti_mercato ; $num2++) {
+					$dati_calciatore = explode(",", $mercato[$num2]);
 					$proprietario = $dati_calciatore[4];
 					$numero_calciatore= $dati_calciatore[0];
 					if ($proprietario == $outente and $numero_calciatore==$numero) $sx="off";
 				}
-				if ($ruolo == "P") {$backruolo = "#ffb732";}
-				if ($ruolo == "D") {$backruolo = "#00007f";}
-				if ($ruolo == "C") {$backruolo = "#006600";}
-				if ($ruolo == "A") {$backruolo = "#cc0000";}
 				
 				$table_layout .= "<tr>
-				<td style='text-align:left'><b class='ruolo' style='background: $backruolo'>$ruolo</b> <a href='stat_calciatore.php?num_calciatore=$numero&amp;ruolo_guarda=$ruolo_guarda&amp;escludi_controllo=$escludi_controllo' class='user'>$nome</a></td>
-				<td align=center>$ultvoto</td>
-				<td align=center>$ultfantavoto</td>
-				<td align=center>$valore</td>";
+				<td style='text-align:left'><b class='ruolo $backruolo'>$ruolo</b> <a href='stat_calciatore.php?num_calciatore=$numero&amp;ruolo_guarda=$ruolo_guarda&amp;escludi_controllo=$escludi_controllo' class='user'>$nome</a></td>
+				<td class='center'>$voto</td>
+				<td class='center'>$votofc</td>
+				<td class='center'>$valore</td>";
 				if ($_SESSION['valido'] == "SI" and $mercato_libero == "SI" and $stato_mercato == "I" and $sx!="off")  $table_layout .= "<td align='center'><a href='compra.php?num_calciatore=$numero&amp;valutazione=$valutazione' class='user'>compra</a></td>";
 				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "SI" and $stato_mercato != "I" and $sx!="off") $table_layout .= "<td align='center'><a href='cambi.php?num_calciatore=$numero' class='user'>cambia</a></td>";
-				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "I" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
+				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and ($stato_mercato == "I" or $stato_mercato == "P" or $stato_mercato == "S") and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
 				//elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "B") $table_layout .= "<td align='center'><a href='busta_offerta.php?num_calciatore=$numero&amp;valutazione=$valutazione&amp;xsquadra_ok=$xsquadra_ok&amp;mercato_libero=$mercato_libero' class='user'>inserisci nella busta</a></td>";
 				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "B" and $sx!="off") $table_layout .= "<td align='center'><a class='user'>inserisci nella busta</a></td>";
-				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "P" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
-				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "S" and $sx!="off") $table_layout .= "<td align='center'><a href='offerta.php?num_calciatore=$numero' class='user'>offri</a></td>";
 				elseif ($_SESSION['valido'] == "SI" and $mercato_libero == "NO" and $stato_mercato == "A" and $sx!="off") $table_layout .= "<td align=center><a href='scambia.php?num_calciatore=$numero&amp;altro_utente=$proprietario' class='user'>scambia</a></td>";
 				else $table_layout .= "<td align='center'>----</td>";
 				$table_layout .= "</tr>";
@@ -396,6 +502,193 @@
 		</div>
 		</div>
 		</div>";
+	}	
+	
+	#################################
+	##### MODULO - Tabella calciatori
+	##### Mostra l'elenco completo dei giocatori presenti nel torneo.
+	
+	function tabella_calciatori($larghezza) {
+		
+		extract($GLOBALS);
+		global $ruolo, $backruolo, $proprietario, $azione, $t_r, $propr_c, $props, $numero;
+		
+		#####################################
+		#### Controlla numero ultima giornata
+		
+		$data_busta_chiusa = @join('',@file($percorso_cartella_dati."/data_buste_".$_SESSION['torneo']."_0.txt"));
+		$data_busta_precedente = @join('',@file($percorso_cartella_dati."/data_buste_precedente_".$_SESSION['torneo']."_0.txt"));
+		
+		if ($stato_mercato != "I") $ultima_giornata = ultima_giornata_giocata();
+		
+		if ($stato_mercato != "I" and $ultima_giornata >= 1) {
+			if (@is_file("$percorso_cartella_voti/voti$ultima_giornata.txt")) {
+				$calciatori = file("$percorso_cartella_voti/voti$ultima_giornata.txt");
+				$frase_voti = "Dati aggiornati all'ultima giornata <b>$ultima_giornata</b>";
+				} else {
+				$ultima_giornata --;
+				$calciatori = file("$percorso_cartella_voti/voti$ultima_giornata.txt");
+				$frase_voti = "<font color=red>Dati dell'ultima giornata ancora non presenti.</font><br/> Valutazione alla giornata <b>$ultima_giornata</b>.";
+				$blocco = 1;
+			}
+			} else {
+			$calciatori = @file("$percorso_cartella_dati/calciatori.txt");
+			$frase_voti = "Dati relativi al precampionato.";
+		}
+		
+		$layout = "<div class='card'>
+		<div class='card-content'>
+		<div class='row'>
+		<div class='col m$larghezza'>
+		<span class='card-title'>Elenco calciatori<span style='font-size: 13px;'> - $frase_voti</span></span>
+		<hr>
+		<table class='sortable centered highlight' style='width:100%' cellpadding='10' cellspacing='0' id='t1'>
+		
+		<tr>
+		<thead>
+		<th style='text-align: center'>&nbsp;&nbsp;Codice&nbsp;&nbsp;</th>
+		<th style='text-align: center'>Nome</th>
+		<th style='text-align: center'>Ruolo</th>
+		<th style='text-align: center'>Operazioni</th>
+		<th style='text-align: center'>Valutazione</th>";
+		
+		if ($mercato_libero == "SI")
+		$layout .= "<th style='text-align: center'>Costo iniziale</th>";
+		else
+		$layout .= "<th style='text-align: center'>Proprietario</th>";
+		
+		$layout .= "<th style='text-align: center'>Squadra</th></thead></tr>";
+
+		$num_calciatori = count($calciatori);
+		
+		for($num1 = 0; $num1 < $num_calciatori; $num1++) {
+			
+			$valore_mercato = " - ";
+			$tempo_restante = "";
+			$dati_calciatore = explode($separatore_campi_file_calciatori, $calciatori [$num1]);
+			list ($numero, $giornata, $nome, $squadra, $attivo, $ruolo, $presenza, $votofc, $mininf25, $minsup25, $voto, $golsegnati, $golsubiti, $golvittoria, $golpareggio, $assist, $ammonizione, $espulsione, $rigoretirato, $rigoresubito, $rigoreparato, $rigoresbagliato, $autogol, $entrato, $titolare, $sv, $giocaincasa, $valore) = $dati_calciatore;
+			
+			$squadra = preg_replace( "#\"#","",$squadra);
+			$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
+			
+			assegna_ruoli();
+			
+			if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
+			if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
+			
+			if ($ruolo == $ruolo_guarda or $ruolo_guarda == "tutti") {
+				$num_cer_val = count($calciatori);
+				
+				for($num2 = 0; $num2 < $num_cer_val; $num2 ++) {
+					$dati_cervalcal = explode($separatore_campi_file_calciatori, $calciatori [$num2]);
+					$num_cervalcal = $dati_cervalcal[($num_colonna_numcalciatore_file_calciatori - 1)];
+					$num_cervalcal = trim($num_cervalcal);
+					
+					if ($num_cervalcal == $numero) {
+						$costo = $dati_cervalcal[($num_colonna_valore_calciatori - 1)];
+						$costo = trim($costo);
+						break;
+					} else
+					$costo = "-";
+				}
+				
+				$mercato = file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+				$num_mercato = count($mercato);
+				$n = $num_mercato - 1;
+				
+				offerta_tempo_rimasto();
+				
+				if ($mercato_libero == "NO") {
+					if ($stato_mercato == "B") {
+						$ultima_riga = explode(",", $mercato[$n]);
+						if ($ultima_riga [0] == "" and $n > 1) {
+							$diff_giri = $ultima_riga [1] - $data_busta_chiusa;
+							} else {
+							$diff_giri = 0;
+						}
+						if (strlen($tempo_off_mer) == 16)
+						$tempo_off_mer = substr($tempo_off_mer, 0, 12);
+						$diff = $tempo_off_mer - $data_busta_chiusa;
+						if ($propr_c == $_SESSION['utente'] and ($diff == 0 or $diff == $diff_giri)) {
+							$azione = "Acquisito nella Busta";
+							$proprietario = "<font color='red' size='-2'>$_SESSION[utente]</font>";
+						} 
+						elseif ($propr_c == $_SESSION['utente']) { 
+							$azione = "Inserito nella Busta";
+						}
+						elseif ($propr_c != $_SESSION['utente'] and ($diff == 0 or $diff == $diff_giri)) {
+							$azione = "<a href='scambia.php?num_calciatore=$numero&amp;altro_utente=$proprietario_merc' class='user'>scambia</a>";
+							$proprietario = "<font color='red' size='-2'>$propr_c</font>";
+						} 
+						elseif ($propr_c != $_SESSION['utente'] and !isset($azione)) {
+							$azione = "<a href='busta_offerta.php?num_calciatore=$numero&valutazione=$valore&squadra_ok=$squadra_ok&mercato_libero=$mercato_libero' class='user'>offri</a>";
+							$proprietario = "Svincolato";
+						}
+					} 
+					
+					elseif ($proprietario == "Svincolato" and ($stato_mercato == "I" or "A" or "P"))
+					$azione = "<a href='offerta.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok&amp;mercato_libero=$mercato_libero&amp;ruolos=$ruolo' class='user'>offri</a>";
+					elseif ($proprietario == "Svincolato" and $stato_mercato == "B")
+					$azione = "<a href='busta_offerta.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok&amp;mercato_libero=$mercato_libero' class='user'>offri con busta</a>";
+					elseif ($proprietario == "Svincolato" and $stato_mercato == "R")
+					$azione = "<a href='compra.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok' class='user'>compra</a>";
+					elseif ($_SESSION ['utente'] != $propr_c and $stato_mercato == "B")
+					$azione = "<a href='busta_offerta.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok&amp;mercato_libero=$mercato_libero' class='user'>offri con busta</a>";
+					elseif ($_SESSION ['utente'] != $propr_c and $stato_mercato == "I")
+					$azione = $t_r;
+					elseif ($_SESSION ['utente'] != $propr_c and $stato_mercato == "P")
+					$azione = "<a href='offerta.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=$squadra_ok&amp;mercato_libero=$mercato_libero' class='user'>offri</a>";
+					elseif ($_SESSION ['utente'] != $propr_c and ($stato_mercato == "S" or "A")) {
+						$ppr = cerca_proprietario($numero);
+						$azione = "<a href='scambia.php?num_calciatore=$numero&amp;altro_utente=$ppr' class='user'>scambia</a>";
+					} 
+					elseif ($_SESSION ['utente'] == $propr_c and $stato_mercato == "B")
+					$azione = "<a href='busta_vendi.php?num_calciatore=$numero' class='user'>togli dalla busta</a>";
+					elseif ($_SESSION ['utente'] == $propr_c and ($stato_mercato == "I" or "R" or "A" or "P") and $tempo_restante == "")
+					$azione = "<a href='vendi.php?num_calciatore=$numero' class='user'>vendi</a>";
+					else $azione = "-";
+				} 
+				
+				elseif ($mercato_libero == "SI") {
+					if ($squadra_ok == "NO" and $_SESSION ['utente'] != $propr_c)
+					$azione = "<a href='compra.php?num_calciatore=$numero&amp;valutazione=$valore&amp;squadra_ok=NO' class='user'>compra</a>";
+					elseif (($stato_mercato == "I" or "R") and $_SESSION ['utente'] == $propr_c)
+					$azione = "<a href='vedi_vendi_subito.php?num_calciatore=$numero' class='user'>svincola</a>";
+					elseif ($stato_mercato == "I" and $_SESSION ['utente'] != $propr_c)
+					$azione = "<a href='compra.php?num_calciatore=$numero&amp;valutazione=$valore' class='user'>compra</a>";
+					elseif ($stato_mercato == "A" and $_SESSION ['utente'] != $propr_c)
+					$azione = "<a href='cambi.php?num_calciatore=$numero' class='user'>cambi</a>";
+					else
+					$azione = "-";
+				} else $azione = "Errore di configurazione";
+				
+				if ($stato_mercato == "C") $azione = "Mercato chiuso";
+				if ($attivo == 0) $azione = "<font color='red'><b>Trasferito</b></font>";
+				if ($blocco == 1) $azione = "<font color='red'>Attendere aggiornamento</font>";
+				
+				if ($stato_mercato != "I") $link_info = "<a href='stat_calciatore.php?num_calciatore=$numero&amp;ruolo_guarda=$ruolo_guarda' class='user'>$numero</a>";
+				else $link_info = "<u>$numero</u>";
+				
+				if ($stato_mercato == "A" and $mercato_libero == "SI" and $props and $pallinogiallo == "SI")
+				$info = "<img src='./immagini/info1.gif' style='border:0; margin:0;' title='$props' alt='$props' />";
+				
+				$layout .= "<tr>
+				<td>$link_info</td>
+				<td>$nome $info</td>
+				<td><span class='ruolo $backruolo'>$ruolo</span></td>
+				<td>$azione</td>
+				<td>".intval($valore)."</td>";
+				
+				if ($mercato_libero == "SI") $layout .= "<td class='center'>".intval($costo)."</td>";
+				else $layout .= "<td class='center'>&nbsp;$proprietario</td>";
+				
+				$layout .= "<td class='center'><a href='tab_squadre.php?vedi_squadra=$squadra'>$squadra</a></td></tr>";
+				
+				
+			} // fine if ($ruolo == $ruolo_guarda or ...)
+		} // fine for $num1
+		$layout .= "</table></div></div></div></div>";
+		echo $layout;
 	}	
 	
 ?>

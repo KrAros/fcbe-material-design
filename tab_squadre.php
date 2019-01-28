@@ -35,7 +35,7 @@
 		<div class='row'>
 		<div class='col m12'>
 		<ol class='breadcrumbs indigo'>
-		<li class='breadcrumbs-item'><a class='white-text' href='#'>Dashboard</a></li>
+		<li class='breadcrumbs-item'><a class='white-text' href='./mercato.php'>Dashboard</a></li>
 		<li class='breadcrumbs-item grey-text text-lighten-1'>".ucfirst(strtolower($vedi_squadra))."</li>
 		</ol>
 		</div>
