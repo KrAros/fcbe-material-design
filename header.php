@@ -62,8 +62,9 @@ dir="ltr">
 		<meta name="Keywords"
 		content="fantacalciobazar, fantacalcio, semplice, completo, online" />
 		<meta name="Robots" content="INDEX, FOLLOW" />
-		<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
 		<style type="text/css">
 			body {
 			background-color: <?php echo$sfondo_tab1?>;
@@ -93,7 +94,7 @@ dir="ltr">
 		<!--[if gte IE 9]><!-->
 		<script src="./inc/js/jquery-2.0.3.min.js"></script>
 		<!--<![endif]-->
-<script src="./dati/update/update.js" type="text/javascript"></script>
+		<script src="./dati/update/update.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			$(document).ready(function(){
@@ -202,7 +203,7 @@ dir="ltr">
 							<li><a href="mercato.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
 							<li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">security</i>Gestione<i class="material-icons right">arrow_drop_down</i></a></li>
 							
-						    <ul id="dropdown1" class="dropdown-content">';
+							<ul id="dropdown1" class="dropdown-content">';
 							if ($chiusura_giornata != 1) {
 								echo "
 								<li><a href='./squadra.php'>Schiera formazione</a></li>
@@ -242,32 +243,32 @@ dir="ltr">
 							
 							<li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><i class="material-icons left">compare_arrows</i>Mercato<i class="material-icons right">arrow_drop_down</i></a></li>
 							
-						    <ul id="dropdown2" class="dropdown-content">
+							<ul id="dropdown2" class="dropdown-content">
 							<li><a href="registro_mercato.php">Riepilogo acquisti</a></li>
 							<li><a href="tab_calciatori.php?ruolo_guarda=tutti">Listone calciatori</a></li>
-						    </ul>
+							</ul>
 							
 							<li><a class="dropdown-trigger" href="#!" data-target="dropdown3"><i class="material-icons left">star</i>Link Utili<i class="material-icons right">arrow_drop_down</i></a></li>
 							
-						    <ul id="dropdown3" class="dropdown-content">
+							<ul id="dropdown3" class="dropdown-content">
 							<li><a href="televideo.php">Televideo</a></li>
 							<li><a href="temporeale.php">Risultati temporeale</a></li>
 							<li><a href="probform.php">Probabili formazioni</a></li>
 							<li><a href="indisponibili.php">Indisponibili</a></li>
-						    </ul>
+							</ul>
 							
 							<li><a class="dropdown-trigger" href="#!" data-target="dropdown4"><i class="material-icons left">account_circle</i>' . $_SESSION ['utente'] . '<i class="material-icons right">arrow_drop_down</i></a></li>
 							
 							
-						    <ul id="dropdown4" class="dropdown-content">
+							<ul id="dropdown4" class="dropdown-content">
 							<li><a href="a_modUtente.php">Modifica profilo</a></li>
 							<li><a href="messaggi.php">Messaggi</a></li>
-						</ul>
-						
-						<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
-						</ul>';
+							</ul>
+							
+							<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+							</ul>';
 						}
-						?>	
-						</div>
-						</nav>
-						</div>								
+					?>	
+				</div>
+			</nav>
+		</div>														

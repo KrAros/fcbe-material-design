@@ -1,5 +1,179 @@
 <?php
 	
+	########################
+	##### FUNZIONE - Grafico
+	##### Visualizza un grafico con i dati immessi
+	
+	function grafico($numero_grafico,$tipo,$titolo,$vocex,$vocey,$datix,$datiy,$leggendax,$leggenday){
+		
+		extract($GLOBALS);
+		
+		echo'<div id="container',$numero_grafico,'" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		<script>
+		Highcharts.chart("container'.$numero_grafico.'", {
+		chart: {
+        type: "'.$tipo.'"
+		},
+		title: {
+        text: "'.$titolo.'"
+		},
+		xAxis: {
+        categories: ["1", "2", "3", "4", "5", "6",
+		"7", "8", "9", "10", "11", "12",
+		"13", "14", "15", "16", "17", "18",
+		"19", "20", "21", "22", "23", "24",
+		"25", "26", "27", "28", "29", "30",
+		"31", "32", "33", "34", "35", "36", "37", "38"],
+        title: {
+		text: "'.$vocex.'"
+        }
+		},
+		yAxis: {
+        title: {
+		text: "'.$vocey.'"
+        }
+		},
+		tooltip: {
+        crosshairs: true,
+        shared: true,
+		},
+		plotOptions: {
+        spline: {
+		marker: {
+		radius: 4,
+		lineColor: "#666666",
+		lineWidth: 1
+		}
+        }
+		}, 
+		series: [{
+        name: "'.$leggendax.'",
+        marker: {
+		symbol: "diamond"
+        },
+        data: ['.$datix.']
+		}, ';
+		if ($datiy != null) {
+			echo '{
+			name: "'.$leggenday.'",
+			marker: {
+			symbol: "square"
+			},
+			color: "#8b0000",
+			data: ['.$datiy.']
+			}';
+		}
+		echo ']
+		});
+		</script>';
+	}
+	
+	#######################################
+	##### FUNZIONE - Statistiche Calciatori
+	##### Restituisce le statistiche stagionali del calciatore visualizzato estrapolandoli dal file voti
+	
+	function statistiche_calciatore() {
+	
+		extract($GLOBALS);
+		global $ruolo, $backruolo, $ruoli_in_parole, $stat_squadra, $stat_voto, $stat_valore, $num_calciatore_voto, $nome,
+		$quotazione_iniziale, $partite_giocate, $ultima_giornata, $totamm, $totesp, $totgol, $totgolsub, $totass, $totrigp, 
+		$totrigt, $totrigs, $totrigsb, $totaut, $media_giornale, $media_punti, $stringav, $stringafv, $stringaval, $stato;
+		
+		$partite_giocate = 0;
+		$somma_voti_tot = 0;
+		$somma_voti_giornale = 0;
+		
+		for ($num1 = 1; $num1 < 40; $num1++) {
+			if (strlen($num1) == 1) $num1 = "0".$num1;
+			
+			if ($voti = @file("$percorso_cartella_voti/voti$num1.txt")) {
+				$num_voti = count($voti);
+				for ($num2 = 0; $num2 < $num_voti; $num2++) {
+					$dati_voto = explode($separatore_campi_file_voti, $voti[$num2]);
+					list ($num_calciatore_voto, $stat_giornata, $stat_nome, $stat_squadra, $stat_attivo, $stat_ruolo, $stat_presenza, $stat_votofc, $stat_mininf25, $stat_minsup25, $stat_voto, $stat_golsegnati, $stat_golsubiti, $stat_golvittoria, $stat_golpareggio, $stat_assist, $stat_ammonizione, $stat_espulsione, $stat_rigoretirato, $stat_rigoresubito, $stat_rigoreparato, $stat_rigoresbagliato, $stat_autogol, $stat_subentrato, $stat_titolare, $stat_sv, $stat_giocaincasa, $stat_valore) = $dati_voto;
+					
+					if ($num_calciatore == $num_calciatore_voto) {
+						$stat_votofc = str_replace(",",".",$stat_votofc);
+						$stat_voto = str_replace(",",".",$stat_voto);
+						$stat_valore = str_replace(",",".",$stat_valore);
+						
+						$stringafv .= $dati_voto[7].",";
+						$stringav .= $dati_voto[10].",";
+						$stringaval .= $dati_voto[27].",";
+						
+						if ($stat_votofc != 0 or $stat_voto != 0) {
+							$partite_giocate++;
+							$somma_voti_tot = $somma_voti_tot + $stat_votofc;
+							$somma_voti_giornale = $somma_voti_giornale + $stat_voto;
+						} 
+						
+						$stat_nome = preg_replace ( "/\"/", "",$stat_nome);
+						$stat_squadra = preg_replace ( "/\"/", "",$stat_squadra);
+						$totpresenze = $totpresenze + $stat_presenza;
+						$totvotfc = $totvotfc + $stat_votofc;
+						$totmininf25 = $totmininf25 + $stat_mininf25;
+						$totminsup25 = $totminsup25 + $stat_minsup25;
+						$totvot = $totvot + $stat_voto;
+						$totgol = $totgol + $stat_golsegnati;
+						$totgolsub = $totgolsub + $stat_golsubiti;
+						$totgolvit = $totgolvit + $stat_golvittoria;
+						$totgolpar = $totgolpar + $stat_golpareggio;
+						$totass = $totass + $stat_assist;
+						$totamm = $totamm + $stat_ammonizione;
+						$totesp = $totesp + $stat_espulsione;
+						$totrigt = $totrigt + $stat_rigoretirato;
+						$totrigs = $totrigs + $stat_rigoresubito;
+						$totrigp = $totrigp + $stat_rigoreparato;
+						$totrigsb = $totrigsb + $stat_rigoresbagliato;
+						$totaut = $totaut + $stat_autogol;
+						$tottit = $tottit + $stat_titolare;
+						
+						break;
+					} # fine if ($num_calciatore == $num_calciatore_voto)
+					$ultima_giornata = $num1;
+				} # fine if ($voti = @file("$percorso_cartella_voti/voti$num1.txt"))
+			} # fine for $num2
+		} # fine for $num1
+		if ($partite_giocate != 0) {
+			$media_giornale = round(($somma_voti_giornale/$partite_giocate),2);
+			$media_punti = round(($somma_voti_tot/$partite_giocate),2);
+		} # fine if ($partite_giocate != 0)
+		else {
+			$media_giornale = 0;
+			$media_punti = 0;
+		} # fine else if ($partite_giocate != 0)
+		
+		if ($ultima_giornata != "") $calciatori = file("$prima_parte_pos_file_voti$ultima_giornata.txt");
+		else $calciatori = file("$percorso_cartella_dati/calciatori.txt");
+		$calciatori_iniziale = file("$percorso_cartella_dati/calciatori.txt");
+		
+		$num_calciatori = count($calciatori);
+		for ($num1 = 0 ; $num1 < $num_calciatori ; $num1++) {
+			$dati_calciatore = explode($separatore_campi_file_calciatori, $calciatori[$num1]);
+			list ($numero, $giornata, $nome, $squadra, $attivo, $ruolo, $presenza, $votofc, $mininf25, $minsup25, $voto, $golsegnati, $golsubiti, $golvittoria, $golpareggio, $assist, $ammonizione, $espulsione, $rigoretirato, $rigoresubito, $rigoreparato, $rigoresbagliato, $autogol, $entrato, $titolare, $sv, $giocaincasa, $valore) = $dati_calciatore;
+			
+			if ($num_calciatore == $numero) {
+				
+				$squadra = preg_replace( "#\"#","",$squadra);
+				$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
+				
+				assegna_ruoli();
+				
+				if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
+				if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
+				
+				###### Quotazione iniziale ######
+				$valore_calciatore = explode($separatore_campi_file_calciatori, $calciatori_iniziale[$num1]);
+				$quotazione_iniziale = $valore_calciatore[($num_colonna_valore_calciatori-1)];
+				break;
+			} # fine if ($num_calciatore == $numero)
+		} # fine for $num1
+		
+		if ($stat_attivo == 0) $stato = "<b><font color='darkred'>Trasferito</font></b>";
+		else $stato = "<b><font color='darkgreen'>In attivit&agrave;</font></b>";	
+		
+	}
+	
 	##############################
 	##### FUNZIONE - Assegna ruoli
 	##### Converte i ruoli da numeri a lettere, assegnando un colore di background
@@ -7,9 +181,10 @@
 	function assegna_ruoli() {
 		
 		extract($GLOBALS);
-		global $ruolo, $backruolo;
+		global $ruolo, $backruolo, $ruoli_in_parole;
 		
 		$ruoli = array("P","D","C","A");
+		$ruoli_in_parole = array("PORTIERE", "DIFENSORE", "CENTROCAMPISTA", "ATTACCANTE");
 		$simboli = array($simbolo_portiere_file_calciatori, $simbolo_difensore_file_calciatori, $simbolo_centrocampista_file_calciatori, $simbolo_attaccante_file_calciatori);
 		$backruolo = array("orange darken-4", "indigo darken-4", "green darken-4", "red darken-4");
 		
@@ -17,9 +192,11 @@
 			if ($ruolo == $simboli[$num3]) {
 				$ruolo = $ruoli[$num3]; 
 				$backruolo = $backruolo[$num3];
+				$ruoli_in_parole = $ruoli_in_parole[$num3];
 			}	
 		}
 	}
+	
 	
 	##################################################
 	##### FUNZIONE - Tempo rimasto dall'ultima offerta
@@ -94,9 +271,11 @@
 	##### FUNZIONE - Associa giocatori con ruolo
 	##### Cerca nel file calciatori il COGNOME del giocatore ($nome), trova il numero della stringa e restituisce il numero di ruolo.
 	
-	function cerca_ruolo_giocatore($nome){
+	function cerca_ruolo_giocatore($nome) {
+		
 		global $ruolo, $backruolo;
 		extract($GLOBALS);
+		
 		$nome_giocatore = strtoupper($nome);
 		
 		$lines = file('./dati/calciatori.txt');
@@ -110,7 +289,6 @@
 		$ruolo = $dati_calciatore[5];
 		
 		assegna_ruoli();
-		
 	}
 	
 	############################
@@ -296,6 +474,7 @@
 	##### Mostra il prossimo scontro di Serie A della squadra della quale si visualizzano le info
 	
 	function ultime_notizie_squadra($larghezza) {
+		
 		global $vedi_squadra;
 		
 		###############################################
@@ -425,6 +604,7 @@
 	##### Mostra il riepilogo degli acquisti, con la possibilità di filtrare le operazioni per ogni utente
 	
 	function registro_mercato($larghezza) {
+		
 		global $percorso_cartella_dati;
 		
 		$file = file($percorso_cartella_dati."/utenti_".$_SESSION['torneo'].".php");
@@ -558,7 +738,7 @@
 		$layout .= "<th style='text-align: center'>Proprietario</th>";
 		
 		$layout .= "<th style='text-align: center'>Squadra</th></thead></tr>";
-
+		
 		$num_calciatori = count($calciatori);
 		
 		for($num1 = 0; $num1 < $num_calciatori; $num1++) {

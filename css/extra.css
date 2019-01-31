@@ -182,3 +182,7 @@ a.info:hover {
 	border-radius:2px;
 	height:54px;
 }
+
+.highcharts-title, .highcharts-credits {
+ display: none;
+}

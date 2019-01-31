@@ -2,39 +2,31 @@
 
 ##### ROOT #####
 
-- inserisci_offerta.php
-- offerta.php
-Aggiunto il supporto per PHP 7.0.
+- header.php
+Cambiato lo script di riferimento per la generazione dei grafici.
 
-- tab_calciatori.php
-Inserito un countdown in tempo reale che mostra quanto manca allo scadere di un'offerta. Codice snellito.
-Suddivisione layout grafico dalle funzioni.
+- stat_calciatore.php
+Il file è stato riscritto: la generazione delle statstiche è ora affidata alla funzione statistiche_calciatore(), solo la parte grafica è rimasta nel file. Aggiunto il grafico sull'andamento della quotazione del giocatore.
 
-- tab_squadre.php
-Fixato un errore nel link per la dashboard presente nel breadcrumbs.
 
 ##### INC #####
 
-- inc/funzioni.php
-Fix minor bug.
-
 - inc/funzioni_utente.php
-Creata la funzione offerta_tempo_rimasto(): controlla quanto tempo resta alla scadenza di un'offerta presentata per un giocatore.
-Creata la funzione assegna_ruoli(): converte i ruoli da numeri a lettere, assegnando loro un colore di background.
-Creata la funzione cerca_ruolo_giocatore(): permette di estrarre il ruolo del giocatore ricercato con la funzione.
-Creata la funzione tabella_calciatori(): mostra l'elenco completo dei giocatori presenti nel torneo.
+Creata la funzione grafico(): permette di generare grafici specificando nei parametri della funzione cosa fare apparire.
+Creata la funzione statistiche_calciatore(): genera i valori delle statistiche di un calciatore di tutta la stagione.
+La funzione assegna_ruoli() è stata ampliata: ora permette di visualizzare anche il nome intero del ruolo del giocatore.
 
-- inc/jquery.countdown.css
-- inc/jquery.countdown.js
-File eliminati perché doppioni.
-
-- inc/js/jquery.countdown.css
-Modificato l'aspetto del countdown.
-
-- inc/funzioni_utente.php
-Snellita la funzione rosa_squadra(). Corretto il bug dell'errata visualizzazione dei nomi accentati.
 
 ##### CSS #####
 
+- immagini/foto
+Aggiornati alcuni loghi di squadre.
+
+- immagini/foto
+Aggiornate alcune foto dei calciatori.
+
 - immagini/tab.css
 Modificata la visualizzazione del campetto nelle probabili formazioni di ogni squadra.
+
+- css/extra.css
+Sistemazione del layoute dei grafici.
