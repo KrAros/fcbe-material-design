@@ -52,8 +52,7 @@ dir="ltr">
 		media="screen,projection" />
 		<link type="text/css" rel="stylesheet" href="css/extra.css"
 		media="screen,projection" />
-		<meta http-equiv="content-type"
-		content="text/html; charset=iso-8859-1\r\n" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="Content-Language" content="Italian" />
 		<meta name="Author"
 		content="Antonello Onida - http://fantacalciobazar.sssr.it" />
@@ -62,9 +61,9 @@ dir="ltr">
 		<meta name="Keywords"
 		content="fantacalciobazar, fantacalcio, semplice, completo, online" />
 		<meta name="Robots" content="INDEX, FOLLOW" />
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-more.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/highcharts-more.js"></script>
 		<style type="text/css">
 			body {
 			background-color: <?php echo$sfondo_tab1?>;
@@ -144,6 +143,61 @@ dir="ltr">
 				$('select').formSelect();
 			});
 		</script>
+		<script>
+			$(document).ready(function() {
+				$("#switch_portieri").change(function() {
+					if($(this).is(":checked")) {
+						$(".P").show(2000)
+					}
+					else {
+						$(".P").hide("slow")
+					}
+					}),$("#switch_difensori").change(function() {
+					if($(this).is(":checked")) {
+						$(".D").show(2000)
+					}
+					else {
+						$(".D").hide("slow")
+					}
+					}),$("#switch_centrocampisti").change(function() {
+					if($(this).is(":checked")) {
+						$(".C").show(2000)
+					}
+					else {
+						$(".C").hide("slow")
+					}
+					}),$("#switch_attaccanti").change(function() {
+					if($(this).is(":checked")) {
+						$(".A").show(2000)
+					}
+					else {
+						$(".A").hide("slow")
+					}
+				})
+			});
+		</script>
+		<script>
+			$(document).ready(function() {
+				$("#search").on("keyup", function() {
+					var value = $(this).val().toUpperCase();
+					$("#t1 tr").each(function(index) {
+						if (index !== 1) {
+							
+							$row = $(this);
+							
+							var id = $row.find("td:nth-child(2)").text();
+							
+							if (id.indexOf(value) !== 0) {
+								$row.hide();
+							}
+							else {
+								$row.show();
+							}
+						}
+					});
+				})
+			});
+		</script>
 		<title><?php echo $titolo_sito; ?></title>
 		
 	</head>
@@ -154,121 +208,122 @@ dir="ltr">
 				<div class="nav-wrapper">
 					<a href="./index.php" class="brand-logo" style="padding-left: 15px;"><?php echo $titolo_sito; ?></a>
 					<?php
+					
+					if (@$_SESSION ['valido'] == "SI" and $_SESSION ['utente'] == $admin_user) {
+						echo '<ul class="right hide-on-med-and-down">
+						<li><a href="a_gestione.php"><i class="material-icons left">dashboard</i>Dashboard amministrativa</a></li>
+						<li><a href="a_torneo.php"><i class="material-icons left">event_note</i>Gestione tornei</a></li>';
+						if ($usa_cms == "SI")
+						echo '<li><a href="a_sito.php"><i class="material-icons left">view_module</i>CMS</a></li>';
+						echo '<li><a href="a_configura.php"><i class="material-icons left">build</i>Configurazione sito</a></li>
+						<li><a class="dropdown-trigger" href="#!" data-target="dropdownad"><i class="material-icons left">list</i>Altre funzionalit&agrave;</a></li>
 						
-						if (@$_SESSION ['valido'] == "SI" and $_SESSION ['utente'] == $admin_user) {
-							echo '<ul class="right hide-on-med-and-down">
-							<li><a href="a_gestione.php"><i class="material-icons left">dashboard</i>Dashboard amministrativa</a></li>
-							<li><a href="a_torneo.php"><i class="material-icons left">event_note</i>Gestione tornei</a></li>';
-							if ($usa_cms == "SI")
-							echo '<li><a href="a_sito.php"><i class="material-icons left">view_module</i>CMS</a></li>';
-							echo '<li><a href="a_configura.php"><i class="material-icons left">build</i>Configurazione sito</a></li>
-							<li><a class="dropdown-trigger" href="#!" data-target="dropdownad"><i class="material-icons left">list</i>Altre funzionalit&agrave;</a></li>
-							
-							
-							<ul id="dropdownad" class="dropdown-content">
-							<li><a href="./a_aggUtente.php">Aggiungi utenti</a></li>
-							<li><a href="./a_appUtente.php">Approvazione utenti</a></li>
-							<li><a href="./a_verifiche.php">Verifiche struttura</a></li>
-							<li class="divider"></li>
-							<li><a href="./a_upload.php">Carica voti</a></li>
-							<li><a href="./a_invia_voti.php">Invia formazioni - DA FIXARE</a></li>
-							<li><a href="./a_invia_risultati.php">Invia risultati - DA FIXARE</a></li>
-							<li><a href="./messaggi.php">Gestione messaggi</a></li>
-							<li class="divider"></li>
-							<li><a href="./a_nlUtente.php">Newsletter utenti</a></li>
-							<li><a href="./a_crea_sondaggio.php">Sondaggi e votazioni</a></li>
-							<li><a href="./a_fm.php">File manager</a></li>
-							<li><a href="./a_backup.php">Backup dati</a></li>
-							<li><a href="./a_b2mail.php">Backup dati per email</a></li>
-							</ul>
-							
-							
-							<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
-							</ul>';
-						} 
-						elseif (@$_SESSION ['valido'] == "SI") {
-							$chiusura_giornata = ( int ) @file ( $percorso_cartella_dati . "/chiusura_giornata.txt" );
-							$file = file ( $percorso_cartella_dati . "/utenti_" . $_SESSION ['torneo'] . ".php" );
-							$linee = count ( $file );
-							
-							for($num1 = 1; $num1 < 40; $num1 ++) {
-								if (strlen ( $num1 ) == 1)
-								$num1 = "0" . $num1;
-								if (@is_file ( $percorso_cartella_dati . "/giornata" . $num1 . "_" . $_SESSION ['torneo'] . "_" . $_SESSION ['serie'] ))
-								$ultgio = $num1;
-								else
-								break;
-							} // fine for $num1
-							echo '<ul class="right hide-on-med-and-down">
-							<li><a href="mercato.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
-							<li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">security</i>Gestione<i class="material-icons right">arrow_drop_down</i></a></li>
-							
-							<ul id="dropdown1" class="dropdown-content">';
-							if ($chiusura_giornata != 1) {
-								echo "
-								<li><a href='./squadra.php'>Schiera formazione</a></li>
-								<li><a href='./formateam.php'>Forma squadra</a></li>";
-								if ($mercato_libero == "SI" and $stato_mercato == "A") {
-									echo "<li><a href='./cambi.php' >Cambi</a></li>";
-								}
-								if ($mercato_libero == "SI" and $stato_mercato == "A" and $trasferiti_ok == "SI") {
-									echo "<li><a href='./cambi_tra.php'>Cambia Trasferiti</a></li>";
-								}
-								} elseif ($chiusura_giornata == 1) {
-								echo "<li><a href='./squadra1.php'>Formazioni attuali</a></li>";
+						
+						<ul id="dropdownad" class="dropdown-content">
+						<li><a href="./a_aggUtente.php">Aggiungi utenti</a></li>
+						<li><a href="./a_appUtente.php">Approvazione utenti</a></li>
+						<li><a href="./a_verifiche.php">Verifiche struttura</a></li>
+						<li class="divider"></li>
+						<li><a href="./a_upload.php">Carica voti</a></li>
+						<li><a href="./a_invia_voti.php">Invia formazioni - DA FIXARE</a></li>
+						<li><a href="./a_invia_risultati.php">Invia risultati - DA FIXARE</a></li>
+						<li><a href="./messaggi.php">Gestione messaggi</a></li>
+						<li class="divider"></li>
+						<li><a href="./a_nlUtente.php">Newsletter utenti</a></li>
+						<li><a href="./a_crea_sondaggio.php">Sondaggi e votazioni</a></li>
+						<li><a href="./a_fm.php">File manager</a></li>
+						<li><a href="./a_backup.php">Backup dati</a></li>
+						<li><a href="./a_b2mail.php">Backup dati per email</a></li>
+						</ul>
+						
+						
+						<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+						</ul>';
+					} 
+					elseif (@$_SESSION ['valido'] == "SI") {
+						$chiusura_giornata = ( int ) @file ( $percorso_cartella_dati . "/chiusura_giornata.txt" );
+						$file = file ( $percorso_cartella_dati . "/utenti_" . $_SESSION ['torneo'] . ".php" );
+						$linee = count ( $file );
+						
+						for($num1 = 1; $num1 < 40; $num1 ++) {
+							if (strlen ( $num1 ) == 1)
+							$num1 = "0" . $num1;
+							if (@is_file ( $percorso_cartella_dati . "/giornata" . $num1 . "_" . $_SESSION ['torneo'] . "_" . $_SESSION ['serie'] ))
+							$ultgio = $num1;
+							else
+							break;
+						} // fine for $num1
+						echo '<ul class="right hide-on-med-and-down">
+						<li><a href="mercato.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
+						<li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">security</i>Gestione<i class="material-icons right">arrow_drop_down</i></a></li>
+						
+						<ul id="dropdown1" class="dropdown-content">';
+						if ($chiusura_giornata != 1) {
+							echo "
+							<li><a href='./squadra.php'>Schiera formazione</a></li>
+							<li><a href='./suggteam.php'>Team consigliato</a></li>
+							<li><a href='./statistiche_rosa.php'>Statistiche rosa</a></li>";
+							if ($mercato_libero == "SI" and $stato_mercato == "A") {
+								echo "<li><a href='./cambi.php' >Cambi</a></li>";
 							}
-							echo '<li class="divider"></li>';
-							for($num1 = 1; $num1 < 40; $num1 ++) {
-								if ($campionato ["1-$num1"] == "S") {
-									echo "<li><a href='./calendario.php'>Calendario</a></li>";
-									break;
-								}
-							} // fine for $num1
-							if ($mercato_libero == "NO" or $ottipo_calcolo == "S") {
-								if ($stato_mercato != "I") {
-									echo "<li><a href='./classifica.php' >Classifica</a></li>";
-								}
+							if ($mercato_libero == "SI" and $stato_mercato == "A" and $trasferiti_ok == "SI") {
+								echo "<li><a href='./cambi_tra.php'>Cambia Trasferiti</a></li>";
 							}
-							if ($stato_mercato != "I" or $stato_mercato != "R" or $stato_mercato != "B") {
-								echo "<li><a href='./rose.php' >Riepilogo rose</a></li>";
-								echo "<li><a href='./statistiche.php' >Statistiche</a></li>";
-							}
-							if ($stato_mercato == "A" or $stato_mercato == "P" or $stato_mercato == "C" or $stato_mercato == "S") {
-								echo "<li><a href='./giornate.php'>Riepilogo giornate</a></li>";
-							}
-							if ($mercato_libero == "SI" and $stato_mercato != "I" and $ultgio != 0) {
-								echo "<li><a href='./guarda_giornate.php' >Vedi tutti i voti</a></li>";
-							}
-							echo '</ul>
-							
-							<li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><i class="material-icons left">compare_arrows</i>Mercato<i class="material-icons right">arrow_drop_down</i></a></li>
-							
-							<ul id="dropdown2" class="dropdown-content">
-							<li><a href="registro_mercato.php">Riepilogo acquisti</a></li>
-							<li><a href="tab_calciatori.php?ruolo_guarda=tutti">Listone calciatori</a></li>
-							</ul>
-							
-							<li><a class="dropdown-trigger" href="#!" data-target="dropdown3"><i class="material-icons left">star</i>Link Utili<i class="material-icons right">arrow_drop_down</i></a></li>
-							
-							<ul id="dropdown3" class="dropdown-content">
-							<li><a href="televideo.php">Televideo</a></li>
-							<li><a href="temporeale.php">Risultati temporeale</a></li>
-							<li><a href="probform.php">Probabili formazioni</a></li>
-							<li><a href="indisponibili.php">Indisponibili</a></li>
-							</ul>
-							
-							<li><a class="dropdown-trigger" href="#!" data-target="dropdown4"><i class="material-icons left">account_circle</i>' . $_SESSION ['utente'] . '<i class="material-icons right">arrow_drop_down</i></a></li>
-							
-							
-							<ul id="dropdown4" class="dropdown-content">
-							<li><a href="a_modUtente.php">Modifica profilo</a></li>
-							<li><a href="messaggi.php">Messaggi</a></li>
-							</ul>
-							
-							<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
-							</ul>';
+							} elseif ($chiusura_giornata == 1) {
+							echo "<li><a href='./squadra1.php'>Formazioni attuali</a></li>";
 						}
+						echo '<li class="divider"></li>';
+						for($num1 = 1; $num1 < 40; $num1 ++) {
+							if ($campionato ["1-$num1"] == "S") {
+								echo "<li><a href='./calendario.php'>Calendario</a></li>";
+								break;
+							}
+						} // fine for $num1
+						if ($mercato_libero == "NO" or $ottipo_calcolo == "S") {
+							if ($stato_mercato != "I") {
+								echo "<li><a href='./classifica.php' >Classifica</a></li>";
+							}
+						}
+						if ($stato_mercato != "I" or $stato_mercato != "R" or $stato_mercato != "B") {
+							echo "<li><a href='./rose.php' >Riepilogo rose</a></li>";
+							echo "<li><a href='./statistiche.php' >Statistiche</a></li>";
+						}
+						if ($stato_mercato == "A" or $stato_mercato == "P" or $stato_mercato == "C" or $stato_mercato == "S") {
+							echo "<li><a href='./giornate.php'>Riepilogo giornate</a></li>";
+						}
+						if ($mercato_libero == "SI" and $stato_mercato != "I" and $ultgio != 0) {
+							echo "<li><a href='./guarda_giornate.php' >Vedi tutti i voti</a></li>";
+						}
+						echo '</ul>
+						
+						<li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><i class="material-icons left">compare_arrows</i>Mercato<i class="material-icons right">arrow_drop_down</i></a></li>
+						
+						<ul id="dropdown2" class="dropdown-content">
+						<li><a href="registro_mercato.php">Riepilogo acquisti</a></li>
+						<li><a href="tab_calciatori.php?ruolo_guarda=tutti">Listone calciatori</a></li>
+						</ul>
+						
+						<li><a class="dropdown-trigger" href="#!" data-target="dropdown3"><i class="material-icons left">star</i>Link Utili<i class="material-icons right">arrow_drop_down</i></a></li>
+						
+						<ul id="dropdown3" class="dropdown-content">
+						<li><a href="televideo.php">Televideo</a></li>
+						<li><a href="temporeale.php">Risultati temporeale</a></li>
+						<li><a href="probform.php">Probabili formazioni</a></li>
+						<li><a href="indisponibili.php">Indisponibili</a></li>
+						</ul>
+						
+					<li><a class="dropdown-trigger" href="#!" data-target="dropdown4"><i class="material-icons left">account_circle</i>' . $_SESSION ['utente'] . '<i class="material-icons right">arrow_drop_down</i></a></li>
+					
+					
+					<ul id="dropdown4" class="dropdown-content">
+					<li><a href="a_modUtente.php">Modifica profilo</a></li>
+					<li><a href="messaggi.php">Messaggi</a></li>
+					</ul>
+					
+					<li><a href="logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
+					</ul>';
+					}
 					?>	
-				</div>
-			</nav>
-		</div>														
+					</div>
+					</nav>
+					</div>																																	

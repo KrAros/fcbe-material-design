@@ -1,5 +1,184 @@
 <?php
 	
+	function statistiche_rosa() {
+		extract($GLOBALS);
+		global $ruolo, $backruolo, $ruoli_in_parole, $stat_squadra, $stat_voto, $stat_valore, $num_calciatore_voto, $nome,
+		$quotazione_iniziale, $partite_giocate, $ultima_giornata, $totamm, $totesp, $totgol, $totgolsub, $totass, $totrigp, 
+		$totrigt, $totrigs, $totrigsb, $totaut, $media_giornale, $media_punti, $stringav, $stringafv, $stringaval, $stato, 
+		$vedi_squadra;
+		
+		if ($stato_mercato != "I" AND $ultima_giornata >= 1) $voti = file("$percorso_cartella_voti/voti$ultima_giornata.txt");
+		else $voti = file("$percorso_cartella_dati/calciatori.txt");
+		
+		//echo "<pre>";
+		//print_r($GLOBALS);
+		//echo "</pre>";
+		$tabella = "
+		<table class='highlight' width='100%' cellpadding='0' cellspacing='0' align='center' bgcolor='$sfondo_tab' summary='Tabella statistiche squadra'>
+		<tr><thead>
+		<th class='testa'>Nome</th>
+		<th class='center'>Squadra</th>
+		<th class='center'>Gare</th>
+		<th class='center'>Medie</th>
+		<th class='center'>Gol</th>
+		<th class='center'>Assist</th>
+		<th class='center'>Gialli</th>
+		<th class='center'>Rossi</th>
+		<th class='center'>Rigori</th>
+		<th class='center'>Cos / Val</th>
+		<th class='center'>Ultimi</th></thead></tr>";
+		
+		$num_voti = count($voti);
+		
+		#Aggiunte
+		$cerca_squadra = file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+		$num_cer_squ = count($cerca_squadra);
+		
+		#print_r ($cerca_squadra);
+		#echo "<hr>";
+		array_multisort ($cerca_squadra, SORT_ASC, SORT_STRING);
+		#print_r ($cerca_squadra);
+		
+		$partite_giocate = 0;
+		$somma_voti_tot = 0;
+		$somma_voti_giornale = 0;
+		
+		for ($knum1 = 0 ; $knum1 <= $num_cer_squ ; $knum1++) {	
+			$dati_calciatore = explode(",", trim($cerca_squadra[$knum1]));
+			list ($num_calciatore, $nome, $ruolo, $valore, $xsquadra) = $dati_calciatore;
+			
+			$nome = preg_replace("#\"#","",$nome);
+			$xsquadra = preg_replace("#\"#","",$xsquadra);
+			assegna_ruoli('calciatori');
+			
+			if ($xsquadra == $vedi_squadra) {	
+				for ($num1 = 1; $num1 < 40; $num1++) {
+					if (strlen($num1) == 1) $num1 = "0".$num1;
+					
+					if ($voti = @file("$percorso_cartella_voti/voti$num1.txt")) {
+						$num_voti = count($voti);
+						for ($num2 = 0 ; $num2 <= $num_voti ; $num2++) {
+							$dati_voto = explode($separatore_campi_file_voti, $voti[$num2]);
+							list ($num_calciatore_voto, $stat_giornata, $stat_nome, $stat_squadra, $stat_attivo, $stat_ruolo, $stat_presenza, $stat_votofc, $stat_mininf25, $stat_minsup25, $stat_voto, $stat_golsegnati, $stat_golsubiti, $stat_golvittoria, $stat_golpareggio, $stat_assist, $stat_ammonizione, $stat_espulsione, $stat_rigoretirato, $stat_rigoresubito, $stat_rigoreparato, $stat_rigoresbagliato, $stat_autogol, $stat_subentrato, $stat_titolare, $stat_sv, $stat_giocaincasa, $stat_valore) = $dati_voto;
+							
+							if ($num_calciatore == $num_calciatore_voto) {
+								
+								$voto_tot = $dati_voto[($num_colonna_vototot_file_voti-1)];
+								$voto_tot = togli_acapo($voto_tot);
+								$voto_tot = str_replace(",",".",$voto_tot);
+								$voto_giornale = $dati_voto[($num_colonna_votogiornale_file_voti-1)];
+								$voto_giornale = togli_acapo($voto_giornale);
+								$voto_giornale = str_replace(",",".",$voto_giornale);
+								$uvt = $voto_tot; $uvg = $voto_giornale;
+								if ($voto_tot != 0 or $voto_giornale != 0) {
+									$partite_giocate++;
+									$somma_voti_tot = $somma_voti_tot + $voto_tot;
+									$somma_voti_giornale = $somma_voti_giornale + $voto_giornale;
+								} # fine if ($voto_tot != 0 or $voto_giornale != 0)
+								
+								$stat_nome = preg_replace ( "/\"/", "",$stat_nome);
+								$stat_squadra = preg_replace ( "/\"/", "",$stat_squadra);
+								$totpresenze = $totpresenze + $stat_presenza;
+								$totvotfc = $totvotfc + $stat_votofc;
+								$totmininf25 = $totmininf25 + $stat_mininf25;
+								$totminsup25 = $totminsup25 + $stat_minsup25;
+								$totvot = $totvot + $stat_voto;
+								$totgol = $totgol + $stat_golsegnati;
+								$totgolsub = $totgolsub + $stat_golsubiti;
+								$totgolvit = $totgolvit + $stat_golvittoria;
+								$totgolpar = $totgolpar + $stat_golpareggio;
+								$totass = $totass + $stat_assist;
+								$totamm = $totamm + $stat_ammonizione;
+								$totesp = $totesp + $stat_espulsione;
+								$totrigt = $totrigt + $stat_rigoretirato;
+								$totrigs = $totrigs + $stat_rigoresubito;
+								$totrigp = $totrigp + $stat_rigoreparato;
+								$totrigsb = $totrigsb + $stat_rigoresbagliato;
+								$totaut = $totaut + $stat_autogol;
+								$stat_subentrato = $dati_voto[($ncs_entrato -1)];
+								$tottit = $tottit + $stat_titolare;
+								$stat_valore = $dati_voto[($ncs_valore -1)];
+								$tot_golsegnati = $tot_golsegnati + $stat_golsegnati;
+								$tot_golsubiti = $tot_golsubiti + $stat_golsubiti;
+								
+								break;
+							} # fine if ($num_calciatore == $num_calciatore_voto)
+							#$ultima_giornata = $num1;
+						} # fine if ($voti = @file("$percorso_cartella_voti/MCC$num1.txt"))
+					} # fine for $num2
+				} # fine for $num1
+				
+				if ($partite_giocate != 0) {
+					$media_giornale = round(($somma_voti_giornale /$partite_giocate),2);
+					$media_punti = round(($somma_voti_tot / $partite_giocate),2);
+				} # fine if ($partite_giocate != 0)
+				else {
+					$media_giornale = 0;
+					$media_punti = 0;
+				} # fine else if ($partite_giocate != 0)
+				if ($stat_attivo == 0) $mess = "<b><font color=red>Non disponibile</font></b>";
+				else $mess = "In attività";
+				
+				if ($ruolo == "P") $tot_golsegnati = $tot_golsubiti;
+				if ($stat_attivo == "0") $csattivo = " - <font class='piccolo'>Trasferito</font>"; else $csattivo = "";
+				
+				$lmsquadra = "m_".strtolower($stat_squadra).".gif";
+				$squadra = "<a href='tab_squadre.php?vedi_squadra=$stat_squadra' style=' border: 0px; text-decoration: none;' title='$stat_squadra'><img class='z-depth-2' style='border-radius: 12px;' src='./immagini/$lmsquadra' style='width: 25px; border: 0px; text-decoration: none;' alt='$stat_squadra' /></a>";
+				assegna_ruoli('mercato');
+				$tabella .= "<tr class='$ruolo'>
+				<td><b class='ruolo $backruolo'>$ruolo</b> <a href='stat_calciatore.php?num_calciatore=$num_calciatore&amp;ruolo_guarda=$ruolo_guarda' class='user'>$nome</a> $csattivo</td>
+				<td class='center'>$squadra</td>
+				<td class='center'>$totpresenze</td>
+				<td class='center'>$media_punti ($media_giornale)</td>
+				<td class='center'>$tot_golsegnati</td>
+				<td class='center'>$totass</td>
+				<td class='center'>$totamm</td>
+				<td class='center'>$totesp</td>
+				<td class='center'>$totrigt</td>
+				<td class='center'>$valore / $stat_valore</td>
+				<td class='center'>$uvt ($uvg)</td></tr>";
+				
+				$stat_presenza=0;
+				$totpresenze=0;
+				$stat_votofc=0;
+				$totvotfc=0;
+				$stat_voto=0;
+				$totvot=0;
+				$stat_golsegnati=0;
+				$tot_golsegnati=0;
+				$stat_golsubiti=0;
+				$tot_golsubiti=0;
+				$stat_golvittoria=0;
+				$totgolvit=0;
+				$stat_golpareggio=0;
+				$totgolpar=0;
+				$stat_assist=0;
+				$totass=0;
+				$stat_ammonizione=0;
+				$totamm=0;
+				$stat_espulsione=0;
+				$totesp=0;
+				$stat_rigoretirato=0;
+				$totrigt=0;
+				$stat_rigoresubito=0;
+				$totrigs=0;
+				$stat_rigoreparato=0;
+				$totrigp=0;
+				$stat_rigoresbagliato=0;
+				$totrigsb=0;
+				$stat_autogol=0;
+				$totaut=0;
+				$partite_giocate=0;
+				$media_giornale=0;
+				$media_punti=0;
+				$partite_giocate = 0;
+				$somma_voti_tot = 0;
+				$somma_voti_giornale = 0;
+			} # fine for $Knum1
+		} # fine if ($statistiche == "SI")	
+		echo $tabella;
+	}
+	
 	########################
 	##### FUNZIONE - Grafico
 	##### Visualizza un grafico con i dati immessi
@@ -12,46 +191,46 @@
 		<script>
 		Highcharts.chart("container'.$numero_grafico.'", {
 		chart: {
-        type: "'.$tipo.'"
+		type: "'.$tipo.'"
 		},
 		title: {
-        text: "'.$titolo.'"
+		text: "'.$titolo.'"
 		},
 		xAxis: {
-        categories: ["1", "2", "3", "4", "5", "6",
+		categories: ["1", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "11", "12",
 		"13", "14", "15", "16", "17", "18",
 		"19", "20", "21", "22", "23", "24",
 		"25", "26", "27", "28", "29", "30",
 		"31", "32", "33", "34", "35", "36", "37", "38"],
-        title: {
+		title: {
 		text: "'.$vocex.'"
-        }
+		}
 		},
 		yAxis: {
-        title: {
+		title: {
 		text: "'.$vocey.'"
-        }
+		}
 		},
 		tooltip: {
-        crosshairs: true,
-        shared: true,
+		crosshairs: true,
+		shared: true,
 		},
 		plotOptions: {
-        spline: {
+		spline: {
 		marker: {
 		radius: 4,
 		lineColor: "#666666",
 		lineWidth: 1
 		}
-        }
+		}
 		}, 
 		series: [{
-        name: "'.$leggendax.'",
-        marker: {
+		name: "'.$leggendax.'",
+		marker: {
 		symbol: "diamond"
-        },
-        data: ['.$datix.']
+		},
+		data: ['.$datix.']
 		}, ';
 		if ($datiy != null) {
 			echo '{
@@ -73,7 +252,7 @@
 	##### Restituisce le statistiche stagionali del calciatore visualizzato estrapolandoli dal file voti
 	
 	function statistiche_calciatore() {
-	
+		
 		extract($GLOBALS);
 		global $ruolo, $backruolo, $ruoli_in_parole, $stat_squadra, $stat_voto, $stat_valore, $num_calciatore_voto, $nome,
 		$quotazione_iniziale, $partite_giocate, $ultima_giornata, $totamm, $totesp, $totgol, $totgolsub, $totass, $totrigp, 
@@ -157,7 +336,7 @@
 				$squadra = preg_replace( "#\"#","",$squadra);
 				$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
 				
-				assegna_ruoli();
+				assegna_ruoli('calciatori');
 				
 				if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
 				if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
@@ -178,14 +357,18 @@
 	##### FUNZIONE - Assegna ruoli
 	##### Converte i ruoli da numeri a lettere, assegnando un colore di background
 	
-	function assegna_ruoli() {
+	function assegna_ruoli($file_riferimento) {
 		
 		extract($GLOBALS);
 		global $ruolo, $backruolo, $ruoli_in_parole;
 		
 		$ruoli = array("P","D","C","A");
 		$ruoli_in_parole = array("PORTIERE", "DIFENSORE", "CENTROCAMPISTA", "ATTACCANTE");
-		$simboli = array($simbolo_portiere_file_calciatori, $simbolo_difensore_file_calciatori, $simbolo_centrocampista_file_calciatori, $simbolo_attaccante_file_calciatori);
+		if ($file_riferimento != "mercato") {
+			$simboli = array($simbolo_portiere_file_calciatori, $simbolo_difensore_file_calciatori, $simbolo_centrocampista_file_calciatori, $simbolo_attaccante_file_calciatori);
+			} else {
+			$simboli = $ruoli;
+		}
 		$backruolo = array("orange darken-4", "indigo darken-4", "green darken-4", "red darken-4");
 		
 		for ($num3 = 0; $num3 < 4; $num3++) {
@@ -288,7 +471,7 @@
 		$dati_calciatore = explode($separatore_campi_file_calciatori, $lines[$line_number-1]);
 		$ruolo = $dati_calciatore[5];
 		
-		assegna_ruoli();
+		assegna_ruoli('calciatori');
 	}
 	
 	############################
@@ -319,8 +502,8 @@
 		<div class='col m$larghezza'>
 		<span class='card-title left-align'>Prossima gara in Serie A</span>
 		<hr><br>
-		<img height='130' src='$casa'> <span class='vs'>VS</span> <img height='130' src='$trasferta'> 
-		$data - $ora
+		<img style='vertical-align: middle;' width='100' src='$casa'> <span class='vs'>VS</span> <img style='vertical-align: middle;'  width='100' src='$trasferta'> 
+		<br><br>$data - $ora
 		</div>
 		</div>
 		</div>
@@ -490,7 +673,7 @@
 		<span class='card-title '>Ultime notizie</span>
 		<hr>";
 		output_rss_feed($url_rss, 5, true, false, 100);
-	    echo "</div>
+		echo "</div>
 		</div>
 		</div>
 		</div>";
@@ -555,7 +738,7 @@
 			$squadra = preg_replace( "#\"#","",$squadra);
 			$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
 			
-			assegna_ruoli();
+			assegna_ruoli('calciatori');
 			
 			if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
 			if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
@@ -722,8 +905,36 @@
 		<div class='col m$larghezza'>
 		<span class='card-title'>Elenco calciatori<span style='font-size: 13px;'> - $frase_voti</span></span>
 		<hr>
-		<table class='sortable centered highlight' style='width:100%' cellpadding='10' cellspacing='0' id='t1'>
 		
+		<div class='row'>
+		<div class='col m8 center'><label>Filtra per ruolo:</label>
+		<div class='switch' style='padding-top: 10px;'>
+		<label>
+		<input id='switch_portieri' type='checkbox' checked>
+		<span class='lever portieri'></span>
+		</label>
+		<label>
+		<input id='switch_difensori' type='checkbox' checked>
+		<span class='lever difensori'></span>
+		</label>
+		<label>
+		<input id='switch_centrocampisti' type='checkbox' checked>
+		<span class='lever centrocampisti'></span>
+		</label>
+		<label>
+		<input id='switch_attaccanti' type='checkbox' checked>
+		<span class='lever attaccanti'></span>
+		</label>
+		</div>
+		</div>
+		<div class='col m4 center'><label>Cerca giocatore:</label>
+        <div class='input-field' style='margin: 0;'>
+		<input type='text' id='search'></input>
+        </div>
+		</div>
+		</div>
+		
+		<table class='sortable centered highlight' style='width:100%' cellpadding='10' cellspacing='0' id='t1'>
 		<tr>
 		<thead>
 		<th style='text-align: center'>&nbsp;&nbsp;Codice&nbsp;&nbsp;</th>
@@ -751,7 +962,7 @@
 			$squadra = preg_replace( "#\"#","",$squadra);
 			$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
 			
-			assegna_ruoli();
+			assegna_ruoli('calciatori');
 			
 			if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
 			if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
@@ -852,7 +1063,7 @@
 				if ($stato_mercato == "A" and $mercato_libero == "SI" and $props and $pallinogiallo == "SI")
 				$info = "<img src='./immagini/info1.gif' style='border:0; margin:0;' title='$props' alt='$props' />";
 				
-				$layout .= "<tr>
+				$layout .= "<tr class='$ruolo'>
 				<td>$link_info</td>
 				<td>$nome $info</td>
 				<td><span class='ruolo $backruolo'>$ruolo</span></td>
@@ -871,4 +1082,4 @@
 		echo $layout;
 	}	
 	
-?>
+?>											

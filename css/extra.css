@@ -42,9 +42,9 @@
 }
 
 .ruolo {
-	padding: 4px 6px 4px 6px;
+	padding: 1px 6px 2px 6px;
 	color: white;
-	border-radius: 3px;
+	border-radius: 10px;
 }
 
 hr {
@@ -184,5 +184,71 @@ a.info:hover {
 }
 
 .highcharts-title, .highcharts-credits {
- display: none;
+	display: none;
+}
+
+.lever {
+	margin: 0 10px !important
+}
+
+.switch label input[type="checkbox"]:checked + .portieri {
+	background-color: #ffcc80 !important
+}
+.switch label input[type="checkbox"]:checked + .portieri::after {
+	background-color: #e65100 !important;
+	content: "P" !important;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+.switch label input[type="checkbox"]:checked + .difensori {
+	background-color: #9fa8da !important
+}
+.switch label input[type="checkbox"]:checked + .difensori::after {
+	background-color: #1a237e !important;
+	content: "D" !important;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+.switch label input[type="checkbox"]:checked + .centrocampisti {
+	background-color: #a5d6a7 !important
+}
+.switch label input[type="checkbox"]:checked + .centrocampisti::after {
+	background-color: #1b5e20 !important;
+	content: "C" !important;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+.switch label input[type="checkbox"]:checked + .attaccanti {
+	background-color: #ef9a9a  !important
+}
+.switch label input[type="checkbox"]:checked + .attaccanti::after
+{
+	background-color: #b71c1c !important;
+	content: "A" !important;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+.portieri::after {
+	content: "P" !important;
+	font-weight: bold;
+	text-align: center;
+}
+.difensori::after {
+	content: "D" !important;
+	font-weight: bold;
+	text-align: center;
+}
+.centrocampisti::after {
+	content: "C" !important;
+	font-weight: bold;
+	text-align: center;
+}
+.attaccanti::after {
+	content: "A" !important;
+	font-weight: bold;
+	text-align: center;
 }

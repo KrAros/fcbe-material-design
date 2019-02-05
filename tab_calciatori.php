@@ -70,4 +70,4 @@
 	} // fine if ($pass_errata != "SI")
 	
 	include ("./footer.php");
-?>														
+?>		
