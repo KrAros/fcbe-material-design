@@ -205,8 +205,8 @@
 						if (file_exists ( $percorso_cartella_dati . "/squadra_" . $outente )) {
 							$titolo .= "<br />Ultima modifica formazione: " . date ( "d-m-Y H:i:s.", filemtime ( $percorso_cartella_dati . "/squadra_$outente" ) );
 						}
-						$cambi_effettuati = INTVAL ( $ocambi );
-						$cambi_total = $numero_cambi_max + $cambi_extra;
+						$cambi_effettuati = INTVAL($ocambi);
+						@$cambi_total = $numero_cambi_max + $cambi_extra;
 						$titolo .= "<br />Cambi: $cambi_effettuati su $cambi_total";
 						// ################################
 						//

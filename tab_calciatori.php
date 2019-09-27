@@ -27,7 +27,7 @@
 	include ("./header.php");
 	
 	if ($_SESSION ['valido'] == "SI" or $escludi_controllo == "SI") {
-
+		
 		#######################
 		##### Layout Principale
 		

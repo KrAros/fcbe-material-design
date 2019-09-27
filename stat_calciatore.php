@@ -25,7 +25,7 @@
 		#################################################################
 		##### FUNZIONE - Statistiche calciatori (inc/funzioni_utente.php)
 		
-		statistiche_calciatore();
+		statistiche_calciatore($num_calciatore);
 		
 		#######################
 		##### Layout Principale

@@ -198,12 +198,13 @@ dir="ltr">
 				})
 			});
 		</script>
+		
 		<title><?php echo $titolo_sito; ?></title>
 		
 	</head>
 	
 	<body>
-		<div class="navbar-fixed">
+		<div id="navbar" class="navbar-fixed">
 			<nav class="indigo">
 				<div class="nav-wrapper">
 					<a href="./index.php" class="brand-logo" style="padding-left: 15px;"><?php echo $titolo_sito; ?></a>
@@ -262,7 +263,7 @@ dir="ltr">
 							echo "
 							<li><a href='./squadra.php'>Schiera formazione</a></li>
 							<li><a href='./suggteam.php'>Team consigliato</a></li>
-							<li><a href='./statistiche_rosa.php'>Statistiche rosa</a></li>";
+							<li><a href='./statistiche_rosa.php?vedi_squadra=".$_SESSION['utente']."'>Statistiche rosa</a></li>";
 							if ($mercato_libero == "SI" and $stato_mercato == "A") {
 								echo "<li><a href='./cambi.php' >Cambi</a></li>";
 							}

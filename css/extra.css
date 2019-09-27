@@ -1,3 +1,7 @@
+body {
+	background-color: #f2f2f2;
+}
+
 .quotazioni {
 	padding: 8px !important;
 	height: 104px;
@@ -251,4 +255,30 @@ a.info:hover {
 	content: "A" !important;
 	font-weight: bold;
 	text-align: center;
+}
+.iconasquadra {
+	border-radius: 12px;
+	width: 16px;
+	border: 0px;
+	height: 16px;
+	display: inline-block;
+	background-position: center;
+	vertical-align: sub;
+	margin-right: 5px;
+}
+.creditirimasti {
+	padding: 8px;
+margin-top: -14px !important;
+font-size: 18px;
+text-align: center;
+}
+
+.creditirimasti > small {
+	display: block;
+	font-size: 10px;
+	text-align: center;
+	line-height: 12px;
+	font-weight: 400;
+	text-transform: uppercase;
+	white-space: normal;
 }

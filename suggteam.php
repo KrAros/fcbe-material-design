@@ -63,32 +63,23 @@
 		
 		$vedi_squadra = $_SESSION['utente'];
 		echo '<div class="container" style="width: 85%;margin-top: -10px;">
-	<div class="card-panel">
+		<div class="card-panel">
     	<div class="row">';
-			
-			require ("./widget.php");
-			echo'<div class="col m9">';
-				echo"<div class='bread'><a href='./mercato.php'>Gestione</a> / Forma Squadra</div><br>
-				<div class='card'>
-				    <div class='card-content'>
-				        <span class='card-title'>Formazione consigliata<span style='font-size: 13px;'> - Calciatori migliori nelle ultime $range giornate</span></span>
-			 	        <hr>";
-		echo "<br/><table width='100%' cellpadding='5'  align='center' bgcolor='$sfondo_tab'>
-		<tr><td><center><br/>Giornate in esame --> $inizio_range - $fine_range<br/>
-		<h3>Modulo selezionato: $dif - $cen - $att</h3>
-		<table width='100%' cellpadding='2' align='center'>
-		<tr><td class='testa'>Num.</td>
-		<td class='testa'>Nome</td>
-		<td class='testa'>Ruolo</td>
-		<td class='testa'>Partite</td>
-		<td class='testa'>Media</td>
-		<td class='testa'>MediaFC</td>
-		<td class='testa'>Gol</td>
-		<td class='testa'>Assist</td>
-		<td class='testa'>Rigori</td>
-		<td class='testa'>Gialli</td>
-		<td class='testa'>Rossi</td>
-		</tr>";
+		
+		require ("./widget.php");
+		echo'<div class="col m9">';
+		echo"<div class='row'>
+	<div class='col m12'>
+	<ol class='breadcrumbs indigo'>
+	<li class='breadcrumbs-item'><a class='white-text' href='./mercato.php'>Dashboard</a></li>
+	<li class='breadcrumbs-item grey-text text-lighten-1'>Forma Squadra</li>
+	</ol>
+	</div>
+	</div>
+		<div class='card'>
+		<div class='card-content'>
+		<span class='card-title'>Formazione consigliata<span style='font-size: 13px;'> - Calciatori migliori nelle ultime $range giornate</span></span>
+		<hr><br>";
 		
 		#######################################
 		$voti = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
@@ -232,12 +223,12 @@
 						if ($s_ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
 						if ($s_ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
 						if ($s_ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
-					if ($s_ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
-					break;
+						if ($s_ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
+						break;
 					} # fine if ($num_calciatore == $numero)
-					} # fine for $num1
-					
-					if ($statistiche == "SI") {
+				} # fine for $num1
+				
+				if ($statistiche == "SI") {
 					if ($stat_attivo == 0) $mess = "<b><font color=red>Non disponibile</font></b>";
 					else $mess = "In attività";
 					
@@ -246,26 +237,26 @@
 					if ($stat_ruolo == 2) $st_ruolo = "Centrocampista";
 					if ($stat_ruolo == 3) $st_ruolo = "Attaccante";
 					#if ($stat_ruolo == 3) $st_ruolo = "Fantasista";
-					
-					if ($ruolo == "P" and $totpresenze >= $partite_minime_per_range){
-					$portieri[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero);
-					}
-					if ($ruolo == "D" and $totpresenze >= $partite_minime_per_range){
-					$difensori[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero);
-					}
-					
-					if ($ruolo == "C" and $totpresenze >= $partite_minime_per_range){
-					$centrocampisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero);
-					}
-					
-					if ($ruolo == "A" and $totpresenze >= $partite_minime_per_range){
-					$attaccanti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero);
-					}
-					
-					if ($ruolo == "F" and $totpresenze >= $partite_minime_per_range){
-					$fantasisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero);
-					}
-					
+						
+						if ($ruolo == "P" and $totpresenze >= $partite_minime_per_range){
+							$portieri[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
+						}
+						if ($ruolo == "D" and $totpresenze >= $partite_minime_per_range){
+							$difensori[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
+						}
+						
+						if ($ruolo == "C" and $totpresenze >= $partite_minime_per_range){
+							$centrocampisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
+						}
+						
+						if ($ruolo == "A" and $totpresenze >= $partite_minime_per_range){
+							$attaccanti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
+						}
+						
+						if ($ruolo == "F" and $totpresenze >= $partite_minime_per_range){
+							$fantasisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
+						}
+						
 					} #Fine  if ($xsquadra==$vedi_squadra) {
 					
 					$stat_presenza=0;
@@ -305,171 +296,189 @@
 					$somma_voti_tot = 0;
 					$somma_voti_giornale = 0;
 					
-					} # fine for $Knum1
-					
-					} # fine if ($statistiche == "SI")
-					
-					$ordinamento = 6;
-					
-					function cmp1 ($a, $b) {
-					global $ordinamento;
-					return strcmp($b[$ordinamento], $a[$ordinamento]);
-					}
-					
-					usort($portieri, "cmp1");
-					usort($difensori, "cmp1");
-					usort($centrocampisti, "cmp1");
-					usort($attaccanti, "cmp1");
-					
-					#Crea tabella
-					if ($ruolo == "P") $tot_golsegnati = $tot_golsubiti;
-					
-					$color="white";
-					$nome = $portieri[0][0];
-					$totpresenze = $portieri[0][1];
-					$media_giornale = $portieri[0][2];
-					$tot_golsegnati = $portieri[0][3];
-					$stat_ammonizioni = $portieri[0][4];
-					$stat_espulsione = $portieri[0][5];
-					$media_punti = $portieri[0][6]-10;
-					$totass = $portieri[0][7];
-					$numero = $portieri[0][8];
-					
-					echo "<tr bgcolor = '$color'>";
-					echo "<td><a href='stat_calciatore.php?num_calciatore=$numero&ruolo_guarda=$ruolo_guarda' class='user'>$numero</a></td>
-					<td align='left'>$nome</td>
-					<td align='center'>P</td>
-					<td align='center'>$totpresenze</td>
-					<td align='center'>$media_giornale</td>
-					<td align='center'>$media_punti</td>
-					<td align='center'>$tot_golsegnati</td>
-					<td align='center'>$totass</td>
-					<td align='center'>$stat_rigoretirato</td>
-					<td align='center'>$stat_ammonizione</td>
-					<td align='center'>$stat_espulsione</td>
-					</tr>";
-					
-					
-					
-					for ($i=0; $i<$dif; $i++) {
-					
-					$color="#cccccc";
-					
-					$nome = $difensori[$i][0];
-					$totpresenze = $difensori[$i][1];
-					$media_giornale = $difensori[$i][2];
-					$tot_golsegnati = $difensori[$i][3];
-					$stat_ammonizioni = $difensori[$i][4];
-					$stat_espulsione = $difensori[$i][5];
-					$media_punti = $difensori[$i][6]-10;
-					$totass = $difensori[$i][7];
-					$numero = $difensori[$i][8];
-					
-					echo "<tr bgcolor = '$color'>";
-					echo "<td><a href='stat_calciatore.php?num_calciatore=$numero&ruolo_guarda=$ruolo_guarda' class='user'>$numero</a></td>
-					<td align='left'>$nome</td>
-					<td align='center'>D</td>
-					<td align='center'>$totpresenze</td>
-					<td align='center'>$media_giornale</td>
-					<td align='center'>$media_punti</td>
-					<td align='center'>$tot_golsegnati</td>
-					<td align='center'>$totass</td>
-					<td align='center'>$stat_rigoretirato</td>
-					<td align='center'>$stat_ammonizione</td>
-					<td align='center'>$stat_espulsione</td>
-					</tr>";
-					}
-					
-					for ($i=0; $i<$cen; $i++) {
-					
-					$color="white";
-					
-					$nome = $centrocampisti[$i][0];
-					$totpresenze = $centrocampisti[$i][1];
-					$media_giornale = $centrocampisti[$i][2];
-					$tot_golsegnati = $centrocampisti[$i][3];
-					$stat_ammonizioni = $centrocampisti[$i][4];
-					$stat_espulsione = $centrocampisti[$i][5];
-					$media_punti = $centrocampisti[$i][6]-10;
-					$totass = $centrocampisti[$i][7];
-					$numero = $centrocampisti[$i][8];
-					
-					echo "<tr bgcolor = '$color'>";
-					echo "<td><a href='stat_calciatore.php?num_calciatore=$numero&ruolo_guarda=$ruolo_guarda' class='user'>$numero</a></td>
-					<td align='left'>$nome</td>
-					<td align='center'>C</td>
-					<td align='center'>$totpresenze</td>
-					<td align='center'>$media_giornale</td>
-					<td align='center'>$media_punti</td>
-					<td align='center'>$tot_golsegnati</td>
-					<td align='center'>$totass</td>
-					<td align='center'>$stat_rigoretirato</td>
-					<td align='center'>$stat_ammonizione</td>
-					<td align='center'>$stat_espulsione</td>
-					</tr>";
-					
-					}
-					
-					for ($i=0; $i<$att; $i++) {
-					
-					$color="#cccccc";
-					
-					$nome = $attaccanti[$i][0];
-					$totpresenze = $attaccanti[$i][1];
-					$media_giornale = $attaccanti[$i][2];
-					$tot_golsegnati = $attaccanti[$i][3];
-					$stat_ammonizioni = $attaccanti[$i][4];
-					$stat_espulsione = $attaccanti[$i][5];
-					$media_punti = $attaccanti[$i][6]-10;
-					$totass = $attaccanti[$i][7];
-					$numero = $attaccanti[$i][8];
-					
-					echo "<tr bgcolor = '$color'>";
-					echo "<td><a href='stat_calciatore.php?num_calciatore=$numero&ruolo_guarda=$ruolo_guarda' class='user'>$numero</a></td>
-					<td align='left'>$nome</td>
-					<td align='center'>A</td>
-					<td align='center'>$totpresenze</td>
-					<td align='center'>$media_giornale</td>
-					<td align='center'>$media_punti</td>
-					<td align='center'>$tot_golsegnati</td>
-					<td align='center'>$totass</td>
-					<td align='center'>$stat_rigoretirato</td>
-					<td align='center'>$stat_ammonizione</td>
-					<td align='center'>$stat_espulsione</td>
-					</tr>";
-					};
-					
-					echo "</table>";
-					echo "<br/><br/><br/><table width='70%' class='border' border='0' cellspacing='0' cellpadding='20' align='center' bgcolor='#FFFFFF'><tr>
-					<td align='center' valign='middle'><b>
-					Visualizza la miglior formazione</b><br/><br/>Cambia il modulo: ";
-					
-					echo "<a href='./suggteam.php?dif=3&amp;cen=5&amp;att=2'><b>3 - 5 - 2</b></a> /
-					<a href='./suggteam.php?dif=3&amp;cen=4&amp;att=3'><b>3 - 4 - 3</b></a> /
-					<a href='./suggteam.php?dif=4&amp;cen=3&amp;att=3'><b>4 - 3 - 3</b></a> /
-					<a href='./suggteam.php?dif=4&amp;cen=4&amp;att=2'><b>4 - 4 - 2</b></a> /
-					<a href='./suggteam.php?dif=4&amp;cen=5&amp;att=1'><b>4 - 5 - 1</b></a> /
-					<a href='./suggteam.php?dif=5&amp;cen=4&amp;att=1'><b>5 - 4 - 1</b></a><br/><br/><br/><br/>";
-					
-					echo "<form method='post' action='./suggteam.php'>
-					<input type='hidden' name='dif' value='$dif'>
-					<input type='hidden' name='cen' value='$cen'>
-					<input type='hidden' name='att' value='$att'>
-					
-					<input type='submit' value='Seleziona'> intervallo <select name='range' onChange='submit()'>";
-					
-					for ($num1 = "02" ; $num1 < 50 ; $num1++) {
-					if (strlen($num1) == 1) $num1 = "0".$num1;
-					$controlla_giornata = "giornata$num1";
-					if (@is_file("$percorso_cartella_dati/voti$num1.txt")) echo "<option value='$num1' selected>$num1</option>";
-					else break;
-					} # fine for $num1
-					
-					echo "</select></form><br/>tra le giornate per la generazione delle statistiche.";
-					echo "<br/></td></tr></table><br/><br/>";
-					echo "</td></tr></table>";
-					} # fine if ($_SESSION['valido'] == "SI") {
-					else echo"<meta http-equiv='refresh' content='0; url=logout.php'>";
-					
-					include("./footer.php");
-					?>							
+				} # fine for $Knum1
+				
+			} # fine if ($statistiche == "SI")
+			
+			$ordinamento = 6;
+			
+			function cmp1 ($a, $b) {
+				global $ordinamento;
+				return strcmp($b[$ordinamento], $a[$ordinamento]);
+			}
+			
+			usort($portieri, "cmp1");
+			usort($difensori, "cmp1");
+			usort($centrocampisti, "cmp1");
+			usort($attaccanti, "cmp1");
+			
+			#Crea tabella
+			if ($ruolo == "P") $tot_golsegnati = $tot_golsubiti;
+			
+			$nome = $portieri[0][0];
+			$totpresenze = $portieri[0][1];
+			$media_giornale = $portieri[0][2];
+			$tot_golsegnati = $portieri[0][3];
+			$stat_ammonizioni = $portieri[0][4];
+			$stat_espulsione = $portieri[0][5];
+			$media_punti = $portieri[0][6]-10;
+			$totass = $portieri[0][7];
+			$numero = $portieri[0][8];
+			$xsquadra = $portieri[0][9];
+			
+			$tabella = "<table width='100%' cellpadding='10' class='responsive-table highlight' >
+			<thead>
+			<tr>
+			<th></td>
+			<th>Nome</td>
+			<th>Squadra</td>
+			<th>Partite</td>
+			<th>Media Voto</td>
+			<th>Media FantaVoto</td>
+			<th>Gol</td>
+			<th>Assist</td>
+			<th>Rigori</td>
+			<th>Gialli</td>
+			<th>Rossi</td>
+			</tr>
+			</thead>
+			
+			<td class='center'><b class='ruolo orange darken-4'>P</b></td>
+			<td><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
+			<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
+			<td class='center'>$totpresenze</td>
+			<td class='center'>$media_giornale</td>
+			<td class='center'>$media_punti</td>
+			<td class='center'>$tot_golsegnati</td>
+			<td class='center'>$totass</td>
+			<td class='center'>$stat_rigoretirato</td>
+			<td class='center'>$stat_ammonizione</td>
+			<td class='center'>$stat_espulsione</td>
+			</tr>";
+			
+			
+			
+			for ($i=0; $i<$dif; $i++) {
+				
+				$color="#cccccc";
+				
+				$nome = $difensori[$i][0];
+				$totpresenze = $difensori[$i][1];
+				$media_giornale = $difensori[$i][2];
+				$tot_golsegnati = $difensori[$i][3];
+				$stat_ammonizioni = $difensori[$i][4];
+				$stat_espulsione = $difensori[$i][5];
+				$media_punti = $difensori[$i][6]-10;
+				$totass = $difensori[$i][7];
+				$numero = $difensori[$i][8];
+				$xsquadra = $difensori[$i][9];
+				
+				$tabella .= "<td class='center'><b class='ruolo indigo darken-4'>D</b></td>
+				<td align='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
+				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
+				<td class='center'>$totpresenze</td>
+				<td class='center'>$media_giornale</td>
+				<td class='center'>$media_punti</td>
+				<td class='center'>$tot_golsegnati</td>
+				<td class='center'>$totass</td>
+				<td class='center'>$stat_rigoretirato</td>
+				<td class='center'>$stat_ammonizione</td>
+				<td class='center'>$stat_espulsione</td>
+				</tr>";
+			}
+			
+			for ($i=0; $i<$cen; $i++) {
+				
+				$nome = $centrocampisti[$i][0];
+				$totpresenze = $centrocampisti[$i][1];
+				$media_giornale = $centrocampisti[$i][2];
+				$tot_golsegnati = $centrocampisti[$i][3];
+				$stat_ammonizioni = $centrocampisti[$i][4];
+				$stat_espulsione = $centrocampisti[$i][5];
+				$media_punti = $centrocampisti[$i][6]-10;
+				$totass = $centrocampisti[$i][7];
+				$numero = $centrocampisti[$i][8];
+				$xsquadra = $centrocampisti[$i][9];
+				
+				$tabella .= "<td class='center'><b class='ruolo green darken-4'>C</b></td>
+				<td class='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
+				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
+				<td class='center'>$totpresenze</td>
+				<td class='center'>$media_giornale</td>
+				<td class='center'>$media_punti</td>
+				<td class='center'>$tot_golsegnati</td>
+				<td class='center'>$totass</td>
+				<td class='center'>$stat_rigoretirato</td>
+				<td class='center'>$stat_ammonizione</td>
+				<td class='center'>$stat_espulsione</td>
+				</tr>";
+				
+			}
+			
+			for ($i=0; $i<$att; $i++) {
+				
+				$nome = $attaccanti[$i][0];
+				$totpresenze = $attaccanti[$i][1];
+				$media_giornale = $attaccanti[$i][2];
+				$tot_golsegnati = $attaccanti[$i][3];
+				$stat_ammonizioni = $attaccanti[$i][4];
+				$stat_espulsione = $attaccanti[$i][5];
+				$media_punti = $attaccanti[$i][6]-10;
+				$totass = $attaccanti[$i][7];
+				$numero = $attaccanti[$i][8];
+				$xsquadra = $attaccanti[$i][9];
+				
+				$tabella .= "<td class='center'><b class='ruolo red darken-4'>A</b></td>
+				<td class='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
+				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
+				<td class='center'>$totpresenze</td>
+				<td class='center'>$media_giornale</td>
+				<td class='center'>$media_punti</td>
+				<td class='center'>$tot_golsegnati</td>
+				<td class='center'>$totass</td>
+				<td class='center'>$stat_rigoretirato</td>
+				<td class='center'>$stat_ammonizione</td>
+				<td class='center'>$stat_espulsione</td>
+				</tr>";
+			};
+			
+			echo" <div class='row'>
+			<div class='col m6 center'>
+			
+			<form method='post' action='suggteam.php'>
+			<input type='hidden' name='dif' value='$dif'>
+			<input type='hidden' name='cen' value='$cen'>
+			<input type='hidden' name='att' value='$att'>
+			Seleziona l'intervallo tra le giornate per la generazione delle statistiche: <select name='range' onChange='this.form.submit()'>";
+			
+			for ($num1 = "02" ; $num1 < 50 ; $num1++) {
+				if (strlen($num1) == 1) $num1 = "0".$num1;
+				$controlla_giornata = "giornata$num1";
+				if (@is_file("$percorso_cartella_dati/voti$num1.txt")) echo "<option value='$num1' selected>$num1</option>";
+				else break;
+			} # fine for $num1
+			
+			echo "</select></form>
+			
+			</div>
+			<div class='col m6 center'>Cambia il modulo:</b><br><br>";
+			
+			echo "<a href='./suggteam.php?dif=3&amp;cen=5&amp;att=2'><b>3 - 5 - 2</b></a> /
+			<a href='./suggteam.php?dif=3&amp;cen=4&amp;att=3'><b>3 - 4 - 3</b></a> /
+			<a href='./suggteam.php?dif=4&amp;cen=3&amp;att=3'><b>4 - 3 - 3</b></a> /
+			<a href='./suggteam.php?dif=4&amp;cen=4&amp;att=2'><b>4 - 4 - 2</b></a> /
+			<a href='./suggteam.php?dif=4&amp;cen=5&amp;att=1'><b>4 - 5 - 1</b></a> /
+			<a href='./suggteam.php?dif=5&amp;cen=4&amp;att=1'><b>5 - 4 - 1</b></a><br/><br/><br/><br/>
+			</div>
+			</div>
+			
+			<div class='row'>
+			<div class='col m12'>
+			$tabella</table>
+			</div></div>";
+			echo "</div></div></div></div></div></div></div>";
+		} # fine if ($_SESSION['valido'] == "SI") {
+		else echo"<meta http-equiv='refresh' content='0; url=logout.php'>";
+		
+		include("./footer.php");
+	?>													

@@ -23,6 +23,12 @@ session_start ();
 require_once ("./dati/dati_gen.php");
 require ("./inc/funzioni.php");
 
+foreach (getallheaders() as $name => $value) {
+header_remove($name);
+}
+
+ob_end_clean();
+
 if ($_SESSION ['utente'] == @$_GET ['iutente']) {
 	
 	$clock_fantacampo [] = "Inizio " . microtime ();

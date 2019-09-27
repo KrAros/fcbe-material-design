@@ -38,7 +38,6 @@
 	include("./header.php");
 	
 	if ($_SESSION['valido'] == "SI") {
-		
 		######################################
 		##### Controlla numero ultima giornata
 		for ($num1 = 1 ; $num1 < 40 ; $num1++) {
@@ -49,11 +48,12 @@
 		} # fine for $num1
 		
 		$ultima_giornata = $giornata_ultima;
+		
 		#######################################
 		
 		if ($ultima_giornata == "") echo "<br/><br/><center><h3>Statistiche non presenti</h3></center><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
 		else {
-			$vedi_squadra = $_SESSION['utente'];
+			
 			echo '<div class="container" style="width: 85%;margin-top: -10px;">
 			<div class="card-panel">
 			<div class="row">';
@@ -72,11 +72,8 @@
 			echo"<div class='card'>
 			<div class='card-content'>
 			<span class='card-title'>Statistiche rosa<span style='font-size: 13px;'> - Dati statistici fino alla giornata $ultima_giornata</span></span>
-			<hr>";
-			
-			echo"<table style='width:100%'>";
-			
-			
+			<hr>
+			<table style='width:100%'>";
 			
 			#######################################
 			
@@ -87,4 +84,4 @@
 	else echo"<meta http-equiv='refresh' content='0; url=logout.php'>";
 	
 	include("./footer.php");
-?>					
+?>				

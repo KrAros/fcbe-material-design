@@ -1,47 +1,33 @@
-########## CHANGELOG v0.0.10-alpha ##########
+########## CHANGELOG v0.0.11-alpha ##########
 
 ##### ROOT #####
+- inserisci_acquisto.php
+Modificata la struttura della stringa per la registrazione degli acquisti: è stata aggiunta anche la squadra dove milita il giocatore.
 
-- formateam.php
-File rinominato in statistiche_rosa.php
+- rose.php
+Aggiunto il supporto alla nuova funzione rosa_utenti(). Restayling grafico.
 
-- formazioni.php, noaccstat.php, previsioni_test.php, stateam.php, statoforma.php, stat_utente.php, tab_calciatori_tra.php, tab_squadre.php
-File eliminati perché inutili nel progetto.
+- squadra.php
+Fixato bug che non permetteva la visualizzazione del fantacampo.
 
-- header.php
-Cambiamento di qualche link nel menu superiore.
-Aggiunte di un paio di script che verranno successivamente spostati in un file separato.
+- squadra1.php
+Inizio dei lavori per il supporto a PHP 7.0.
 
-- stat_calciatore.php
-Il file è stato riscritto: la generazione delle statstiche è ora affidata alla funzione statistiche_calciatore(), solo la parte grafica è rimasta nel file. Aggiunto il grafico sull'andamento della quotazione del giocatore.
+- suggteam.php
+Terminato il lavoro di porting grafico: ora il file è perfettamente integrato con lo script.
 
-- statistiche_rosa.php
-Inizio dei lavori su questo file: per il momento c'è il supporto a PHP 7.0 e l'adattamento grafico.
-
-- stateam1.php, suggteam.php
-Aggiunto il supporto a PHP 7.0. Inizio lavori di porting grafico ed ampliamento funzionalità.
-
-- tab_calciatori.php
-Aggiunti i filtri per ruolo: sarà possibile mostrare in tempo reale solo i ruoli che interessano.
-Aggiunta la possibilità di cercare un calciatore attraverso il forum di ricerca.
-
-- tab_squadre.php
-Accorgimenti grafici nella disposizione dei loghi nella prossima giornata.
+- widget.php
+Inserito pushpin per ancorare i moduli anche in fase di scrolling.
 
 ##### INC #####
 
 - inc/funzioni_utente.php
-La funzione assegna_ruoli() è stata ancora ampliata: ora permette di assegnare correttamente i colori ai ruoli che vengono pescati sia dal file calciatori che dal file mercato (che sono registrati in maniera differente); l'argomento è rappresentato dal nome del file: mercato se si vuole pescare nel file mercato.txt, calciatori se si vuole pescare nel file calciatori.txt.
-Creata la funzione statistiche_rosa(): è temporanea, si valuta la fusione con statistiche_calciatore().
+Fixato un errore di impaginazione e nuovo layout per la funzione tabella_calciatori().
+Creata la funzione rosa_utenti(): restituisce le fanta rose dei partecipanti ad un torneo. Questo ha portato ad un totale restyling grafico del file di riferimento (rose.php): ora è possibile vedere crediti residui, ordinare le tabelle e vedere squadre dei calciatori.
+La funzione statistiche_calciatore() è stata aggiornata con l'aggiunta di un argomento: inserendo il codice di un giocatore, verranno visualizzate le sue statistiche.
+La funzione tabella_calciatori() è stata migliorata: nell'elenco saranno mostrate anche le medie voto e le presenze del giocatore. Da ottimizzare.
 
 ##### CSS #####
 
-- immagini/foto
-Aggiornati loghi delle squadre, eliminati file superflui.
-
-- immagini/tab.css
-Modificata la visualizzazione dei loghi in tab_squadre.php.
-
-- immagini/extra.css
-Modificata la visualizzazione dei ruoli.
-Aggiunta la grafica degli switch presenti in tab_calciatori.php.
+- css/extra.css
+Aggiunte classi per supportare la modifica del layout in tabella_calciatori() e rosa_utenti(). Aggiunto un colore di sfondo ad ogni pagina.

@@ -29,12 +29,46 @@
 	}, 1000);
 </script>
 
+<style>
+
+html, body {
+  height: 100%;
+}
+
+.pin-top {
+  position: relative;
+}
+
+.pin-bottom {
+  position: relative;
+}
+
+.pinned {
+  position: fixed !important;
+  width: 252.15px;
+  top: 85px !important
+}
+
+
+</style>
+
+<script>
+$(document).ready(function(){
+  $('#wrapper').pushpin({
+    top: $('#navbar').offset().top,
+    bottom: $(document).height() - 922,
+    offset: 0
+  });
+});
+</script>
+
 <?php
 	
 	// ##################################
 	// ### ORARIO
 	
 	echo "<div class='col m3'>
+	<div id='wrapper'>
 	<div class='row'>
 	<div class='col m12'>
 	<div class='card indigo'>
@@ -102,7 +136,7 @@
 		<a class='btn waves-effect waves-light indigo right' href='./vota_sondaggio.php'>Risultati</a>
 		</td></tr>
 		</form>";
-		echo "</td></tr></table></div></div>";
+		echo "</td></tr></table></div></div></div>";
 	} // fine if (@is_file("$percorso_cartella_dati/sondaggio.php"))
 	
 	echo "</div>";

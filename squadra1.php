@@ -51,17 +51,9 @@ $linee = count($utenti);
 		
 	####################################################################
 	$contatore_calciatori = 0;
-	$lista_calciatori = "";
 	$soldi_spesi = 0;
 	$num_calciatori_posseduti = 0;
 	$np = 0; $nd = 0; $nc = 0; $nf = 0; $na = 0;
-	$linea_offerto = "";
-	$linea_comprato_P = "";
-	$linea_comprato_D = "";
-	$linea_comprato_C = "";
-	$linea_comprato_F = "";
-	$linea_comprato_A = "";
-	$tab_comprati = "";
 	$tab_offerte = "<table summary='Principale' class='border' width='100%' border='1' cellspacing='1' cellpadding='3' align='center' bgcolor='$sfondo_tab'>
 	<tr><td class='testa'>Num.</td>
 	<td class='testa'>Nome giocatore</td>
@@ -108,7 +100,7 @@ $linee = count($utenti);
 	<td>$nome</td>
 	<td align='center'>$ruolo</td>
 	<td align='center'>$costo</td>";
-	${$nome_linea}[$numero] .= "</tr>";
+	${$nome_linea} [$numero] = "</tr>";
 	} # fine if ($proprietario == $outente)
 	} # fine for $num2
 	
@@ -141,36 +133,36 @@ $linee = count($utenti);
 	for ($num2 = 0 ; $num2 < $num_titolari ; $num2++) {
 	$numero_titolare = $titolari[$num2];
 	if ($linea_comprato_P[$numero_titolare]) {
-	$linea_comprato_P[$numero_titolare] = ereg_replace("value='titolare'","value='titolare' checked",$linea_comprato_P[$numero_titolare]);
-	$linea_comprato_P[$numero_titolare] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_P[$numero_titolare]);
+	$linea_comprato_P[$numero_titolare] = preg_replace("#value='titolare'#","value='titolare' checked",$linea_comprato_P[$numero_titolare]);
+	$linea_comprato_P[$numero_titolare] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_P[$numero_titolare]);
 	$num_pos++;
 	$tab_titolari_P .= $linea_comprato_P[$numero_titolare];
 	$inserito[$numero_titolare] = "SI";
 	} # fine if ($linea_comprato_P[$numero_titolare])
 	if ($linea_comprato_D[$numero_titolare]) {
-	$linea_comprato_D[$numero_titolare] = ereg_replace("value='titolare'","value='titolare' checked",$linea_comprato_D[$numero_titolare]);
-	$linea_comprato_D[$numero_titolare] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_D[$numero_titolare]);
+	$linea_comprato_D[$numero_titolare] = preg_replace("#value='titolare'#","value='titolare' checked",$linea_comprato_D[$numero_titolare]);
+	$linea_comprato_D[$numero_titolare] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_D[$numero_titolare]);
 	$num_pos++;
 	$tab_titolari_D .= $linea_comprato_D[$numero_titolare];
 	$inserito[$numero_titolare] = "SI";
 	} # fine if ($linea_comprato_D[$numero_titolare])
 	if ($linea_comprato_C[$numero_titolare]) {
-	$linea_comprato_C[$numero_titolare] = ereg_replace("value='titolare'","value='titolare' checked",$linea_comprato_C[$numero_titolare]);
-	$linea_comprato_C[$numero_titolare] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_C[$numero_titolare]);
+	$linea_comprato_C[$numero_titolare] = preg_replace("#value='titolare'#","value='titolare' checked",$linea_comprato_C[$numero_titolare]);
+	$linea_comprato_C[$numero_titolare] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_C[$numero_titolare]);
 	$num_pos++;
 	$tab_titolari_C .= $linea_comprato_C[$numero_titolare];
 	$inserito[$numero_titolare] = "SI";
 	} # fine if ($linea_comprato_C[$numero_titolare])
 	if ($linea_comprato_F[$numero_titolare]) {
-	$linea_comprato_F[$numero_titolare] = ereg_replace("value='titolare'","value='titolare' checked",$linea_comprato_F[$numero_titolare]);
-	$linea_comprato_F[$numero_titolare] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_F[$numero_titolare]);
+	$linea_comprato_F[$numero_titolare] = preg_replace("#value='titolare'#","value='titolare' checked",$linea_comprato_F[$numero_titolare]);
+	$linea_comprato_F[$numero_titolare] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_F[$numero_titolare]);
 	$num_pos++;
 	$tab_titolari_F .= $linea_comprato_F[$numero_titolare];
 	$inserito[$numero_titolare] = "SI";
 	} # fine if ($linea_comprato_F[$numero_titolare])
 	if ($linea_comprato_A[$numero_titolare]) {
-	$linea_comprato_A[$numero_titolare] = ereg_replace("value='titolare'","value='titolare' checked",$linea_comprato_A[$numero_titolare]);
-	$linea_comprato_A[$numero_titolare] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_A[$numero_titolare]);
+	$linea_comprato_A[$numero_titolare] = preg_replace("#value='titolare'#","value='titolare' checked",$linea_comprato_A[$numero_titolare]);
+	$linea_comprato_A[$numero_titolare] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_A[$numero_titolare]);
 	$num_pos++;
 	$tab_titolari_A .= $linea_comprato_A[$numero_titolare];
 	$inserito[$numero_titolare] = "SI";
@@ -192,41 +184,41 @@ $linee = count($utenti);
 	$numero_panchinaro = $panchinari[$num2];
 	$num_in_panchina = $num2 + 1;
 	if ($linea_comprato_P[$numero_panchinaro]) {
-	$linea_comprato_P[$numero_panchinaro] = ereg_replace("value='panchinaro'","value='panchinaro' checked",$linea_comprato_P[$numero_panchinaro]);
-	$linea_comprato_P[$numero_panchinaro] = ereg_replace("option value='$num_in_panchina'","option value='$num_in_panchina' selected",$linea_comprato_P[$numero_panchinaro]);
-	$linea_comprato_P[$numero_panchinaro] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_P[$numero_panchinaro]);
+	$linea_comprato_P[$numero_panchinaro] = preg_replace("#value='panchinaro'#","value='panchinaro' checked",$linea_comprato_P[$numero_panchinaro]);
+	$linea_comprato_P[$numero_panchinaro] = preg_replace("#option value='$num_in_panchina'#","option value='$num_in_panchina' selected",$linea_comprato_P[$numero_panchinaro]);
+	$linea_comprato_P[$numero_panchinaro] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_P[$numero_panchinaro]);
 	$num_pos++;
 	$tab_panchinari .= $linea_comprato_P[$numero_panchinaro];
 	$inserito[$numero_panchinaro] = "SI";
 	} # fine if ($linea_comprato_P[$numero_panchinaro])
 	if ($linea_comprato_D[$numero_panchinaro]) {
-	$linea_comprato_D[$numero_panchinaro] = ereg_replace("value='panchinaro'","value='panchinaro' checked",$linea_comprato_D[$numero_panchinaro]);
-	$linea_comprato_D[$numero_panchinaro] = ereg_replace("option value='$num_in_panchina'","option value='$num_in_panchina' selected",$linea_comprato_D[$numero_panchinaro]);
-	$linea_comprato_D[$numero_panchinaro] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_D[$numero_panchinaro]);
+	$linea_comprato_D[$numero_panchinaro] = preg_replace("#value='panchinaro'#","value='panchinaro' checked",$linea_comprato_D[$numero_panchinaro]);
+	$linea_comprato_D[$numero_panchinaro] = preg_replace("#option value='$num_in_panchina'#","option value='$num_in_panchina' selected",$linea_comprato_D[$numero_panchinaro]);
+	$linea_comprato_D[$numero_panchinaro] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_D[$numero_panchinaro]);
 	$num_pos++;
 	$tab_panchinari .= $linea_comprato_D[$numero_panchinaro];
 	$inserito[$numero_panchinaro] = "SI";
 	} # fine if ($linea_comprato_D[$numero_panchinaro])
 	if ($linea_comprato_C[$numero_panchinaro]) {
-	$linea_comprato_C[$numero_panchinaro] = ereg_replace("value='panchinaro'","value='panchinaro' checked",$linea_comprato_C[$numero_panchinaro]);
-	$linea_comprato_C[$numero_panchinaro] = ereg_replace("option value='$num_in_panchina'","option value='$num_in_panchina' selected",$linea_comprato_C[$numero_panchinaro]);
-	$linea_comprato_C[$numero_panchinaro] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_C[$numero_panchinaro]);
+	$linea_comprato_C[$numero_panchinaro] = preg_replace("#value='panchinaro'#","value='panchinaro' checked",$linea_comprato_C[$numero_panchinaro]);
+	$linea_comprato_C[$numero_panchinaro] = preg_replace("#option value='$num_in_panchina'#","option value='$num_in_panchina' selected",$linea_comprato_C[$numero_panchinaro]);
+	$linea_comprato_C[$numero_panchinaro] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_C[$numero_panchinaro]);
 	$num_pos++;
 	$tab_panchinari .= $linea_comprato_C[$numero_panchinaro];
 	$inserito[$numero_panchinaro] = "SI";
 	} # fine if ($linea_comprato_C[$numero_panchinaro])
 	if ($linea_comprato_F[$numero_panchinaro]) {
-	$linea_comprato_F[$numero_panchinaro] = ereg_replace("value='panchinaro'","value='panchinaro' checked",$linea_comprato_F[$numero_panchinaro]);
-	$linea_comprato_F[$numero_panchinaro] = ereg_replace("option value='$num_in_panchina'","option value='$num_in_panchina' selected",$linea_comprato_F[$numero_panchinaro]);
-	$linea_comprato_F[$numero_panchinaro] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_F[$numero_panchinaro]);
+	$linea_comprato_F[$numero_panchinaro] = preg_replace("#value='panchinaro'#","value='panchinaro' checked",$linea_comprato_F[$numero_panchinaro]);
+	$linea_comprato_F[$numero_panchinaro] = preg_replace("#option value='$num_in_panchina'#","option value='$num_in_panchina' selected",$linea_comprato_F[$numero_panchinaro]);
+	$linea_comprato_F[$numero_panchinaro] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_F[$numero_panchinaro]);
 	$num_pos++;
 	$tab_panchinari .= $linea_comprato_F[$numero_panchinaro];
 	$inserito[$numero_panchinaro] = "SI";
 	} # fine if ($linea_comprato_F[$numero_panchinaro])
 	if ($linea_comprato_A[$numero_panchinaro]) {
-	$linea_comprato_A[$numero_panchinaro] = ereg_replace("value='panchinaro'","value='panchinaro' checked",$linea_comprato_A[$numero_panchinaro]);
-	$linea_comprato_A[$numero_panchinaro] = ereg_replace("option value='$num_in_panchina'","option value='$num_in_panchina' selected",$linea_comprato_A[$numero_panchinaro]);
-	$linea_comprato_A[$numero_panchinaro] = ereg_replace("<tr><td>&nbsp;</td>","<tr><td align='center'>$num_pos</td>",$linea_comprato_A[$numero_panchinaro]);
+	$linea_comprato_A[$numero_panchinaro] = preg_replace("#value='panchinaro'#","value='panchinaro' checked",$linea_comprato_A[$numero_panchinaro]);
+	$linea_comprato_A[$numero_panchinaro] = preg_replace("#option value='$num_in_panchina'#","option value='$num_in_panchina' selected",$linea_comprato_A[$numero_panchinaro]);
+	$linea_comprato_A[$numero_panchinaro] = preg_replace("#<tr><td>&nbsp;</td>#","<tr><td align='center'>$num_pos</td>",$linea_comprato_A[$numero_panchinaro]);
 	$num_pos++;
 	$tab_panchinari .= $linea_comprato_A[$numero_panchinaro];
 	$inserito[$numero_panchinaro] = "SI";
@@ -237,37 +229,32 @@ $linee = count($utenti);
 	
 	# Tabella degli esclusi
 	$tab_centro .= "<tr><td align='center' colspan='$colspan'><B>Tribuna</B></td></tr>";
-	$tab_fuori_P = "";
-	$tab_fuori_D = "";
-	$tab_fuori_C = "";
-	$tab_fuori_F = "";
-	$tab_fuori_A = "";
 	$num_calciatori = count($lista_calciatori);
 	for ($num2 = 0 ; $num2 < $num_calciatori ; $num2++) {
 	$numero_fuori = $lista_calciatori[$num2];
 	if ($inserito[$numero_fuori] != "SI") {
 	if ($linea_comprato_P[$numero_fuori]) {
-	$linea_comprato_P[$numero_fuori] = ereg_replace("value='fuori'","value='fuori' checked",$linea_comprato_P[$numero_fuori]);
+	$linea_comprato_P[$numero_fuori] = preg_replace("#value='fuori'#","value='fuori' checked",$linea_comprato_P[$numero_fuori]);
 	$tab_fuori_P .= $linea_comprato_P[$numero_fuori];
 	$inserito[$numero_fuori] = "SI";
 	} # fine if ($linea_comprato_P[$numero_fuori])
 	if ($linea_comprato_D[$numero_fuori]) {
-	$linea_comprato_D[$numero_fuori] = ereg_replace("value='fuori'","value='fuori' checked",$linea_comprato_D[$numero_fuori]);
+	$linea_comprato_D[$numero_fuori] = preg_replace("#value='fuori'#","value='fuori' checked",$linea_comprato_D[$numero_fuori]);
 	$tab_fuori_D .= $linea_comprato_D[$numero_fuori];
 	$inserito[$numero_fuori] = "SI";
 	} # fine if ($linea_comprato_D[$numero_fuori])
 	if ($linea_comprato_C[$numero_fuori]) {
-	$linea_comprato_C[$numero_fuori] = ereg_replace("value='fuori'","value='fuori' checked",$linea_comprato_C[$numero_fuori]);
+	$linea_comprato_C[$numero_fuori] = preg_replace("#value='fuori'#","value='fuori' checked",$linea_comprato_C[$numero_fuori]);
 	$tab_fuori_C .= $linea_comprato_C[$numero_fuori];
 	$inserito[$numero_fuori] = "SI";
 	} # fine if ($linea_comprato_C[$numero_fuori])
 	if ($linea_comprato_F[$numero_fuori]) {
-	$linea_comprato_F[$numero_fuori] = ereg_replace("value='fuori'","value='fuori' checked",$linea_comprato_F[$numero_fuori]);
+	$linea_comprato_F[$numero_fuori] = preg_replace("#value='fuori'#","value='fuori' checked",$linea_comprato_F[$numero_fuori]);
 	$tab_fuori_F .= $linea_comprato_F[$numero_fuori];
 	$inserito[$numero_fuori] = "SI";
 	} # fine if ($linea_comprato_F[$numero_fuori])
 	if ($linea_comprato_A[$numero_fuori]) {
-	$linea_comprato_A[$numero_fuori] = ereg_replace("value='fuori'","value='fuori' checked",$linea_comprato_A[$numero_fuori]);
+	$linea_comprato_A[$numero_fuori] = preg_replace("#value='fuori'#","value='fuori' checked",$linea_comprato_A[$numero_fuori]);
 	$tab_fuori_A .= $linea_comprato_A[$numero_fuori];
 	$inserito[$numero_fuori] = "SI";
 	} # fine if ($linea_comprato_A[$numero_fuori])

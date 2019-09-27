@@ -184,7 +184,7 @@
 			}
 			else $scadenza = 0;
 			
-			$archivio = "\r\n$num_calciatore,$nome,$ruolo,$valore_offerta,".$_SESSION['utente'].",$scadenza";
+			$archivio = "\r\n$num_calciatore,$nome,$ruolo,$valore_offerta,".$_SESSION['utente'].",$scadenza,$xsquadra";
 			$file_mercato = fopen($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt","ab+");
 			flock($file_mercato,LOCK_EX);
 			fwrite($file_mercato,$archivio);

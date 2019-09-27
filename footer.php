@@ -14,6 +14,7 @@
 ?>
 
 <footer class="page-footer indigo" style="margin-top:-15px">
+	<div id="footer">
 	<div class="container">
 		<div class="row">
 			<div class="col l6 s12">
@@ -36,7 +37,7 @@
             <p class="grey-text text-lighten-4 left">&copy; 2019 Simone Gentile <?php if ($vvm) echo "- Versione: $vvm"; ?></p>
             <p class="grey-text text-lighten-4 right">Pagina generata in <?php echo $total_time ?> secondi.</p>
 		</div>
-	</div>
+	</div></div>
 </footer>
 
 
