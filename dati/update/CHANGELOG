@@ -1,33 +1,33 @@
-########## CHANGELOG v0.0.11-alpha ##########
+########## CHANGELOG v0.0.12-alpha ##########
 
 ##### ROOT #####
-- inserisci_acquisto.php
-Modificata la struttura della stringa per la registrazione degli acquisti: è stata aggiunta anche la squadra dove milita il giocatore.
 
-- rose.php
-Aggiunto il supporto alla nuova funzione rosa_utenti(). Restayling grafico.
+- fantacampo.php
+Migliorata la qualità dell'output del fantacampo: ora l'immagine non è più sgranata.
+
+- header.php
+Aggiunto un paio di script per alcune funzionalità di supporto allo script. In futuro, probabilmente questi saranno spostati in un file dedicato.
 
 - squadra.php
-Fixato bug che non permetteva la visualizzazione del fantacampo.
+Aggiornamenti al layout grafico di caricamento della formazione e supporto alla nuova funzione invia_formazione().
 
-- squadra1.php
-Inizio dei lavori per il supporto a PHP 7.0.
+- statistiche.php
+Il file è stato profondamente rinnovato. Oltre la semplice modifica grafica, sono state aggiunte molte funzionalità: possibilità di vedere le statistiche degli anni pasasti, di una singola squadra o di specifici ruoli.
 
-- suggteam.php
-Terminato il lavoro di porting grafico: ora il file è perfettamente integrato con lo script.
+##### IMMAGINI #####
 
-- widget.php
-Inserito pushpin per ancorare i moduli anche in fase di scrolling.
+- immagini
+
+Aggiornati i loghi piccoli di qualche squadra per una migliore resa nel fantacampo.
 
 ##### INC #####
 
 - inc/funzioni_utente.php
-Fixato un errore di impaginazione e nuovo layout per la funzione tabella_calciatori().
-Creata la funzione rosa_utenti(): restituisce le fanta rose dei partecipanti ad un torneo. Questo ha portato ad un totale restyling grafico del file di riferimento (rose.php): ora è possibile vedere crediti residui, ordinare le tabelle e vedere squadre dei calciatori.
-La funzione statistiche_calciatore() è stata aggiornata con l'aggiunta di un argomento: inserendo il codice di un giocatore, verranno visualizzate le sue statistiche.
-La funzione tabella_calciatori() è stata migliorata: nell'elenco saranno mostrate anche le medie voto e le presenze del giocatore. Da ottimizzare.
+  - Aggiornata la funzione rosa_squadra(): nel layout è stato aggiunto un link che collega alle statistiche complete della squadra visualizzata.
+  - Aggiornata la funzione statistiche_rosa(): piccole modifiche per rendere il layout più gradevole.
+  - Aggiunta la funzione invia_formazione(): questa sostituisce il file seleziona_squadra.php, di fatti eliminato. Ora il file squadra.php al momento dell'aggiornamento della formazione chiamerà questa funzione che gestirà tutto il processo.
 
 ##### CSS #####
 
 - css/extra.css
-Aggiunte classi per supportare la modifica del layout in tabella_calciatori() e rosa_utenti(). Aggiunto un colore di sfondo ad ogni pagina.
+Aggiunte classi per supportare l'aggiunta degli infobox in Material Design style.
