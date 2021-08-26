@@ -1,7 +1,7 @@
 <?php
 ##################################################################################
 #    FANTACALCIOBAZAR EVOLUTION
-#    Copyright (C) 2003-2010 by Antonello Onida
+#    Copyright (C) 2003-2009 by Antonello Onida
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,140 +17,55 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ##################################################################################
-session_start();
-
-# nel caso fosse settato register_globals = Off
-reset($_POST);
-$conta=count($_POST);
-for($num1 = 0 ; $num1 < $conta; $num1++) {
-$var_POST = key($_POST);
-$$var_POST = $_POST[$var_POST];
-next($_POST);
-} # fine for $num1
-
-reset($_GET);
-$conta=count($_GET);
-for($num1 = 0 ; $num1 < $conta; $num1++) {
-$var_GET = key($_GET);
-$$var_GET = strip_tags($_GET[$var_GET]);
-next($_GET);
-} # fine for $num1
-
-header("Cache-control: private");
-include_once("./dati/dati_gen.php");
-include_once("./inc/funzioni.php");
-include("./header.php");
-?>
-
-<div class="contenuto">
-<div id="articoli">
-<div id="sinistra">
-<div class="articoli_s">
-
-<?php
-if ($usa_cms == "SI" AND strip_tags($_GET[paginaid])) {
-pagina(strip_tags($_GET[paginaid]));
-}
-elseif ($usa_cms == "SI" AND strip_tags($_GET[categoria])) {
-categoria($_GET[categoria]);
-}
-elseif ($usa_cms == "SI" AND strip_tags($_GET[notiziaid])) {
-notizia($_GET[notiziaid], strip_tags(htmlentities($evidenzia)));
-}
-elseif ($usa_cms == "SI" AND strip_tags($ricerca)) {
-ricerca(strip_tags(htmlentities($testo)));
-}
-elseif ($usa_cms == "SI" AND $vedi_notizie >= 1) {
-echo"<p style='float: left; margin: 10; padding-right: 10px;'>";
-if ($mostra_gall_index == "SI") immagine_casuale('sx',0,0);
-echo "</p>".$acapo;
-
-if (trim($messaggi[1]) != "") echo "<div class='slogan'>".html_entity_decode($messaggi[1])."</div><div style='clear:both;'>&nbsp;</div>".$acapo;
-
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "<div>".$acapo;
-if (trim($messaggi[3]) != "") echo "<div class='box1'>" . html_entity_decode($messaggi[3]) . "</div>".$acapo;
-if (trim($messaggi[4]) != "") echo "<div class='box2'>" . html_entity_decode($messaggi[4]) . "</div>".$acapo;
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "</div>".$acapo;
-
-echo "<div style='clear:both;'>&nbsp;</div>".$acapo;
-notizie();
-
-}
-elseif(trim($messaggi[1]) != "") {
-echo"<p style='float: left; margin: 10; padding-right: 10px;'>";
-immagine_casuale('sx',0,0);
-echo "</p>".$acapo;
-
-if (trim($messaggi[1]) != "") echo "<div class='slogan'>".html_entity_decode($messaggi[1])."</div><div style='clear:both;'>&nbsp;</div>".$acapo;
-
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "<div>".$acapo;
-if (trim($messaggi[3]) != "") echo "<div class='box1'>" . html_entity_decode($messaggi[3]) . "</div>".$acapo;
-if (trim($messaggi[4]) != "") echo "<div class='box2'>" . html_entity_decode($messaggi[4]) . "</div>".$acapo;
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "</div>".$acapo;
-
-echo "<div style='clear:both;'>&nbsp;</div>".$acapo;
+require_once("./dati/dati_gen.php");
+require_once("./inc/funzioni.php");
+echo "<div id='loginbox'><p align='center'><b><u>Accesso procedura</u></b></p>";
+if(@$_GET["fallito"] == 1) echo "<br/><div class='evidenziato'>> Pseudonimo o password errati o mancanti!</div>";
+elseif(@$_GET["fallito"] == 2) echo "<br/><div class='evidenziato'>> Password amministratore errata.<br/>E' stata inviata una mail di notifica.</div>";
+elseif(@$_GET["fallito"] == 3) echo "<br><div class=\"evidenziato\">> Scegli il torneo dal men&ugrave; a tendina</div>";
+elseif(@$_GET["nofile"]) echo "<br/><div class='evidenziato'>> File utenti non trovato!</div>";
+elseif(@$_GET["logout"] == 1) echo "<br/><div class='evidenziato'>> Disconnesso!</div>";
+elseif(@$_GET["logout"] == 2) echo "<br/><div class='evidenziato'>> Accesso riservato!</div>";
+elseif(@$_GET["logout"] == 3) echo "<br/><div class='evidenziato'>> Rieseguire accesso!</div>";
+elseif(@$_GET["nuovo"]) echo "<br/><div class='evidenziato'>> Connesso!</div>";
+elseif(@$_GET["iscritto"]) echo "<br/><div class='evidenziato'>> Utente iscritto! Email inviata!</div>";
+elseif(@$_GET["attesa"]) echo "<br/><div class='evidenziato'>> Utente in attesa di autorizzazione!</div>";
+if(isset($_SESSION["valido"]) AND $_SESSION['valido'] == "SI"){
+	echo"<br/>Ciao: <b>".$_SESSION['utente']."</b><br/>";
+	include("./inc/online.php");
 }
 else {
-echo"<p style='float: left; margin: 0; padding-right: 10px;'>";
-immagine_casuale('sx',0,0);
-echo "</p>.$acapo";
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "<div>".$acapo;
-if (trim($messaggi[3]) != "") echo "<div class='box1'>" . html_entity_decode($messaggi[3]) . "</div>".$acapo;
-if (trim($messaggi[4]) != "") echo "<div class='box2'>" . html_entity_decode($messaggi[4]) . "</div>".$acapo;
-if (trim($messaggi[3]) OR trim($messaggi[4])) echo "</div>".$acapo;
-
-echo "<div style='clear:both;'>&nbsp;</div>".$acapo;
-}
-
-echo "</div>
-</div>
-<div id='destra'>";
-include("./menu_i.php");
+		$tornei = @file("$percorso_cartella_dati/tornei.php");
+		$num_tornei = 0;
+		$conta_tornei = count($tornei);
+	if($attiva_multi == "SI" and $conta_tornei > 2) {
+		$vedi_tornei_attivi = "<select name='l_torneo'>";
+		$vedi_tornei_attivi .= "<option value=''>Scegli il tuo torneo</option>";
+		#$tornei = @file("$percorso_cartella_dati/tornei.php");
+		#$num_tornei = 0;
+		#$conta_tornei = count($tornei);
+		for($num1 = 0; $num1 < $conta_tornei; $num1++){
+			$num_tornei++;
+		}
+		for ($num1 = 1 ; $num1 < $num_tornei; $num1++) {
+			@list($otid, $otdenom) = explode(",", trim($tornei[$num1]));
+			$vedi_tornei_attivi .= "<option value='$otid'>$otdenom</option>";
+		} # fine for $num1
+		$vedi_tornei_attivi .= "</select>";
+	}
+	else $vedi_tornei_attivi = "<input type='hidden' name='l_torneo' value='1' />";
+	echo "<br/><form method='post' action='./login.php'>
+	username: <input type='text' name='l_utente' class='text' /><br/>
+	password:   <input type='password' name='l_pass' class='text' /><br/>
+	$vedi_tornei_attivi<br>
+	Ricordami <input type=\"checkbox\" name=\"l_ricordami\" value=\"SI\">	<br/><br/>
+	
+	<input type='image' name='login' value='Login' src='immagini/entra.gif'>
+	</form>";
+	echo "<br/><div class='articolo_d'><a href='./recuperopass.php'>recupera password</a></div>";
+	#echo "<br/><div class='articolo_d'><a href='./recuperopass.php'>recupera password</a></div>";
+	
+} # fine ----------<input name='login' class='button' value='Login' type='submit' />
 echo "</div>";
-?>
-<div id='addizionali'>
-<br /><br />
-<!-- SiteSearch Google -->
-<form method="get" action="http://www.sssr.it/ricerca.php" target="_top">
-<table summary="addizionali" align="center" border="0" bgcolor="#ffffff">
-<tr><td nowrap="nowrap" valign="top" align="left" height="32">
-<input type="hidden" name="domains" value="sassarionline.net;fantacalciobazar.altervista.org;fantacalciobazar.sssr.it" />
-<label for="sbi" style="display: none">Inserisci i termini di ricerca</label>
-<input type="text" name="q" size="31" maxlength="255" value="" id="sbi" />
-</td>
-<td nowrap="nowrap">
-<label for="sbb" style="display: none">Invia modulo di ricerca</label>
-<input type="submit" name="sa" value="Cerca con Google" id="sbb" />
-<input type="hidden" name="client" value="pub-9997862776187032" />
-<input type="hidden" name="forid" value="1" />
-<input type="hidden" name="ie" value="ISO-8859-1" />
-<input type="hidden" name="oe" value="ISO-8859-1" />
-<input type="hidden" name="cof" value="GALT:#0066CC;GL:1;DIV:#999999;VLC:336633;AH:center;BGC:FFFFFF;LBGC:FF9900;ALC:0066CC;LC:0066CC;T:000000;GFNT:666666;GIMP:666666;FORID:11" />
-<input type="hidden" name="hl" value="it" />
-</td></tr>
-<tr>
-<td nowrap="nowrap" colspan="2">
-<table summary="">
-	<tr>
-		<td>
-			<input type="radio" name="sitesearch" value="" checked="checked" id="ss0" />
-		<label for="ss0" title="Ricerca nel Web"><font size="-1" color="#000000">Web</font></label></td>
-			<td>
-				<input type="radio" name="sitesearch" value="sassarionline.net" id="ss1" />
-			<label for="ss1" title="Cerca sassarionline.net"><font size="-1" color="#000000">sassarionline.net</font></label></td>
-				<td>
-					<input type="radio" name="sitesearch" value="fantacalciobazar.altervista.org" id="ss2" />
-				<label for="ss2" title="Cerca fantacalciobazar.altervista.org"><font size="-1" color="#000000">fantacalciobazar.altervista.org</font></label></td>
-					<td>
-						<input type="radio" name="sitesearch" value="fantacalciobazar.sssr.it" id="ss3" />
-					<label for="ss3" title="Cerca fantacalciobazar.sssr.it"><font size="-1" color="#000000">fantacalciobazar.sssr.it</font></label></td>
-					</tr>
-				</table>
-			</td></tr></table>
-		</form>
-		<!-- SiteSearch Google -->
-	</div>
-</div>
-<?php
-include("./footer.php");
+unset ($vedi_tornei_attivi,$tornei);
 ?>

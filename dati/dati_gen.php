@@ -78,12 +78,13 @@ $num_colonna_valore_calciatori = 28;
 # essere anche una URL (http://...). Se il file contiene anche 01,02,... in
 # corripondeza alla giornata utilizzare anche la 2ª,3ª,4ª e 5ª variabile.
 $prima_parte_pos_file_voti = 'dati/2018/MCC';
-$cartella_remota ='2018';
+$prima_parte_file_voti = 'MCC';
+$cartella_remota ='2019';
 $abilita_stat ='MIRROR';
 $risparmia_risorse ='NO';
 $num_giornata_file_voti = 'SI';
 $num_giornata_file_voti_doppio = 'SI';
-$seconda_parte_pos_file_voti = '.txt';
+$estensione_file_voti = '.txt';
 
 # Dati non configurabili da form
 

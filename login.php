@@ -21,9 +21,7 @@ session_start();
 header ("Cache-control: private");
 require_once("./dati/dati_gen.php");
 $debug = "NO";
-
 if ($debug == "SI") echo "";
-
 if (!$_POST['l_utente'] AND $_SESSION['valido'] != "SI" ) {
 	header("location: index.php?fallito=1");
 	}
@@ -63,20 +61,16 @@ else {
 			
 			$tornei = @file("$percorso_cartella_dati/tornei.php");
 			$num_tornei = count($tornei);
-
 			for ($num1 = 1 ; $num1 < $num_tornei; $num1++) {
 				@list($otid, $otdenom, $otpart, $otserie, $otmercato_libero, $ottipo_calcolo, $otgiornate_totali, $otritardo_torneo, $otcrediti_iniziali, $otnumcalciatori, $otcomposizione_squadra, $temp1, $temp2, $temp3, $temp4, $otstato, $otmodificatore_difesa, $otschemi, $otmax_in_panchina, $otpanchina_fissa, $otmax_entrate_dalla_panchina, $otsostituisci_per_ruolo, $otsostituisci_per_schema,  $otsostituisci_fantasisti_come_centrocampisti, $otnumero_cambi_max, $otrip_cambi_numero, $otrip_cambi_giornate, $otrip_cambi_durata, $otaspetta_giorni, $otaspetta_ore, $otaspetta_minuti, $otnum_calciatori_scambiabili, $otscambio_con_soldi, $otvendi_costo, $otpercentuale_vendita, $otsoglia_voti_primo_gol, $otincremento_voti_gol_successivi, $otvoti_bonus_in_casa, $otpunti_partita_vinta, $otpunti_partita_pareggiata, $otpunti_partita_persa, $otdifferenza_punti_a_parita_gol, $otdifferenza_punti_zero_a_zero, $otmin_num_titolari_in_formazione, $otpunti_pareggio, $otpunti_pos, $otreset_scadenza) = explode(",", $tornei[$num1]);
 				$_SESSION['otreset']=$otreset_scadenza;
-
 				if (is_file($percorso_cartella_dati."/utenti_".$otid.".php")) {
 					$file = @file("./dati/utenti_".$otid.".php")or die("Impossibile caricare i dattagli degli utenti [RIF: ./dati/utenti $otid]");
 					$linee = count($file);
 					$linea = 1;
 					$trovato = 0;
-
 					do {
 						@list($outente, $opass, $opermessi, $oemail, $ourl, $osquadra, $otorneo, $oserie, $ocitta, $ocrediti, $ovariazioni, $ocambi, $oreg, $otitolari, $opanchina, $otemp1, $otemp2, $otemp3, $otemp4, $otemp5, $otemp6, $otemp7, $otemp8, $otemp9, $otemp0) = explode("<del>", $file[$linea]);
-
 						if(($login_utente == $outente) && (md5($login_pass) == $opass) && ($login_torneo == $otorneo)) $trovato = 1;
 						else $trovato = 0;
 						if($trovato==1) break;
@@ -88,9 +82,7 @@ else {
 					$trovato = 0;
 				}
 			}
-
 			if ($trovato == 1 and $opermessi >=0) {
-
 				$_SESSION['uid'] = $linea;
 				$_SESSION['utente'] = $outente;
 				$_SESSION['pass'] = $opass;

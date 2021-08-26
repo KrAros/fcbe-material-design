@@ -17,8 +17,17 @@
 	#    along with this program; if not, write to the Free Software
 	#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	##################################################################################
-	require_once("./controlla_pass.php");
-	include("./header.php");
+	require './libs/Smarty.class.php';
+    require './controlla_pass.php';
+    $smarty = new Smarty;
+    //$smarty->force_compile = true;
+    $smarty->debugging = true;
+    $smarty->caching = false;
+    $smarty->cache_lifetime = 120;
+	include('a_widget.php');
+	
+	$smarty->assign("TitoloPagina", "Dashboard amministrativa");
+	$smarty->assign("Sottotitolo", "Benvenuto Amministratore!");
 	
 	if ($_SESSION['valido'] == "SI" and $_SESSION['permessi'] == 5) {
 		#require ("./a_menu.php");		
@@ -128,14 +137,14 @@
 			
 			for($num0 = 1; $num0 < $num_tornei; $num0++) {
 				if (@is_file($percorso_cartella_dati."/".$giornata."_".$num0."_0") AND $num1 >= $prossima) {
-					$tabella_giornate .= "<a href='a_giornata.php?num_giornata=$num1' class='evidenziato z-depth-4 white'>&nbsp;$num1&nbsp;</a>&nbsp;&nbsp;&nbsp;";
+					$tabella_giornate_giocate .= "<a href='a_giornata.php?num_giornata=$num1' class='evidenziato z-depth-4 white'>&nbsp;$num1&nbsp;</a>&nbsp;&nbsp;&nbsp;";
 					$ultima_gio=$num1;
 					if($num1 >= $prossima) $prossima = $num1+1;
 				} 
 			} # fine for $num0
 			$num1++;
 		} # fine for $num1
-		
+		$smarty->assign("giornate_giocate", $tabella_giornate_giocate);
 		$tabella_giornate.="</p></div></div></div></div>";
 		
 		if ($prossima < 1) $prossima = 1;
@@ -172,7 +181,7 @@
 		
 		if (@fopen($file_voti_locale,'r')) {$dis="";}
 		else {$dis="disabled='disabled'";}
-		
+		$smarty->assign("dis", $dis);
 		
 		#if ($lfv == "NO") $tabella_giornate .= "<div style='float: left; padding: 5px;'>MCC$prossima.txt non disponibile!</div>";
 			#elseif (@fopen($file_voti_locale,'r')) $tabella_giornate .= "<div style='float: left; padding: 5px;'>MCC$prossima.txt presente!<br />Si pu&ograve; creare la giornata!</div>";
@@ -219,6 +228,12 @@
 			echo "Cartella remota mancante"; }
 			$timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
 			
+			$smarty->assign("timestamp", $timestamp);
+			$time_voti_locale = filemtime($file_voti_localec);
+			$smarty->assign("time_voti_locale", $time_voti_locale);
+			$smarty->assign("clfv", $clfv);
+			$smarty->assign("lfv", $lfv);
+			
 			if ($timestamp > @filemtime($file_voti_localec)) { //otherwise unknown
 				$tabella_giornate .= "<form method='post' action='./a_gestione.php'>
 				<input type='hidden' name='ccfv' value='SI' />
@@ -264,7 +279,10 @@
 				echo (curl_error($curl)); 
 			}
 			$timestamp = curl_getinfo($curl, CURLINFO_FILETIME);
-			$file_mcc= ("./".$prima_parte_pos_file_voti.$ultima_gio.".txt");
+			$file_mcc = ("./".$prima_parte_pos_file_voti.$ultima_gio.".txt");
+			$mcc_file = @filemtime($file_mcc);
+			$smarty->assign("mcc_file", $mcc_file);
+			$smarty->assign("ultima_gio", $ultima_gio);
 			
 			if ($timestamp > @filemtime($file_mcc) and $ultima_gio == 00) { 	
 				$tabella_giornate .= "<div class='col s12 m6'>
@@ -313,6 +331,9 @@
 				if ($clfv == "NO" and $lfv =="NO" ) $tabella_giornate .= "<div style='float: center; padding: 22px;'><b>Procedura disattivata da pannello config!</b></div>";
 				else {
 					$file_mcc = ("./".$prima_parte_pos_file_voti.$prossima.".txt");
+					$file_mcc = file_exists($file_mcc);
+					$smarty->assign("file_mcc", $file_mcc);
+					$smarty->assign("prossima", $prossima);
 					
 					#elseif (@fopen($file_voti_localec,'r')) $tabella_giornate .= "<div style='float: left; padding: 5px;'>calciatori.txt presente!<br />Si può aggiornare!</div>";
 					if (!file_exists($file_mcc)) { 
@@ -366,61 +387,10 @@
 				if ($manutenzione == "SI") $mess_manu = "<img border='1' src='./immagini/manutenzione.gif' alt='Sito in manutenzione' vspace='10' width='150' /><br/><b>Attenzione: sito in stato di manutenzione!</b><br/><br/>";
 				else unset($mess_manu);
 				
-				#######################
-				##### Layout Principale	
-				
-				echo '<div class="container" style="width: 85%;margin-top: -10px;">
-				<div class="card-panel">
-				<div class="row">';
-				
-				require ("./a_widget.php");
-				echo '<div class="col m6">';
-				echo "<div class='card'>
-				<div class='card-content'>
-				<span class='card-title'>Dashboard amministrativa<span style='font-size: 13px;'> - Benvenuto Amministratore! $tabella_msg</span></span>
-				<hr>
-				<div class='row'>
-				
-				<table summary='Amministrazione' bgcolor='$sfondo_tab' width='100%'>
-				<tr><td valign='top' width='50%' align='center'>".$tabella_giornate;
-				
-				echo "</td></tr></table></div></div></div></div>";
-				
-				
-				#############
-				# RSS forum #
-				#############
-				
-				
-				echo'<div class="col m3">';
-				echo "<div class='card'>
-				<div class='card-content'>
-				<span class='card-title'>Le ultime dal Forum</span>
-				<div class='row'>";
-				
 
-				
-				include_once "./inc/rss_fetch.php";
-				output_rss_feed('http://fantacalciobazar.altervista.org/syndication.php', 10, true, true, 200);
-				
-				echo "</div></div></div>";
-				
-				echo "<div class='card'>
-				<div class='card-content'>
-				<span class='card-title'>Statistiche sito</span>
-				<div class='row'>";
-				
-				include('./inc/online.php');
-				include('./inc/flount.php');
-				
-				echo "</div></div></div>";
-				
-				
-				echo "</div></div></div></div></div>";
 				
 				#############
 			}
 			else header("location: logout.php?logout=2");
-			
-			include("./footer.php");
+			$smarty->display('a_gestione.tpl');
 		?>																																																								

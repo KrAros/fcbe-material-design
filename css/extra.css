@@ -342,3 +342,35 @@ text-align: center;
     background-color: #fbc02d;
     color: #fff;
 }
+.triangolog {
+	position: relative;
+	width: auto;
+	height: auto;
+}
+.triangolog:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent #ffca28 transparent transparent;
+  right: 0;
+  top: 0;
+  position: absolute;
+}
+.triangolor {
+	position: relative;
+	width: auto;
+	height: auto;
+}
+.triangolor:after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent #c00 transparent transparent;
+  right: 0;
+  top: 0;
+  position: absolute;
+}

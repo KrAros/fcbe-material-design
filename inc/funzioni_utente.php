@@ -407,8 +407,8 @@
 		$propr_c = "";
 		$props = "";
 		
-		$mercato = file($percorso_cartella_dati."/mercato_".$_SESSION ['torneo']."_".$_SESSION ['serie'].".txt");
-		$num_mercato = count($mercato);
+		$mercato = @file($percorso_cartella_dati."/mercato_".$_SESSION ['torneo']."_".$_SESSION ['serie'].".txt");
+		$num_mercato = @count($mercato);
 		$n = $num_mercato - 1;
 		
 		###############################################################
@@ -546,6 +546,7 @@
 		$data = $xml->data;
 		$ora = $xml->ora;
 		$prossima_partita = $xml->partita;
+		$icona = "m_".strtolower($vedi_squadra).".gif";
 		
 		######################
 		##### Template grafico
@@ -563,7 +564,7 @@
 		<ul class='portiere matchPlayersList module-1'>
 		<li>";
 		cerca_ruolo_giocatore($titolari[0]);
-		echo "<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+		echo "<div class='playerNumber z-depth-2' style='background-image:url(./immagini/$icona)'></div>
 		<div class='playerName card $backruolo'>".$titolari[0]."</div>
 		</li>
 		</ul>
@@ -571,7 +572,7 @@
 		for ($i = $mod[1]; $i > 0; $i--){
 			cerca_ruolo_giocatore($titolari[$i+0]);
 			echo "<li>
-			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/$icona)'></div>
 			<div class='playerName card $backruolo'>".$titolari[$i+0]."</div>
 			</li>";
 		}
@@ -580,7 +581,7 @@
 		for ($i = $mod[2]; $i > 0; $i--){
 			cerca_ruolo_giocatore($titolari[$i+$mod[1]]);
 			echo "<li>
-			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/$icona)'></div>
 			<div class='playerName card $backruolo'>".$titolari[$i+$mod[1]]."</div>
 			</li>";
 		}
@@ -589,7 +590,7 @@
 		for ($i = $mod[3]; $i > 0; $i--){
 			cerca_ruolo_giocatore($titolari[$i+$mod[2]+$mod[1]]);
 			echo "<li>
-			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+			<div class='playerNumber z-depth-2' style='background-image:url(./immagini/$icona)'></div>
 			<div class='playerName card $backruolo'>".$titolari[$i+$mod[2]+$mod[1]]."</div>
 			</li>";
 		}
@@ -599,7 +600,7 @@
 			for ($i = $mod[4]; $i > 0; $i--){
 				cerca_ruolo_giocatore($titolari[$i+$mod[3]+$mod[2]+$mod[1]]);
 				echo "<li>
-				<div class='playerNumber' style='background-image:url(./immagini/m_$vedi_squadra.gif)'></div>
+				<div class='playerNumber' style='background-image:url(./immagini/$icona)'></div>
 				<div class='playerName card $backruolo'>".$titolari[$i+$mod[3]+$mod[2]+$mod[1]]."</div>
 				</li>";
 			}
@@ -718,7 +719,7 @@
 		$num_cer_squ = count($calciatori);
 		
 		$mercato = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-		$num_acquisti_mercato = count($mercato);
+		$num_acquisti_mercato = @count($mercato);
 		
 		######################
 		##### Template grafico
@@ -852,7 +853,7 @@
 		</div>";
 		
 		$messaggi = @file($percorso_cartella_dati."/registro_mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-		$num_messaggi = count($messaggi);
+		$num_messaggi = @count($messaggi);
 		$num_iniziale = 0;
 		#rsort ($messaggi);
 		
@@ -1044,8 +1045,8 @@
 					$media_punti = 0;
 				} # fine else if ($partite_giocate != 0)
 				
-				$mercato = file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-				$num_mercato = count($mercato);
+				$mercato = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+				$num_mercato = @count($mercato);
 				$n = $num_mercato - 1;
 				
 				offerta_tempo_rimasto();
@@ -1121,11 +1122,12 @@
 				if ($stato_mercato == "A" and $mercato_libero == "SI" and $props and $pallinogiallo == "SI")
 				$info = "<img src='./immagini/info1.gif' style='border:0; margin:0;' title='$props' alt='$props' />";
 				
+				$icona = "m_".strtolower($squadra).".gif";
 				
 				$layout .= "<tr class='$ruolo'>
 				<td class='center' style='padding: 15px;'><span class='ruolo $backruolo'>$ruolo</span></td>
 				<td>$nome $info</td>
-				<td><img class='iconasquadra' src='./immagini/m_$squadra.gif'><a href='tab_squadre.php?vedi_squadra=$squadra'>$squadra</a></td>
+				<td><img class='iconasquadra' src='./immagini/$icona'><a href='tab_squadre.php?vedi_squadra=$squadra'>$squadra</a></td>
 				<td class='center'>$partite_giocate</td>
 				<td class='center'>$media_giornale</td>
 				<td class='center'>$media_punti</td>
@@ -1458,4 +1460,122 @@
 		
 	} 
 	
+	
+	######################################
+	##### FUNZIONE - Controllo statistiche
+	##### Restituisce le statistiche stagionali dei calciatori estrapolandole dal file voti
+	
+	function controllo_statistiche($inizio,$fine) {
+		
+		extract($GLOBALS);
+		global $stat_squadra, $stat_voto, $stat_valore, $num_calciatore_voto, $nome, $quotazione_iniziale, $partite_giocate, $ultima_giornata, $totamm, $totesp, $totgol, $totgolsub, $totass, $totrigp, $totrigt, $totrigs, $totrigsb, $totaut, $media_giornale, $media_punti, $stringav, $stringafv, $stringaval, $stato, $stat_nome, $inizio_range, $fine_range, $num_calciatore, $totpresenze, $tot_golsubiti, $tot_golsegnati, $stat_ammonizione, $stat_espulsione, $numero, $squadra, $ruolo, $somma_voti_giornale, $voto_giornale, $voto_tot, $somma_voti_tot, $uvt, $uvg;
+		
+		for ($num1 = $inizio; $num1 <= $fine; $num1++) {
+			if (strlen($num1) == 1) $num1 = "0".$num1;
+			if ($voti = @file("$percorso_cartella_voti/voti$num1.txt")) {
+				$num_voti = count($voti);
+				for ($num2 = 0 ; $num2 < $num_voti ; $num2++) {
+					$dati_voto = explode($separatore_campi_file_voti, $voti[$num2]);
+					list ($num_calciatore_voto, $stat_giornata, $stat_nome, $stat_squadra, $stat_attivo, $stat_ruolo, $stat_presenza, $stat_votofc, $stat_mininf25, $stat_minsup25, $stat_voto, $stat_golsegnati, $stat_golsubiti, $stat_golvittoria, $stat_golpareggio, $stat_assist, $stat_ammonizione, $stat_espulsione, $stat_rigoretirato, $stat_rigoresubito, $stat_rigoreparato, $stat_rigoresbagliato, $stat_autogol, $stat_subentrato, $stat_titolare, $stat_sv, $stat_giocaincasa, $stat_valore) = $dati_voto;
+					if ($num_calciatore == $num_calciatore_voto) {
+						$voto_tot = $dati_voto[($num_colonna_vototot_file_voti-1)];
+						$voto_tot = ($voto_tot);
+						$voto_tot = str_replace($separatore_campi_file_calciatori,".",$voto_tot);
+						$voto_giornale = $dati_voto[($num_colonna_votogiornale_file_voti-1)];
+						$voto_giornale = ($voto_giornale);
+						$voto_giornale = str_replace($separatore_campi_file_calciatori,".",$voto_giornale);
+						$uvt = $voto_tot; 
+						$uvg = $voto_giornale;
+						$stat_votofc = str_replace(",",".",$stat_votofc);
+						$stat_voto = str_replace(",",".",$stat_voto);
+						$stat_valore = str_replace(",",".",$stat_valore);
+						if ($voto_tot != 0 or $voto_giornale != 0) {
+							$partite_giocate++;
+							$somma_voti_tot = $somma_voti_tot + $voto_tot;
+							$somma_voti_giornale = $somma_voti_giornale + $voto_giornale;
+						} 
+								
+						if ($statistiche == "SI") {
+							$stat_nome = preg_replace ( "/\"/", "",$stat_nome);
+							$stat_squadra = preg_replace ( "/\"/", "",$stat_squadra);
+							$totpresenze = $totpresenze + $stat_presenza;
+							$totvotfc = $totvotfc + $stat_votofc;
+							$totmininf25 = $totmininf25 + $stat_mininf25;
+							$totminsup25 = $totminsup25 + $stat_minsup25;
+							$totvot = $totvot + $stat_voto;
+							$totgol = $totgol + $stat_golsegnati;
+							$totgolsub = $totgolsub + $stat_golsubiti;
+							$totgolvit = $totgolvit + $stat_golvittoria;
+							$totgolpar = $totgolpar + $stat_golpareggio;
+							$totass = $totass + $stat_assist;
+							$totamm = $totamm + $stat_ammonizione;
+							$totesp = $totesp + $stat_espulsione;
+							$totrigt = $totrigt + $stat_rigoretirato;
+							$totrigs = $totrigs + $stat_rigoresubito;
+							$totrigp = $totrigp + $stat_rigoreparato;
+							$totrigsb = $totrigsb + $stat_rigoresbagliato;
+							$totaut = $totaut + $stat_autogol;
+							$stat_subentrato = $dati_voto[($ncs_entrato -1)];
+							$tottit = $tottit + $stat_titolare;
+							$stat_valore = $dati_voto[($ncs_valore -1)];
+							$tot_golsegnati = $tot_golsegnati + $stat_golsegnati;
+							$tot_golsubiti = $tot_golsubiti + $stat_golsubiti;
+						}
+						break;
+					} # fine if ($num_calciatore == $num_calciatore_voto)
+					$ultima_giornata = $num1;
+				} # fine for ($num2 = 0 ; $num2 < $num_voti ; $num2++) {
+			} # fine if ($voti = @file("$percorso_cartella_voti/voti$num1.txt"))
+		} # fine for $num1 Cicla sulle giornate
+	}
+
+
+	###############################
+	##### FUNZIONE - Crditi rimasti
+	##### Restituisce i crediti rimasti all'utente specificato
+	
+	function crediti_rimasti($utente) {
+		
+	extract($GLOBALS);
+	global $percorso_cartella_dati, $reset_form, $outente, $frase;
+		$calciatori = file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+		array_multisort($calciatori,SORT_NUMERIC,SORT_ASC);	# Ordino numericamente, decrescente, per avere data più recente top
+		$np = 0;
+		$nd = 0;
+		$nc = 0;
+		$nf = 0;
+		$na = 0;
+		$num_calciatori = count($calciatori);
+		for($num2 = 0; $num2 < $num_calciatori; $num2++) {	
+			$dati_calciatore = explode(",", $calciatori[$num2]);
+			$numero = $dati_calciatore[0];
+			$ruolo = $dati_calciatore[2];
+			$squadra = $dati_calciatore[6];
+			$proprietario = $dati_calciatore[4];
+			assegna_ruoli('mercato');
+			if ($proprietario == $utente) {
+				$soldi_spesi = $soldi_spesi + $dati_calciatore[3];
+				$num_calciatori_posseduti++;
+				if ($ruolo == "P")
+					$np++;
+				else if ($ruolo == "D")
+					$nd++;
+				else if ($ruolo == "C")
+					$nc++;
+				else if ($ruolo == "F")
+					$nf++;
+				else if ($ruolo == "A")
+					$na++;
+				
+				$surplus = INTVAL($ocrediti);
+				$variazioni = INTVAL($ovariazioni);
+				$cambi_effettuati = INTVAL($ocambi);
+				$soldi_spendibili = $soldi_iniziali + $surplus + $variazioni - $soldi_spesi;
+			}
+		}
+	if ($soldi_spendibili != null) echo $soldi_spendibili; else echo $soldi_iniziali;
+	}
+	
+
+
 ?>											

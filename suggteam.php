@@ -1,484 +1,298 @@
 <?php
-	##################################################################################
-	#    FANTACALCIOBAZAR EVOLUTION
-	#    Copyright (C) 2003 by Antonello Onida (fantacalcio@sassarionline.net)
-	#
-	#    This program is free software; you can redistribute it and/or modify
-	#    it under the terms of the GNU General Public License as published by
-	#    the Free Software Foundation; either version 2 of the License, or
-	#    (at your option) any later version.
-	#
-	#    This program is distributed in the hope that it will be useful,
-	#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-	#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	#    GNU General Public License for more details.
-	#
-	#    You should have received a copy of the GNU General Public License
-	#    along with this program; if not, write to the Free Software
-	#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	#
-	#
-	# 05-08-2004 angelo@dabrosca.net :
-	#    Visualizza la best team delle ultime n giornate (Per adesso $range fisso a 5)
-	#    Vengono considerati solo i giocatori che nelle ultime n giornate hanno giocato
-	#    un numero di partite maggiore uguale a $range%2
-	#
-	# 04-09-2004 angelo@dabrosca.net ;
-	#    inserita variabile in dati.php --> $separatore_campi_mercato = ","; <--
-	#
-	#
-	##################################################################################
-	require_once("./controlla_pass.php");
-	include("./header.php");
+	// #################################################################################
+	// FANTACALCIOBAZAR EVOLUTION
+	// Copyright (C) 2003-2009 by Antonello Onida
+	//
+	// This program is free software; you can redistribute it and/or modify
+	// it under the terms of the GNU General Public License as published by
+	// the Free Software Foundation; either version 2 of the License, or
+	// (at your option) any later version.
+	//
+	// This program is distributed in the hope that it will be useful,
+	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	// GNU General Public License for more details.
+	//
+	// You should have received a copy of the GNU General Public License
+	// along with this program; if not, write to the Free Software
+	// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+	// #################################################################################
 	
-	if ($_SESSION['valido'] == "SI") {
+	require './libs/Smarty.class.php';
+    require './controlla_pass.php';
+    $smarty = new Smarty;
+    //$smarty->force_compile = true;
+    $smarty->debugging = true;
+    $smarty->caching = false;
+    $smarty->cache_lifetime = 120;
+    
+    $smarty->assign("TitoloPagina", "Forma squadra");
 		
-		for ($num1 = 1 ; $num1 < 40 ; $num1++) {
-			if (strlen($num1) == 1) $num1 = "0".$num1;
-			$giornata_controlla = "giornata$num1";
-			if (!@is_file($percorso_cartella_dati."/".$giornata_controlla."_".$_SESSION['torneo']."_".$_SESSION['serie'])) break;
-			else $giornata_ultima = $num1;
-		} # fine for $num1
+	$ultima_giornata = ultima_giornata_giocata();
+	
+	###############################################################################################
+	##### Calcolo il numero minimo di partite_disputate per prendere in considerazione il giocatore
 		
-		$ultima_giornata = $giornata_ultima;
-		/* Calcolo il numero minimo di partite_disputate per prendere in considerazione il giocatore   */
+	if (!$range) $range=5;
+	$partite_minime_per_range = $range/3;
 		
-		if (!$range) $range=5;
+	if ($range%2) $partite_minime_per_range = round($partite_minime_per_range,0);
+	$fine_range = $ultima_giornata;
+	
+	if ($ultima_giornata > $range) {
+		$inizio_range = $ultima_giornata - $range +1;
+	} else {
+		$inizio_range = 1 ;
+	}
 		
-		$partite_minime_per_range = $range/3;
+	if (strlen($inizio_range) == 1) $inizio_range = "0".$inizio_range;
 		
-		if ($range%2) $partite_minime_per_range = round($partite_minime_per_range,0);
+	$smarty->assign("Sottotitolo", "Calciatori migliori nelle ultime $range giornate");
+	$vedi_squadra = $_SESSION['utente'];
 		
-		$fine_range = $ultima_giornata;
-		if ($ultima_giornata > $range){
-			$inizio_range = $ultima_giornata - $range +1;
+	############################################
+	##### Inizio controllo statistiche giocatori
+	
+	$voti = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
+	$num_voti = count($voti);
+	$cerca_fantasquadra = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
+	$num_cer_fantasqu = count($cerca_fantasquadra);
+	array_multisort ($cerca_fantasquadra,SORT_ASC, SORT_STRING);
+		
+	$partite_giocate = 0;
+	$somma_voti_tot = 0;
+	$somma_voti_giornale = 0;
+		
+	for ($knum1 = 0 ; $knum1 < $num_cer_fantasqu; $knum1++) {
+		$dati_calciatore = explode(",", $cerca_fantasquadra[$knum1]);
+		list($num_calciatore, $nome, $ruolo, $valore, $fantasquadra) = $dati_calciatore;
+			
+		$nome = htmlentities(utf8_encode(preg_replace( "#\"#","",$nome)), 0, 'UTF-8');
+		$nome = "<a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a>";
+		$fantasquadra = preg_replace("#\"#","",$fantasquadra);
+			
+		if ($considera_fantasisti_come != $ruoli) $considera_fantasisti_come = "F";
+		if ($ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
+			
+		if ($fantasquadra == $vedi_squadra) {
+			controllo_statistiche($inizio_range,$fine_range);	
+			if ($partite_giocate != 0) {
+				$media_giornale = round(($somma_voti_giornale /$partite_giocate),2);
+				$media_punti = round(($somma_voti_tot / $partite_giocate),2);
+			} else {
+				$media_giornale = 0;
+				$media_punti = 0;
+			} 
+				
+			if ($statistiche == "SI") {
+				if ($stat_attivo == 0) $mess = "<b><font color=red>Non disponibile</font></b>";
+				else $mess = "In attività";
+						
+				if ($ruolo == "P" and $totpresenze >= $partite_minime_per_range) {
+					$portieri[]=array($nome,$totpresenze,$media_giornale,$tot_golsubiti,$totamm,$totesp,$media_punti+10,$totass,$numero,$stat_squadra);
+				}
+				if ($ruolo == "D" and $totpresenze >= $partite_minime_per_range){
+					$difensori[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$totamm,$totesp,$media_punti+10,$totass,$numero,$stat_squadra);
+				}		
+				if ($ruolo == "C" and $totpresenze >= $partite_minime_per_range){
+					$centrocampisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$totamm,$totesp,$media_punti+10,$totass,$numero,$stat_squadra);
+				}			
+				if ($ruolo == "A" and $totpresenze >= $partite_minime_per_range){
+					$attaccanti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$totamm,$totesp,$media_punti+10,$totass,$numero,$stat_squadra);
+				}		
+				if ($ruolo == "F" and $totpresenze >= $partite_minime_per_range){
+					$fantasisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$totamm,$totesp,$media_punti+10,$totass,$numero,$stat_squadra);
+				}
+			} 
+					
+			$stat_presenza=0;
+			$totpresenze=0;
+			$stat_votofc=0;
+			$totvotfc=0;
+			$stat_voto=0;
+			$totvot=0;
+			$stat_golsegnati=0;
+			$tot_golsegnati=0;
+			$stat_golsubiti=0;
+			$tot_golsubiti=0;
+			$stat_golvittoria=0;
+			$totgolvit=0;
+			$stat_golpareggio=0;
+			$totgolpar=0;
+			$stat_assist=0;
+			$totass=0;
+			$stat_ammonizione=0;
+			$totamm=0;
+			$stat_espulsione=0;
+			$totesp=0;
+			$stat_rigoretirato=0;
+			$totrigt=0;
+			$stat_rigoresubito=0;
+			$totrigs=0;
+			$stat_rigoreparato=0;
+			$totrigp=0;
+			$stat_rigoresbagliato=0;
+			$totrigsb=0;
+			$stat_autogol=0;
+			$totaut=0;
+			$totgol=0;
+			$partite_giocate=0;
+			$media_giornale=0;
+			$media_punti=0;
+			$partite_giocate = 0;
+			$somma_voti_tot = 0;
+			$somma_voti_giornale = 0;	
+		} 
+	}
+			
+	$ordinamento = 6;
+	
+	#########################################################################
+	##### Inserimento statistiche in array per essere richiamati nel template
+	
+	function cmp1 ($a, $b) {
+		global $ordinamento;
+		return strcmp($b[$ordinamento], $a[$ordinamento]);
+	}
+		
+	usort($portieri, "cmp1");
+	usort($difensori, "cmp1");
+	usort($centrocampisti, "cmp1");
+	usort($attaccanti, "cmp1");
+			
+	$nome = $portieri[0][0];
+	$totpresenze = $portieri[0][1];
+	$media_giornale = $portieri[0][2];
+	$tot_golsegnati = $portieri[0][3];
+	$totamm = $portieri[0][4];
+	$totesp = $portieri[0][5];
+	$media_punti = $portieri[0][6]-10;
+	$totass = $portieri[0][7];
+	$numero = $portieri[0][8];
+	$squadra = $portieri[0][9];
+	$ruolo = "P";
+	$backruolo = "orange darken-4";
+			
+	$giocatore[] = array( 
+		"nome" => $nome, 
+		"ruolo" => $ruolo, 
+		"squadra" => $squadra, 
+		"partite_giocate" => $totpresenze,
+		"media_giornale" => $media_giornale,
+		"media_punti" => $media_punti,
+		"gol" => $tot_golsegnati,
+		"assist" => $totass,
+		"rigori" => $stat_rigoretirato,
+		"ammonizioni" => $totamm,
+		"espulsioni" => $totesp,
+		"backruolo" => $backruolo
+	);
+			
+	for ($i=0; $i<$dif; $i++) {
+		$nome = $difensori[$i][0];
+		$totpresenze = $difensori[$i][1];
+		$media_giornale = $difensori[$i][2];
+		$tot_golsegnati = $difensori[$i][3];
+		$totamm = $difensori[$i][4];
+		$totesp = $difensori[$i][5];
+		$media_punti = $difensori[$i][6]-10;
+		$totass = $difensori[$i][7];
+		$numero = $difensori[$i][8];
+		$squadra = $difensori[$i][9];
+		$ruolo = "D";
+		$backruolo = "indigo darken-4";
+				
+		$giocatore[] = array( 
+			"nome" => $nome, 
+			"ruolo" => $ruolo, 
+			"squadra" => $squadra, 
+			"partite_giocate" => $totpresenze,
+			"media_giornale" => $media_giornale,
+			"media_punti" => $media_punti,
+			"gol" => $tot_golsegnati,
+			"assist" => $totass,
+			"rigori" => $stat_rigoretirato,
+			"ammonizioni" => $totamm,
+			"espulsioni" => $totesp,
+			"backruolo" => $backruolo
+		);
+	}
+			
+	for ($i=0; $i<$cen; $i++) {
+		$nome = $centrocampisti[$i][0];
+		$totpresenze = $centrocampisti[$i][1];
+		$media_giornale = $centrocampisti[$i][2];
+		$tot_golsegnati = $centrocampisti[$i][3];
+		$totamm = $centrocampisti[$i][4];
+		$totesp = $centrocampisti[$i][5];
+		$media_punti = $centrocampisti[$i][6]-10;
+		$totass = $centrocampisti[$i][7];
+		$numero = $centrocampisti[$i][8];
+		$squadra = $centrocampisti[$i][9];
+		$ruolo = "C";
+		$backruolo = "green darken-4";
+				
+		$giocatore[] = array( 
+			"nome" => $nome, 
+			"ruolo" => $ruolo, 
+			"squadra" => $squadra, 
+			"partite_giocate" => $totpresenze,
+			"media_giornale" => $media_giornale,
+			"media_punti" => $media_punti,
+			"gol" => $tot_golsegnati,
+			"assist" => $totass,
+			"rigori" => $stat_rigoretirato,
+			"ammonizioni" => $totamm,
+			"espulsioni" => $totesp,
+			"backruolo" => $backruolo
+		);
+	}
+			
+	for ($i=0; $i<$att; $i++) {
+		$nome = $attaccanti[$i][0];
+		$totpresenze = $attaccanti[$i][1];
+		$media_giornale = $attaccanti[$i][2];
+		$tot_golsegnati = $attaccanti[$i][3];
+		$totamm = $attaccanti[$i][4];
+		$totesp = $attaccanti[$i][5];
+		$media_punti = $attaccanti[$i][6]-10;
+		$totass = $attaccanti[$i][7];
+		$numero = $attaccanti[$i][8];
+		$squadra = $attaccanti[$i][9];
+		$ruolo = "A";
+		$backruolo = "red darken-4";
+				
+		$giocatore[] = array( 
+			"nome" => $nome, 
+			"ruolo" => $ruolo, 
+			"squadra" => $squadra, 
+			"partite_giocate" => $totpresenze,
+			"media_giornale" => $media_giornale,
+			"media_punti" => $media_punti,
+			"gol" => $tot_golsegnati,
+			"assist" => $totass,
+			"rigori" => $stat_rigoretirato,
+			"ammonizioni" => $totamm,
+			"espulsioni" => $totesp,
+			"backruolo" => $backruolo
+		);
+	};
+			
+	$numero_giornate = array();
+	for ($num1 = "02" ; $num1 < 50 ; $num1++) {
+		if (strlen($num1) == 1) $num1 = "0".$num1;
+		if (@is_file("$percorso_cartella_dati/voti$num1.txt")) {
+			$numero_giornate[$num1] = $num1;
+			$smarty->assign('numero_giornate', $numero_giornate);
+		} else {
+			break;
 		}
-		else {
-			$inizio_range = 1 ;
-		}
-		
-		if (strlen($inizio_range) == 1) $inizio_range = "0".$inizio_range;
-		
-		#######################################
-		
-		$vedi_squadra = $_SESSION['utente'];
-		echo '<div class="container" style="width: 85%;margin-top: -10px;">
-		<div class="card-panel">
-    	<div class="row">';
-		
-		require ("./widget.php");
-		echo'<div class="col m9">';
-		echo"<div class='row'>
-	<div class='col m12'>
-	<ol class='breadcrumbs indigo'>
-	<li class='breadcrumbs-item'><a class='white-text' href='./mercato.php'>Dashboard</a></li>
-	<li class='breadcrumbs-item grey-text text-lighten-1'>Forma Squadra</li>
-	</ol>
-	</div>
-	</div>
-		<div class='card'>
-		<div class='card-content'>
-		<span class='card-title'>Formazione consigliata<span style='font-size: 13px;'> - Calciatori migliori nelle ultime $range giornate</span></span>
-		<hr><br>";
-		
-		#######################################
-		$voti = file($percorso_cartella_voti."/voti".$ultima_giornata.".txt");
-		$num_voti = count($voti);
-		
-		#Aggiunte
-		$cerca_squadra = @file($percorso_cartella_dati."/mercato_".$_SESSION['torneo']."_".$_SESSION['serie'].".txt");
-		$num_cer_squ = count($cerca_squadra);
-		
-		#echo "<pre>";
-		#print_r ($cerca_squadra);
-		array_multisort ($cerca_squadra,SORT_ASC, SORT_STRING);
-		#print_r ($cerca_squadra);
-		#echo "</pre>";
-		
-		$partite_giocate = 0;
-		$somma_voti_tot = 0;
-		$somma_voti_giornale = 0;
-		
-		for ($knum1 = 0 ; $knum1 < $num_cer_squ; $knum1++) {
-			$dati_calciatore = explode(",", $cerca_squadra[$knum1]);
+	} 
 			
-			$numero = $dati_calciatore[0];
-			$numero = trim($numero);
-			$num_calciatore = $numero;
-			$nome = $dati_calciatore[1];
-			$nome = trim($nome);
-			$nome = preg_replace("#\"#","",$nome);
-			$s_ruolo = $dati_calciatore[2];
-			$s_ruolo = trim($s_ruolo);
-			$ruolo = $s_ruolo;
-			$valore = $dati_calciatore[3];
-			$valore = trim($valore);
-			$xsquadra = $dati_calciatore[4];
-			$xsquadra = trim($xsquadra);
-			$xsquadra = preg_replace("#\"#","",$xsquadra);
-			
-			if ($considera_fantasisti_come != "P" and $considera_fantasisti_come != "D" and $considera_fantasisti_come != "C" and $considera_fantasisti_come != "A") $considera_fantasisti_come = "F";
-			if ($s_ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
-			if ($s_ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
-			if ($s_ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
-			if ($s_ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
-			if ($s_ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
-			
-			if ($xsquadra == $vedi_squadra) {
-				for ($num1 = $inizio_range; $num1 <= $fine_range; $num1++) {
-					if (strlen($num1) == 1) $num1 = "0".$num1;
-					
-					if ($voti = @file("$percorso_cartella_voti/voti$num1.txt")) {
-						$num_voti = count($voti);
-						$calciatori = @file("$percorso_cartella_dati/calciatori.txt");
-						$num_calciatori = count($calciatori);
-						for ($num2 = 0 ; $num2 < $num_voti ; $num2++) {
-							$dati_voto = explode($separatore_campi_file_voti, $voti[$num2]);
-							$num_calciatore_voto = $dati_voto[($num_colonna_numcalciatore_file_voti-1)];
-							$num_calciatore_voto = ($num_calciatore_voto);
-							
-							if ($num_calciatore == $num_calciatore_voto) {
-								$voto_tot = $dati_voto[($num_colonna_vototot_file_voti-1)];
-								$voto_tot = ($voto_tot);
-								$voto_tot = str_replace($separatore_campi_file_calciatori,".",$voto_tot);
-								$voto_giornale = $dati_voto[($num_colonna_votogiornale_file_voti-1)];
-								$voto_giornale = ($voto_giornale);
-								$voto_giornale = str_replace($separatore_campi_file_calciatori,".",$voto_giornale);
-								if ($voto_tot != 0 or $voto_giornale != 0) {
-									$partite_giocate++;
-									$somma_voti_tot = $somma_voti_tot + $voto_tot;
-									$somma_voti_giornale = $somma_voti_giornale + $voto_giornale;
-								} # fine if ($voto_tot != 0 or $voto_giornale != 0)
-								
-								if ($statistiche == "SI") {
-									$stat_codice = $dati_voto[($ncs_codice -1)];
-									$stat_giornata = $dati_voto[($ncs_giornata -1)];
-									$stat_nome = $dati_voto[($ncs_nome -1)];
-									$stat_nome = preg_replace("#\"#","",$stat_nome);
-									$stat_squadra = $dati_voto[($ncs_squadra -1)];
-									$stat_squadra = preg_replace("#\"#","",$stat_squadra);
-									$stat_attivo = $dati_voto[($ncs_attivo -1)];
-									$stat_ruolo = $dati_voto[($ncs_ruolo -1)];
-									$stat_presenza = $dati_voto[($ncs_presenza -1)]; $totpresenze = $totpresenze + $stat_presenza;
-									$stat_votofc = $dati_voto[($ncs_votofc -1)]; $totvotfc = $totvotfc + $stat_votofc;
-									$stat_mininf25 = $dati_voto[($ncs_mininf25 -1)]; $totmininf25 = $totmininf25 + $stat_mininf25;
-									$stat_minsup25 = $dati_voto[($ncs_minsup25 -1)]; $totminsup25 = $totminsup25 + $stat_minsup25;
-									$stat_voto = $dati_voto[($ncs_voto -1)]; $totvot = $totvot + $stat_voto;
-									$stat_golsegnati = $dati_voto[($ncs_golsegnati -1)]; $totgol = $totgol + $stat_golsegnati;
-									$stat_golsubiti = $dati_voto[($ncs_golsubiti -1)]; $totgolsub = $totgolsub + $stat_golsubiti;
-									$stat_golvittoria = $dati_voto[($ncs_golvittoria -1)]; $totgolvit = $totgolvit + $stat_golvittoria;
-									$stat_golpareggio = $dati_voto[($ncs_golpareggio -1)]; $totgolpar = $totgolpar + $stat_golpareggio;
-									$stat_assist = $dati_voto[($ncs_assist -1)]; $totass = $totass + $stat_assist;
-									$stat_ammonizione = $dati_voto[($ncs_ammonizione -1)]; $totamm = $totamm + $stat_ammonizione;
-									$stat_espulsione = $dati_voto[($ncs_espulsione -1)]; $totesp = $totesp + $stat_espulsione;
-									$stat_rigoretirato = $dati_voto[($ncs_rigoretirato -1)]; $totrigt = $totrigt + $stat_rigoretirato;
-									$stat_rigoresubito = $dati_voto[($ncs_rigoresubito -1)]; $totrigs = $totrigs + $stat_rigoresubito;
-									$stat_rigoreparato = $dati_voto[($ncs_rigoreparato -1)]; $totrigp = $totrigp + $stat_rigoreparato;
-									$stat_rigoresbagliato = $dati_voto[($ncs_rigoresbagliato -1)]; $totrigsb = $totrigsb + $stat_rigoresbagliato;
-									$stat_autogol = $dati_voto[($ncs_autogol -1)]; $totaut = $totaut + $stat_autogol;
-									$stat_subentrato = $dati_voto[($ncs_entrato -1)];
-									$stat_titolare = $dati_voto[($ncs_titolare -1)]; $tottit = $tottit + $stat_titolare;
-									$stat_valore = $dati_voto[($ncs_valore -1)];
-									$tot_golsegnati = $tot_golsegnati + $stat_golsegnati;
-									$tot_golsubiti = $tot_golsubiti + $stat_golsubiti;
-								}  # Fine if ($statistiche == "SI") 
-								
-								break;
-							} # fine if ($num_calciatore == $num_calciatore_voto)
-							$ultima_giornata = $num1;
-						} # fine for ($num2 = 0 ; $num2 < $num_voti ; $num2++) {
-					} # fine if ($voti = @file("$percorso_cartella_voti/voti$num1.txt"))
-				} # fine for $num1 Cicla sulle giornate
-				
-				if ($partite_giocate != 0) {
-					$media_giornale = round(($somma_voti_giornale /$partite_giocate),2);
-					$media_punti = round(($somma_voti_tot / $partite_giocate),2);
-				} # fine if ($partite_giocate != 0)
-				else {
-					$media_giornale = 0;
-					$media_punti = 0;
-				} # fine else if ($partite_giocate != 0)
-				
-				$calciatori = @file($percorso_cartella_dati."/calciatori.txt");
-				$num_calciatori = count($calciatori);
-				for ($num1 = 0 ; $num1 < $num_calciatori ; $num1++) {
-					$dati_calciatore = explode($separatore_campi_file_calciatori, $calciatori[$num1]);
-					$numero = $dati_calciatore[($num_colonna_numcalciatore_file_calciatori-1)];
-					$numero = ($numero);
-					if ($num_calciatore == $numero) {
-						$nome = $dati_calciatore[($num_colonna_nome_file_calciatori-1)];
-						$nome = ($nome);
-						$nome = preg_replace("#\"#","",$nome);
-						if ($num_colonna_squadra_file_calciatori != 0) {
-							$xsquadra = $dati_calciatore[($num_colonna_squadra_file_calciatori-1)];
-							$xsquadra = ($xsquadra);
-							$xsquadra = preg_replace("#\"#","",$xsquadra);
-						} # fine if ($num_colonna_squadra_file_calciatori != 0)
-						$s_ruolo = $dati_calciatore[($num_colonna_ruolo_file_calciatori-1)];
-						$s_ruolo = ($s_ruolo);
-						$ruolo = $s_ruolo;
-						
-						if ($considera_fantasisti_come != "P" and $considera_fantasisti_come != "D" and $considera_fantasisti_come != "C" and $considera_fantasisti_come != "A") $considera_fantasisti_come = "F";
-						if ($s_ruolo == $simbolo_fantasista_file_calciatori) $ruolo = $considera_fantasisti_come;
-						if ($s_ruolo == $simbolo_portiere_file_calciatori) $ruolo = "P";
-						if ($s_ruolo == $simbolo_difensore_file_calciatori) $ruolo = "D";
-						if ($s_ruolo == $simbolo_centrocampista_file_calciatori) $ruolo = "C";
-						if ($s_ruolo == $simbolo_attaccante_file_calciatori) $ruolo = "A";
-						break;
-					} # fine if ($num_calciatore == $numero)
-				} # fine for $num1
-				
-				if ($statistiche == "SI") {
-					if ($stat_attivo == 0) $mess = "<b><font color=red>Non disponibile</font></b>";
-					else $mess = "In attivit�";
-					
-					if ($stat_ruolo == 0) $st_ruolo = "Portiere" ;
-					if ($stat_ruolo == 1) $st_ruolo = "Difensore";
-					if ($stat_ruolo == 2) $st_ruolo = "Centrocampista";
-					if ($stat_ruolo == 3) $st_ruolo = "Attaccante";
-					#if ($stat_ruolo == 3) $st_ruolo = "Fantasista";
-						
-						if ($ruolo == "P" and $totpresenze >= $partite_minime_per_range){
-							$portieri[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
-						}
-						if ($ruolo == "D" and $totpresenze >= $partite_minime_per_range){
-							$difensori[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
-						}
-						
-						if ($ruolo == "C" and $totpresenze >= $partite_minime_per_range){
-							$centrocampisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
-						}
-						
-						if ($ruolo == "A" and $totpresenze >= $partite_minime_per_range){
-							$attaccanti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
-						}
-						
-						if ($ruolo == "F" and $totpresenze >= $partite_minime_per_range){
-							$fantasisti[]=array($nome,$totpresenze,$media_giornale,$tot_golsegnati,$stat_ammonizione,$stat_espulsione,$media_punti+10,$totass,$numero,$xsquadra);
-						}
-						
-					} #Fine  if ($xsquadra==$vedi_squadra) {
-					
-					$stat_presenza=0;
-					$totpresenze=0;
-					$stat_votofc=0;
-					$totvotfc=0;
-					$stat_voto=0;
-					$totvot=0;
-					$stat_golsegnati=0;
-					$tot_golsegnati=0;
-					$stat_golsubiti=0;
-					$tot_golsubiti=0;
-					$stat_golvittoria=0;
-					$totgolvit=0;
-					$stat_golpareggio=0;
-					$totgolpar=0;
-					$stat_assist=0;
-					$totass=0;
-					$stat_ammonizione=0;
-					$totamm=0;
-					$stat_espulsione=0;
-					$totesp=0;
-					$stat_rigoretirato=0;
-					$totrigt=0;
-					$stat_rigoresubito=0;
-					$totrigs=0;
-					$stat_rigoreparato=0;
-					$totrigp=0;
-					$stat_rigoresbagliato=0;
-					$totrigsb=0;
-					$stat_autogol=0;
-					$totaut=0;
-					$partite_giocate=0;
-					$media_giornale=0;
-					$media_punti=0;
-					$partite_giocate = 0;
-					$somma_voti_tot = 0;
-					$somma_voti_giornale = 0;
-					
-				} # fine for $Knum1
-				
-			} # fine if ($statistiche == "SI")
-			
-			$ordinamento = 6;
-			
-			function cmp1 ($a, $b) {
-				global $ordinamento;
-				return strcmp($b[$ordinamento], $a[$ordinamento]);
-			}
-			
-			usort($portieri, "cmp1");
-			usort($difensori, "cmp1");
-			usort($centrocampisti, "cmp1");
-			usort($attaccanti, "cmp1");
-			
-			#Crea tabella
-			if ($ruolo == "P") $tot_golsegnati = $tot_golsubiti;
-			
-			$nome = $portieri[0][0];
-			$totpresenze = $portieri[0][1];
-			$media_giornale = $portieri[0][2];
-			$tot_golsegnati = $portieri[0][3];
-			$stat_ammonizioni = $portieri[0][4];
-			$stat_espulsione = $portieri[0][5];
-			$media_punti = $portieri[0][6]-10;
-			$totass = $portieri[0][7];
-			$numero = $portieri[0][8];
-			$xsquadra = $portieri[0][9];
-			
-			$tabella = "<table width='100%' cellpadding='10' class='responsive-table highlight' >
-			<thead>
-			<tr>
-			<th></td>
-			<th>Nome</td>
-			<th>Squadra</td>
-			<th>Partite</td>
-			<th>Media Voto</td>
-			<th>Media FantaVoto</td>
-			<th>Gol</td>
-			<th>Assist</td>
-			<th>Rigori</td>
-			<th>Gialli</td>
-			<th>Rossi</td>
-			</tr>
-			</thead>
-			
-			<td class='center'><b class='ruolo orange darken-4'>P</b></td>
-			<td><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
-			<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
-			<td class='center'>$totpresenze</td>
-			<td class='center'>$media_giornale</td>
-			<td class='center'>$media_punti</td>
-			<td class='center'>$tot_golsegnati</td>
-			<td class='center'>$totass</td>
-			<td class='center'>$stat_rigoretirato</td>
-			<td class='center'>$stat_ammonizione</td>
-			<td class='center'>$stat_espulsione</td>
-			</tr>";
-			
-			
-			
-			for ($i=0; $i<$dif; $i++) {
-				
-				$color="#cccccc";
-				
-				$nome = $difensori[$i][0];
-				$totpresenze = $difensori[$i][1];
-				$media_giornale = $difensori[$i][2];
-				$tot_golsegnati = $difensori[$i][3];
-				$stat_ammonizioni = $difensori[$i][4];
-				$stat_espulsione = $difensori[$i][5];
-				$media_punti = $difensori[$i][6]-10;
-				$totass = $difensori[$i][7];
-				$numero = $difensori[$i][8];
-				$xsquadra = $difensori[$i][9];
-				
-				$tabella .= "<td class='center'><b class='ruolo indigo darken-4'>D</b></td>
-				<td align='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
-				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
-				<td class='center'>$totpresenze</td>
-				<td class='center'>$media_giornale</td>
-				<td class='center'>$media_punti</td>
-				<td class='center'>$tot_golsegnati</td>
-				<td class='center'>$totass</td>
-				<td class='center'>$stat_rigoretirato</td>
-				<td class='center'>$stat_ammonizione</td>
-				<td class='center'>$stat_espulsione</td>
-				</tr>";
-			}
-			
-			for ($i=0; $i<$cen; $i++) {
-				
-				$nome = $centrocampisti[$i][0];
-				$totpresenze = $centrocampisti[$i][1];
-				$media_giornale = $centrocampisti[$i][2];
-				$tot_golsegnati = $centrocampisti[$i][3];
-				$stat_ammonizioni = $centrocampisti[$i][4];
-				$stat_espulsione = $centrocampisti[$i][5];
-				$media_punti = $centrocampisti[$i][6]-10;
-				$totass = $centrocampisti[$i][7];
-				$numero = $centrocampisti[$i][8];
-				$xsquadra = $centrocampisti[$i][9];
-				
-				$tabella .= "<td class='center'><b class='ruolo green darken-4'>C</b></td>
-				<td class='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
-				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
-				<td class='center'>$totpresenze</td>
-				<td class='center'>$media_giornale</td>
-				<td class='center'>$media_punti</td>
-				<td class='center'>$tot_golsegnati</td>
-				<td class='center'>$totass</td>
-				<td class='center'>$stat_rigoretirato</td>
-				<td class='center'>$stat_ammonizione</td>
-				<td class='center'>$stat_espulsione</td>
-				</tr>";
-				
-			}
-			
-			for ($i=0; $i<$att; $i++) {
-				
-				$nome = $attaccanti[$i][0];
-				$totpresenze = $attaccanti[$i][1];
-				$media_giornale = $attaccanti[$i][2];
-				$tot_golsegnati = $attaccanti[$i][3];
-				$stat_ammonizioni = $attaccanti[$i][4];
-				$stat_espulsione = $attaccanti[$i][5];
-				$media_punti = $attaccanti[$i][6]-10;
-				$totass = $attaccanti[$i][7];
-				$numero = $attaccanti[$i][8];
-				$xsquadra = $attaccanti[$i][9];
-				
-				$tabella .= "<td class='center'><b class='ruolo red darken-4'>A</b></td>
-				<td class='left'><a href='stat_calciatore.php?num_calciatore=$numero'>$nome</a></td>
-				<td><img class='iconasquadra' src='./immagini/m_$xsquadra.gif'><a href='tab_squadre.php?vedi_squadra=$xsquadra'>$xsquadra</a></td>
-				<td class='center'>$totpresenze</td>
-				<td class='center'>$media_giornale</td>
-				<td class='center'>$media_punti</td>
-				<td class='center'>$tot_golsegnati</td>
-				<td class='center'>$totass</td>
-				<td class='center'>$stat_rigoretirato</td>
-				<td class='center'>$stat_ammonizione</td>
-				<td class='center'>$stat_espulsione</td>
-				</tr>";
-			};
-			
-			echo" <div class='row'>
-			<div class='col m6 center'>
-			
-			<form method='post' action='suggteam.php'>
-			<input type='hidden' name='dif' value='$dif'>
-			<input type='hidden' name='cen' value='$cen'>
-			<input type='hidden' name='att' value='$att'>
-			Seleziona l'intervallo tra le giornate per la generazione delle statistiche: <select name='range' onChange='this.form.submit()'>";
-			
-			for ($num1 = "02" ; $num1 < 50 ; $num1++) {
-				if (strlen($num1) == 1) $num1 = "0".$num1;
-				$controlla_giornata = "giornata$num1";
-				if (@is_file("$percorso_cartella_dati/voti$num1.txt")) echo "<option value='$num1' selected>$num1</option>";
-				else break;
-			} # fine for $num1
-			
-			echo "</select></form>
-			
-			</div>
-			<div class='col m6 center'>Cambia il modulo:</b><br><br>";
-			
-			echo "<a href='./suggteam.php?dif=3&amp;cen=5&amp;att=2'><b>3 - 5 - 2</b></a> /
-			<a href='./suggteam.php?dif=3&amp;cen=4&amp;att=3'><b>3 - 4 - 3</b></a> /
-			<a href='./suggteam.php?dif=4&amp;cen=3&amp;att=3'><b>4 - 3 - 3</b></a> /
-			<a href='./suggteam.php?dif=4&amp;cen=4&amp;att=2'><b>4 - 4 - 2</b></a> /
-			<a href='./suggteam.php?dif=4&amp;cen=5&amp;att=1'><b>4 - 5 - 1</b></a> /
-			<a href='./suggteam.php?dif=5&amp;cen=4&amp;att=1'><b>5 - 4 - 1</b></a><br/><br/><br/><br/>
-			</div>
-			</div>
-			
-			<div class='row'>
-			<div class='col m12'>
-			$tabella</table>
-			</div></div>";
-			echo "</div></div></div></div></div></div></div>";
-		} # fine if ($_SESSION['valido'] == "SI") {
-		else echo"<meta http-equiv='refresh' content='0; url=logout.php'>";
-		
-		include("./footer.php");
-	?>													
+    $smarty->assign("range", $range);
+    $smarty->assign("dif", $dif);
+    $smarty->assign("cen", $cen);
+    $smarty->assign("att", $att);
+	$smarty->assign("GiocatoriTabella", $giocatore); #$giocatore è la variabile con il compito di far vedere l'elenco calciatori
+	$smarty->display('suggteam.tpl');
+?>	

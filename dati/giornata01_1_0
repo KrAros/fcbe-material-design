@@ -1,0 +1,77 @@
+#@& formazione #@&
+Test
+100,ARESTI Simone,P
+220,<b>BERESZYNSKI Bartosz</b>,D,6,6
+201,<b>ACERBI Francesco</b>,D,6,6
+206,<b>ALVES Bruno</b>,D,6,6
+213,<b>ASAMOAH Kwadwo</b>,D,6,6
+501,<b>ALLAN Marques Loureiro</b>,C,8,7
+514,<b>BENASSI Marco</b>,C,6,0
+532,CALHANOGLU Hakan,C
+809,<b>BELOTTI Andrea</b>,A,5,5
+816,<b>CAPUTO Francesco</b>,A,10,7
+810,<b>BERARDI Domenico</b>,A,9.5,6.5
+
+101,<b>AUDERO Emil</b>,P,6,0
+204,ALBIOL Raúl,D,5.5,5.5
+207,ANDERSEN Joachim,D,6,0
+510,<b>BASELLI Daniele</b>,C,6.5,6.5
+609,LINETTY Karol,C
+814,CALLEJON Jose Maria,A
+804,BABACAR Khouma El,A
+
+#@& formazione #@&
+enzo
+
+
+#@& formazione #@&
+jarod13
+
+
+#@& formazione #@&
+Testone
+
+
+#@& formazione #@&
+Test02
+
+
+#@& formazione #@&
+Test03
+
+
+#@& fine formazioni #@&
+
+#@& voti #@&
+Test##@@&&75
+enzo##@@&&0
+jarod13##@@&&0
+Testone##@@&&0
+Test02##@@&&0
+Test03##@@&&0
+#@& fine voti #@&
+
+#@& modificatore #@&
+Test##@@&&
+enzo##@@&&
+jarod13##@@&&
+Testone##@@&&
+Test02##@@&&
+Test03##@@&&
+#@& fine modificatore #@&
+
+#@& scontri #@&
+enzo##@@&&Test02##@@&&2##@@&&0
+jarod13##@@&&Test03##@@&&0##@@&&0
+Testone##@@&&Test##@@&&0##@@&&0
+#@& fine scontri #@&
+
+#@& punteggi #@&
+Test##@@&&
+enzo##@@&&
+jarod13##@@&&
+Testone##@@&&
+Test02##@@&&
+Test03##@@&&
+#@& fine punteggi #@&
+

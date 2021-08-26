@@ -1,33 +1,5 @@
-########## CHANGELOG v0.0.12-alpha ##########
+########## CHANGELOG v0.0.2-alpha ##########
 
 ##### ROOT #####
 
-- fantacampo.php
-Migliorata la qualità dell'output del fantacampo: ora l'immagine non è più sgranata.
-
-- header.php
-Aggiunto un paio di script per alcune funzionalità di supporto allo script. In futuro, probabilmente questi saranno spostati in un file dedicato.
-
-- squadra.php
-Aggiornamenti al layout grafico di caricamento della formazione e supporto alla nuova funzione invia_formazione().
-
-- statistiche.php
-Il file è stato profondamente rinnovato. Oltre la semplice modifica grafica, sono state aggiunte molte funzionalità: possibilità di vedere le statistiche degli anni pasasti, di una singola squadra o di specifici ruoli.
-
-##### IMMAGINI #####
-
-- immagini
-
-Aggiornati i loghi piccoli di qualche squadra per una migliore resa nel fantacampo.
-
-##### INC #####
-
-- inc/funzioni_utente.php
-  - Aggiornata la funzione rosa_squadra(): nel layout è stato aggiunto un link che collega alle statistiche complete della squadra visualizzata.
-  - Aggiornata la funzione statistiche_rosa(): piccole modifiche per rendere il layout più gradevole.
-  - Aggiunta la funzione invia_formazione(): questa sostituisce il file seleziona_squadra.php, di fatti eliminato. Ora il file squadra.php al momento dell'aggiornamento della formazione chiamerà questa funzione che gestirà tutto il processo.
-
-##### CSS #####
-
-- css/extra.css
-Aggiunte classi per supportare l'aggiunta degli infobox in Material Design style.
+- Porting in corso dell'intero script su Smarty per facilitare la gestione del template. 

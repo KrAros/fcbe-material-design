@@ -1,24 +1,37 @@
 <?php
-	// #################################################################################
-	// FANTACALCIOBAZAR EVOLUTION
-	// Copyright (C) 2003-2015 by Antonello Onida
-	//
-	// This program is free software; you can redistribute it and/or modify
-	// it under the terms of the GNU General Public License as published by
-	// the Free Software Foundation; either version 2 of the License, or
-	// (at your option) any later version.
-	//
-	// This program is distributed in the hope that it will be useful,
-	// but WITHOUT ANY WARRANTY; without even the implied warranty of
-	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	// GNU General Public License for more details.
-	//
-	// You should have received a copy of the GNU General Public License
-	// along with this program; if not, write to the Free Software
-	// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-	// #################################################################################
-	require_once ("./controlla_pass.php");
-	include ("./header.php");
+	##################################################################################
+	#    FANTACALCIOBAZAR EVOLUTION
+	#    Copyright (C) 2003 - 2009 by Antonello Onida
+	#
+	#    This program is free software; you can redistribute it and/or modify
+	#    it under the terms of the GNU General Public License as published by
+	#    the Free Software Foundation; either version 2 of the License, or
+	#    (at your option) any later version.
+	#
+	#    This program is distributed in the hope that it will be useful,
+	#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#    GNU General Public License for more details.
+	#
+	#    You should have received a copy of the GNU General Public License
+	#    along with this program; if not, write to the Free Software
+	#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	##################################################################################
+	require './libs/Smarty.class.php';
+    require './controlla_pass.php';
+    $smarty = new Smarty;
+    //$smarty->force_compile = true;
+    $smarty->debugging = true;
+    $smarty->caching = false;
+    $smarty->cache_lifetime = 120;
+	include('a_widget.php');
+	
+	$smarty->assign("TitoloPagina", "Gestione tornei");
+	$smarty->assign("Sottotitolo", "Modifica i parametri dei tornei presenti sul sito");
+	$smarty->assign("inserimento", $inserimento);
+	$smarty->assign("azione", $azione);
+	$smarty->assign("attiva_multi", $attiva_multi);
+	$smarty->assign("messgestutente", $messgestutente);
 	
 	if ($_SESSION ['valido'] == "SI" and $_SESSION ['permessi'] == 5) {
 		
@@ -37,22 +50,9 @@
 		if ($inserimento != "scrivi" and $azione == "cancella") {
 			$id = $_POST ["itorneo"];
 			$itdenom = $_POST ["itdenom"];
-			echo "
-			<table width='100%' style='padding: 15px; background-color:$sfondo_tab'>
-			<caption>Cancellazione torneo</caption>
-			<tr><td align='center'>
-			<br /><br />
-			<b>Utilizzare la funzione di cancellazione solo alla fine del campionato e verificare che nel file tornei.php non ci siano righe vuote presenti!</b><br /><br />
-			Sei sicuro di voler cancellare il torneo <b><u>$itdenom</u></b> (ID: $id)?<br /><br />
-			<br /><br />
-			<form method='post' action='a_torneo.php'>
-			<input type='hidden' name='iitorneo' value='$id' />
-			<input type='hidden' name='azione' value='cancella' />
-			<input type='hidden' name='inserimento' value='scrivi' />
-			<input type='submit' value='Cancella' /></form></td></tr></table>";
-			echo "</div>";
-			include ("./footer.php");
-			exit ();
+			$smarty->assign("id", $id);
+			$smarty->assign("itdenom", $itdenom);
+			//exit ();
 		}
 		
 		if ($inserimento == "scrivi") {
@@ -159,13 +159,16 @@
 				$elenco_id_tornei = array ();
 				// arrializzo e creo elenco tornei
 				foreach ( $dati_tornei as $tornei ) {
-					$at = explode ( ",", trim ( $tornei ) );
-					$a_tornei [trim ( $at [0] )] [] = trim ( $at [1] );
-					$a_tornei [trim ( $at [0] )] [] = trim ( $at [2] );
-					$a_tornei [trim ( $at [0] )] [] = trim ( $at [4] );
-					$a_tornei [trim ( $at [0] )] [] = trim ( $at [5] );
-					$a_tornei [trim ( $at [0] )] [] = trim ( $at [6] );
-					$elenco_id_tornei [] = $at [0];
+					$at = explode(",", trim($tornei));
+					$a_tornei[trim($at[0])][] = trim($at[1]);
+					$a_tornei[trim($at[0])][] = trim($at[2]);
+					$a_tornei[trim($at[0])][] = trim($at[4]);
+					$a_tornei[trim($at[0])][] = trim($at[5]);
+					$a_tornei[trim($at[0])][] = trim($at[6]);
+					$elenco_id_tornei[] = $at[0];
+					$id_tornei = trim($at[0]);
+					$nome_tornei = trim($at[1]);
+					
 					$mostra_tornei .= "<tr bgcolor='$sfondo_tab1'>
 					<td align='center'>" . trim ( $at [0] ) . "</td>
 					<td align='left'>" . trim ( $at [1] ) . "
@@ -193,10 +196,25 @@
 					<input type='image' src='./immagini/elimina32.png' name='submit' alt='Elimina' />
 					</form>
 					</td></tr>";
+					
+					#########################################################################
+					##### Inserimento statistiche in array per essere richiamati nel template
+					$lista_tornei[] = array( 
+						"id" => $id_tornei, 
+						"nome" => $nome_tornei, 
+						"squadra" => $squadra, 
+						"backruolo" => $backruolo,
+						"attivo" => $csattivo,
+						"costo" => $valore,
+						"valore_attuale" => $stat_valore,
+						"proprietario" => $proprietario,
+						"costo" => $costo,
+					);
 				}
 				for($nnid = 1; $nnid < 100; $nnid ++) {
 					if (! in_array ( $nnid, $elenco_id_tornei )) {
 						$nt = $nnid;
+						$smarty->assign("nuovo_torneo",$nt);
 						break;
 					}
 				}
@@ -229,6 +247,7 @@
 				echo "<input type='hidden' name='azione' value='nuovo' />";
 				else
 				echo "<input type='hidden' name='azione' value='modifica' />";
+			$smarty->assign("info_torneo", array( 'id' => $otid, 'nome' => $otdenom, $otpart, $otserie, 'mercato_libero' => $otmercato_libero, $ottipo_calcolo, $otgiornate_totali, $otritardo_torneo, $otcrediti_iniziali, $otnumcalciatori, $otcomposizione_squadra, $otquotacassa, $temp2, $temp3, $temp4, 'stato_mercato' => $otstato, $otmodificatore_difesa, $otschemi, $otmax_in_panchina, $otpanchina_fissa, $otmax_entrate_dalla_panchina, $otsostituisci_per_ruolo, $otsostituisci_per_schema, $otsostituisci_fantasisti_come_centrocampisti, $otnumero_cambi_max, $otrip_cambi_numero, $otrip_cambi_giornate, $otrip_cambi_durata, $otaspetta_giorni, $otaspetta_ore, $otaspetta_minuti, $otnum_calciatori_scambiabili, $otscambio_con_soldi, $otvendi_costo, $otpercentuale_vendita, $otsoglia_voti_primo_gol, $otincremento_voti_gol_successivi, $otvoti_bonus_in_casa, $otpunti_partita_vinta, $otpunti_partita_pareggiata, $otpunti_partita_persa, $otdifferenza_punti_a_parita_gol, $otdifferenza_punti_zero_a_zero, $otmin_num_titolari_in_formazione, $otpunti_pareggio, $otpunti_pos, $otreset_scadenza ));
 			?>
 			<table class="highlight">
 				<thead>
@@ -835,5 +854,6 @@
 			echo "</div></div></div></div></div></div>";
 		} # fine if ($_SESSION["utente"]
 		else header("location:./logout.php");
-		include("./footer.php");
-	?>																																																																																																																																							
+		$smarty->assign("TorneiTabella", $lista_tornei); # $giocatore è la variabile con il compito di far vedere l'elenco calciatori
+		$smarty->display('a_torneo.tpl');
+	?>							
